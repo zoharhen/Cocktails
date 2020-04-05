@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#92A8C9</color>
+    <color name="colorPrimaryDark">#92A8C9</color>
+    <color name="colorAccent">#03DAC5</color>
+
+    <!-- Cocktails App -->
+    <color name="colorAppBackground">#EAEAEA</color>
+    <color name="colorCardBackground">#4E4D4D</color>
+    <color name="colorText">#DFDFDF</color>
+
+</resources>

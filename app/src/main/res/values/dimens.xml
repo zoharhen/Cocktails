@@ -1,0 +1,10 @@
+<resources>
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="scrolling_margin">16dp</dimen>
+
+    <!-- Cocktails App -->
+    <dimen name="headerFontSize">16sp</dimen>
+    <dimen name="textFontSize">11sp</dimen>
+    <dimen name="gridDim">2</dimen>
+
+</resources>
