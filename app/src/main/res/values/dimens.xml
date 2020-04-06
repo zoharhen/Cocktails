@@ -3,6 +3,8 @@
     <dimen name="scrolling_margin">16dp</dimen>
 
     <!-- Cocktails App -->
+    <dimen name="actionBarTitleBeforeCollapsing">43sp</dimen>
+    <dimen name="actionBarTitleAfterCollapsing">30sp</dimen>
     <dimen name="headerFontSize">16sp</dimen>
     <dimen name="textFontSize">11sp</dimen>
     <dimen name="gridDim">2</dimen>

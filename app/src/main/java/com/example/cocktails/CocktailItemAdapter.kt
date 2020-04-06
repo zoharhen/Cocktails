@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.cocktails.R.drawable.mango_tango
 
 class CocktailItemAdapter internal constructor(context: Context, data: List<Cocktail>) :
     RecyclerView.Adapter<CocktailItemAdapter.ViewHolder>() {

@@ -7,24 +7,26 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_scrolling.*
-
+import kotlinx.serialization.*
+import kotlinx.serialization.json.*
 
 data class Cocktail(val name: String, val type: String, val glass: String, val image: Int)
 
 class ScrollingActivity : AppCompatActivity() {
 
     private val items: List<Cocktail> = listOf(
-        Cocktail("Mango tango", "Spring", "Margarita", R.drawable.mangotango),
-        Cocktail("Mojito", "Fresh", "Highball", R.drawable.mojito),
-        Cocktail("Mango tango", "Spring", "Margarita", R.drawable.mangotango),
-        Cocktail("Mojito", "Fresh", "Highball", R.drawable.mojito),
-        Cocktail("Mango tango", "Spring", "Margarita", R.drawable.mangotango),
-        Cocktail("Mojito", "Fresh", "Highball", R.drawable.mojito),
-        Cocktail("Mango tango", "Spring", "Margarita", R.drawable.mangotango),
-        Cocktail("Mojito", "Fresh", "Highball", R.drawable.mojito),
-        Cocktail("Mango tango", "Spring", "Margarita", R.drawable.mangotango),
-        Cocktail("Mojito", "Fresh", "Highball", R.drawable.mojito),
-        Cocktail("Mango tango", "Spring", "Margarita", R.drawable.mangotango))
+        Cocktail("Mango tango", "Spring", "Margarita", R.drawable.c_mangotango),
+        Cocktail("Mojito", "Fresh", "Highball", R.drawable.c_mojito),
+        Cocktail("Mango tango", "Spring", "Margarita", R.drawable.c_red),
+        Cocktail("Mojito", "Fresh", "Highball", R.drawable.c_martini),
+        Cocktail("Mango tango", "Spring", "Margarita", R.drawable.c_test2),
+        Cocktail("Mojito", "Fresh", "Highball", R.drawable.c_orange),
+        Cocktail("Mango tango", "Spring", "Margarita", R.drawable.c_short1),
+        Cocktail("Mojito", "Fresh", "Highball", R.drawable.c_mojito),
+        Cocktail("Mango tango", "Spring", "Margarita", R.drawable.c_mangotango),
+        Cocktail("Mojito", "Fresh", "Highball", R.drawable.c_mojito),
+        Cocktail("Mango tango", "Spring", "Margarita", R.drawable.c_mangotango))
+
     private var adapter: CocktailItemAdapter? = null
     private lateinit var recyclerView: RecyclerView
 

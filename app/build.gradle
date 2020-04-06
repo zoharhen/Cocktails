@@ -32,8 +32,9 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.2.0'
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    implementation 'androidx.fragment:fragment-ktx:1.2.3'
+    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0'
     // youtube:
+    implementation 'androidx.fragment:fragment-ktx:1.2.4'
     implementation 'androidx.cardview:cardview:1.0.0' // card view UI
     implementation 'com.squareup.picasso:picasso:2.5.2' // insert images
     implementation 'com.firebaseui:firebase-ui-database:1.2.0' // database
@@ -42,7 +43,6 @@ dependencies {
     implementation 'com.google.android.material:material:1.2.0-alpha05' // design component
     implementation 'androidx.navigation:navigation-fragment-ktx:2.2.1' // screen navigation
     implementation 'androidx.paging:paging-runtime-ktx:2.1.2' // load and display small chunks of data at a time
-    implementation 'androidx.recyclerview:recyclerview:1.1.0' //  display a scrolling list of elements based on large data sets
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-beta01' // detects the vertical swipe, displays a distinctive progress bar, and triggers callback methods in your app.
     implementation 'com.jakewharton.timber:timber:4.7.1' // logger
     implementation 'com.squareup.okhttp3:logging-interceptor:4.2.2' // logs HTTP request and response data

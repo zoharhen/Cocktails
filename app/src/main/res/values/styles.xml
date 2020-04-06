@@ -14,25 +14,34 @@
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <!-- List item header. Font family: ABeeZee, Line height: 14sp -->
+    <!-- App action bar title: before collapssing -->
+    <style name="TextAppearance.Design.CollapsingToolbar.Expanded" parent="android:TextAppearance">
+        <item name="android:textSize">@dimen/actionBarTitleBeforeCollapsing</item>
+        <item name="android:textColor">@color/colorText</item>
+        <item name="android:fontFamily">@font/abeezee</item>
+    </style>
+
+    <!-- App action bar title: after collapssing -->
+    <style name="TextAppearance.AppCompat.Widget.ActionBar.Title" parent="android:TextAppearance">
+        <item name="android:textSize">@dimen/actionBarTitleAfterCollapsing</item>
+        <item name="android:textColor">@color/colorText</item>
+        <item name="android:fontFamily">@font/abeezee</item>
+    </style>
+
+    <!-- List item header -->
     <style name="list_item_header">
         <item name="android:textSize">@dimen/headerFontSize</item>
         <item name="android:textColor">@color/colorText</item>
+        <item name="android:fontFamily">@font/abeezee</item>
     </style>
 
-    <!-- List item header. Font family: ABeeZee, Line height: 11sp -->
+    <!-- List item text -->
     <style name="list_item_text">
         <item name="android:textSize">@dimen/textFontSize</item>
         <item name="android:textColor">@color/colorText</item>
-    </style>
-
-    <!-- App header -->
-    <style name="app_header">
-        <item name="android:textSize">48sp</item>
-        <item name="android:textColor">#F1F1F1</item>
+        <item name="android:fontFamily">@font/abeezee</item>
     </style>
 
 </resources>
