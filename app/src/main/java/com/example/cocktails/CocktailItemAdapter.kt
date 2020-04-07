@@ -12,10 +12,10 @@ import androidx.recyclerview.widget.RecyclerView
 class CocktailItemAdapter internal constructor(context: Context, data: List<Cocktail>) :
     RecyclerView.Adapter<CocktailItemAdapter.ViewHolder>() {
 
-    private val items: List<Cocktail>
-    private val inflater: LayoutInflater
-    private var clickListener: ItemClickListener? = null
-    private val cnt: Context
+    var onItemClick: ((Cocktail) -> Unit)? = null
+    private val items: List<Cocktail> = data
+    private val inflater: LayoutInflater = LayoutInflater.from(context)
+    private val cnt: Context = context
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = inflater.inflate(R.layout.list_item, parent, false)
@@ -31,22 +31,16 @@ class CocktailItemAdapter internal constructor(context: Context, data: List<Cock
         return items.size
     }
 
-    inner class ViewHolder internal constructor(itemView: View) :
-        RecyclerView.ViewHolder(itemView), View.OnClickListener {
+    inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        var header: TextView
-        var description: TextView
-        var imageView: ImageView
-
-        override fun onClick(view: View) {
-            if (clickListener != null) clickListener!!.onItemClick(view, adapterPosition)
-        }
+        var header: TextView = itemView.findViewById(R.id.list_item_header)
+        var description: TextView = itemView.findViewById(R.id.list_item_description)
+        var imageView: ImageView = itemView.findViewById(R.id.list_item_clipart)
 
         init {
-            header = itemView.findViewById(R.id.list_item_header)
-            description = itemView.findViewById(R.id.list_item_description)
-            imageView = itemView.findViewById(R.id.list_item_clipart)
-            itemView.setOnClickListener(this)
+            itemView.setOnClickListener{
+                onItemClick?.invoke(items[adapterPosition])
+            }
         }
 
         @SuppressLint("SetTextI18n")
@@ -54,20 +48,6 @@ class CocktailItemAdapter internal constructor(context: Context, data: List<Cock
             header.text = cocktail.name
             description.text = "Type: ${cocktail.type}\nGlass: ${cocktail.glass}"
             imageView.setImageResource(cocktail.image)
-    }
-    }
-
-    fun setClickListener(itemClickListener: ItemClickListener?) {
-        clickListener = itemClickListener
-    }
-
-    interface ItemClickListener {
-        fun onItemClick(view: View?, position: Int)
-    }
-
-    init {
-        inflater = LayoutInflater.from(context)
-        items = data
-        cnt = context
+        }
     }
 }

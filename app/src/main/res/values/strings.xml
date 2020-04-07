@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Cocktails</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_item_details_activity">Item_details_activity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
 </resources>

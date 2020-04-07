@@ -1,31 +1,22 @@
 package com.example.cocktails
 
+import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_scrolling.*
-import kotlinx.serialization.*
-import kotlinx.serialization.json.*
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
-data class Cocktail(val name: String, val type: String, val glass: String, val image: Int)
+@Parcelize
+data class Cocktail(val name: String, val type: String, val glass: String, val image: Int): Parcelable
 
 class ScrollingActivity : AppCompatActivity() {
-
-    private val items: List<Cocktail> = listOf(
-        Cocktail("Mango tango", "Spring", "Margarita", R.drawable.c_mangotango),
-        Cocktail("Mojito", "Fresh", "Highball", R.drawable.c_mojito),
-        Cocktail("Mango tango", "Spring", "Margarita", R.drawable.c_red),
-        Cocktail("Mojito", "Fresh", "Highball", R.drawable.c_martini),
-        Cocktail("Mango tango", "Spring", "Margarita", R.drawable.c_test2),
-        Cocktail("Mojito", "Fresh", "Highball", R.drawable.c_orange),
-        Cocktail("Mango tango", "Spring", "Margarita", R.drawable.c_short1),
-        Cocktail("Mojito", "Fresh", "Highball", R.drawable.c_mojito),
-        Cocktail("Mango tango", "Spring", "Margarita", R.drawable.c_mangotango),
-        Cocktail("Mojito", "Fresh", "Highball", R.drawable.c_mojito),
-        Cocktail("Mango tango", "Spring", "Margarita", R.drawable.c_mangotango))
 
     private var adapter: CocktailItemAdapter? = null
     private lateinit var recyclerView: RecyclerView
@@ -35,21 +26,28 @@ class ScrollingActivity : AppCompatActivity() {
         setContentView(R.layout.activity_scrolling)
         setSupportActionBar(toolbar)
 
-        recyclerView = findViewById(R.id.recyclerView)
+        val jsonString = applicationContext.assets.open("cocktailsData.json").bufferedReader().use { it.readText() }
+        val listCocktailType = object : TypeToken<List<Cocktail>>() {}.type
+        val items = Gson().fromJson<List<Cocktail>>(jsonString, listCocktailType)
+
         adapter = CocktailItemAdapter(this, items)
         initRecyclerview()
     }
 
     private fun initRecyclerview() {
         val columns = resources.getInteger(R.integer.gridColumnNum)
+
+        recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = GridLayoutManager(this, columns)
         recyclerView.adapter = adapter
 
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-            }
-        })
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() { })
+
+        adapter?.onItemClick = { cocktail ->
+            val intent = Intent(applicationContext, Item_details_activity::class.java)
+            intent.putExtra("cocktail", cocktail)
+            startActivity(intent)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -62,7 +60,6 @@ class ScrollingActivity : AppCompatActivity() {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-
         return when (item.itemId) {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
