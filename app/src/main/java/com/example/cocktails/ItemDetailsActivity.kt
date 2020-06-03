@@ -3,28 +3,41 @@ package com.example.cocktails
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.TextView
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.tabs.TabLayout
-import androidx.viewpager.widget.ViewPager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NavUtils
+import androidx.viewpager.widget.ViewPager
 import com.example.cocktails.ui.main.SectionsPagerAdapter
-import kotlinx.android.synthetic.main.activity_item_details.*
+import com.google.android.material.tabs.TabLayout
 
-class Item_details_activity : AppCompatActivity() {
+
+class ItemDetailsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_item_details)
+        setContentView(R.layout.tabbed_item)
+
         val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
         val viewPager: ViewPager = findViewById(R.id.view_pager)
         viewPager.adapter = sectionsPagerAdapter
         val tabs: TabLayout = findViewById(R.id.tabs)
         tabs.setupWithViewPager(viewPager)
 
+//        val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar1)
+//        setSupportActionBar(toolbar)
+//        supportActionBar?.setHomeButtonEnabled(true)
+//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         val cocktail = intent.getParcelableExtra<Cocktail>("cocktail")
 
         val activityTitle: TextView = findViewById(R.id.title)
-        activityTitle.setText(cocktail?.name)
+        activityTitle.text = cocktail?.name
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> finish()
+            else -> {
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

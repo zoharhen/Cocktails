@@ -17,32 +17,46 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <!-- App action bar title: before collapssing -->
+    <!-- App action bar title: before collapsing -->
     <style name="TextAppearance.Design.CollapsingToolbar.Expanded" parent="android:TextAppearance">
         <item name="android:textSize">@dimen/actionBarTitleBeforeCollapsing</item>
         <item name="android:textColor">@color/colorText</item>
-        <item name="android:fontFamily">@font/abeezee</item>
+        <item name="android:fontFamily">@font/paytone_one</item>
     </style>
 
-    <!-- App action bar title: after collapssing -->
+    <!-- App action bar title: after collapsing -->
+    <style name="TextAppearance.Widget.AppCompat.Toolbar.Title." parent="android:TextAppearance">
+        <item name="android:textSize">@dimen/actionBarTitleAfterCollapsing</item>
+        <item name="android:textColor">@color/colorText</item>
+        <item name="android:fontFamily">@font/paytone_one</item>
+    </style>
+
     <style name="TextAppearance.AppCompat.Widget.ActionBar.Title" parent="android:TextAppearance">
         <item name="android:textSize">@dimen/actionBarTitleAfterCollapsing</item>
         <item name="android:textColor">@color/colorText</item>
-        <item name="android:fontFamily">@font/abeezee</item>
+        <item name="android:fontFamily">@font/paytone_one</item>
+    </style>
+
+    <style name="TextAppearance.Design.Tab." parent="android:TextAppearance">
+        <item name="android:textSize">@dimen/headerFontSize</item>
+        <item name="android:textColor">@color/colorText</item>
+        <item name="android:fontFamily">@font/raleway_light</item>
     </style>
 
     <!-- List item header -->
     <style name="list_item_header">
         <item name="android:textSize">@dimen/headerFontSize</item>
         <item name="android:textColor">@color/colorText</item>
-        <item name="android:fontFamily">@font/abeezee</item>
+        <item name="android:fontFamily">@font/raleway_light</item>
     </style>
 
     <!-- List item text -->
     <style name="list_item_text">
         <item name="android:textSize">@dimen/textFontSize</item>
         <item name="android:textColor">@color/colorText</item>
-        <item name="android:fontFamily">@font/abeezee</item>
+        <item name="android:fontFamily">@font/raleway_light</item>
     </style>
 
 </resources>
+
+

@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">Cocktails</string>
-    <string name="action_settings">Settings</string>
     <string name="title_activity_item_details_activity">Item_details_activity</string>
-    <string name="tab_text_1">Tab 1</string>
-    <string name="tab_text_2">Tab 2</string>
+    <string name="tab_text_1">Measuring helper</string>
+    <string name="tab_text_2">Recipe</string>
+    <string name="my_cocktails">My Cocktails</string>
+    <string name="favorites">Favorites</string>
+    <string name="contact_us">Contact Us</string>
 </resources>

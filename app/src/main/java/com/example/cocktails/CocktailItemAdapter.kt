@@ -18,7 +18,7 @@ class CocktailItemAdapter internal constructor(context: Context, data: List<Cock
     private val cnt: Context = context
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view: View = inflater.inflate(R.layout.list_item, parent, false)
+        val view: View = inflater.inflate(R.layout.grid_item, parent, false)
         return ViewHolder(view)
     }
 
@@ -32,10 +32,9 @@ class CocktailItemAdapter internal constructor(context: Context, data: List<Cock
     }
 
     inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        var header: TextView = itemView.findViewById(R.id.list_item_header)
-        var description: TextView = itemView.findViewById(R.id.list_item_description)
-        var imageView: ImageView = itemView.findViewById(R.id.list_item_clipart)
+        var header: TextView = itemView.findViewById(R.id.item_title)
+        var description: TextView = itemView.findViewById(R.id.item_description)
+        var imageView: ImageView = itemView.findViewById(R.id.item_clipart)
 
         init {
             itemView.setOnClickListener{

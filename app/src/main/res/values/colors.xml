@@ -5,9 +5,10 @@
     <color name="colorAccent">#03DAC5</color>
 
     <!-- Cocktails App -->
-    <color name="colorAppBackground">#EAEAEA</color>
-    <color name="colorTopBackground">#2D2D2D</color>
-    <color name="colorCardBackground">#4E4D4D</color>
-    <color name="colorText">#DFDFDF</color>
+    <color name="colorAppBackground1">#EAEAEA</color>
+    <color name="colorAppBackground">#232222</color>
+    <color name="colorTopBackground">#373636</color>
+    <color name="colorCardBackground">#373636</color>
+    <color name="colorText">#D5D3D3</color>
 
 </resources>

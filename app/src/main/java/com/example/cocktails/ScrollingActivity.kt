@@ -26,29 +26,32 @@ class ScrollingActivity : AppCompatActivity() {
         setContentView(R.layout.activity_scrolling)
         setSupportActionBar(toolbar)
 
-        val jsonString = applicationContext.assets.open("cocktailsData.json").bufferedReader().use { it.readText() }
-        val listCocktailType = object : TypeToken<List<Cocktail>>() {}.type
-        val items = Gson().fromJson<List<Cocktail>>(jsonString, listCocktailType)
-
-        adapter = CocktailItemAdapter(this, items)
+        initAdapter()
         initRecyclerview()
     }
 
     private fun initRecyclerview() {
         val columns = resources.getInteger(R.integer.gridColumnNum)
-
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = GridLayoutManager(this, columns)
         recyclerView.adapter = adapter
-
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() { })
+    }
+
+    private fun initAdapter() {
+        val jsonString = applicationContext.assets.open("cocktailsData.json").bufferedReader().use { it.readText() }
+        val listCocktailType = object : TypeToken<List<Cocktail>>() {}.type
+        val items = Gson().fromJson<List<Cocktail>>(jsonString, listCocktailType)
+
+        adapter = CocktailItemAdapter(this, items)
 
         adapter?.onItemClick = { cocktail ->
-            val intent = Intent(applicationContext, Item_details_activity::class.java)
+            val intent = Intent(applicationContext, ItemDetailsActivity::class.java)
             intent.putExtra("cocktail", cocktail)
             startActivity(intent)
         }
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -61,7 +64,9 @@ class ScrollingActivity : AppCompatActivity() {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_favorites -> true
+            R.id.action_myCocktails -> true
+            R.id.action_help -> true
             else -> super.onOptionsItemSelected(item)
         }
     }

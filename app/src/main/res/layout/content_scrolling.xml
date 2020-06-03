@@ -14,11 +14,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:background="#EAEAEA"
         android:scrollbars="vertical"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="@integer/gridColumnNum"
-        tools:listitem="@layout/list_item">
+        tools:listitem="@layout/grid_item">
 
     </androidx.recyclerview.widget.RecyclerView>
 

@@ -3,59 +3,55 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/relativeLayout"
-    android:layout_width="210dp"
-    android:layout_height="150dp"
+    android:layout_width="202dp"
+    android:layout_height="143dp"
     android:paddingTop="16dp">
 
     <TextView
-        android:id="@+id/list_item_header"
+        android:id="@+id/item_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="6dp"
         android:layout_marginTop="13dp"
-        android:fontFamily="@font/abeezee"
         android:gravity="center_vertical"
         android:text="CocktailName"
         android:textAppearance="@style/list_item_header"
         android:translationZ="100dp"
-        app:layout_constraintStart_toStartOf="@id/list_item_background"
-        app:layout_constraintTop_toTopOf="@id/list_item_background" />
+        app:layout_constraintStart_toStartOf="@id/background"
+        app:layout_constraintTop_toTopOf="@id/background" />
 
     <TextView
-        android:id="@+id/list_item_description"
+        android:id="@+id/item_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:fontFamily="@font/abeezee"
+        android:layout_marginTop="27dp"
         android:gravity="center_vertical"
         android:text="CocktailDescription"
         android:textAppearance="@style/list_item_text"
         android:translationZ="100dp"
-        app:layout_constraintStart_toStartOf="@id/list_item_header"
-        app:layout_constraintTop_toTopOf="@id/list_item_header" />
+        app:layout_constraintStart_toStartOf="@id/item_title"
+        app:layout_constraintTop_toTopOf="@id/item_title" />
 
     <ImageView
-        android:id="@+id/list_item_background"
-        android:layout_width="135dp"
-        android:layout_height="85dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="32dp"
+        android:id="@+id/background"
+        android:layout_width="144dp"
+        android:layout_height="88dp"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="29dp"
         android:background="@drawable/list_item_background"
-        android:contentDescription="CocktailClipart"
         android:elevation="2dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/list_item_clipart"
+        android:id="@+id/item_clipart"
         android:layout_width="77dp"
         android:layout_height="126dp"
-        android:layout_marginStart="88dp"
+        android:layout_marginStart="93dp"
         android:baselineAlignBottom="true"
-        android:contentDescription="cocktail_clipart"
         android:translationZ="100dp"
-        app:layout_constraintBottom_toBottomOf="@id/list_item_background"
-        app:layout_constraintStart_toStartOf="@id/list_item_description" />
+        app:layout_constraintBottom_toBottomOf="@id/background"
+        app:layout_constraintStart_toStartOf="@id/item_description" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
