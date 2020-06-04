@@ -14,7 +14,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 @Parcelize
-data class Cocktail(val name: String, val type: String, val glass: String, val image: Int): Parcelable
+data class Cocktail(val name: String, val type: String, val steps: Array<String>, val ingredients: Array<String>, val image: String): Parcelable
 
 class ScrollingActivity : AppCompatActivity() {
 
@@ -39,7 +39,7 @@ class ScrollingActivity : AppCompatActivity() {
     }
 
     private fun initAdapter() {
-        val jsonString = applicationContext.assets.open("cocktailsData.json").bufferedReader().use { it.readText() }
+        val jsonString = applicationContext.assets.open("predefined.json").bufferedReader().use { it.readText() }
         val listCocktailType = object : TypeToken<List<Cocktail>>() {}.type
         val items = Gson().fromJson<List<Cocktail>>(jsonString, listCocktailType)
 

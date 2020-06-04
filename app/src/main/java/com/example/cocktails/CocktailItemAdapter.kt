@@ -45,8 +45,9 @@ class CocktailItemAdapter internal constructor(context: Context, data: List<Cock
         @SuppressLint("SetTextI18n")
         fun bind(cocktail: Cocktail) {
             header.text = cocktail.name
-            description.text = "Type: ${cocktail.type}\nGlass: ${cocktail.glass}"
-            imageView.setImageResource(cocktail.image)
+            description.text = "Type: ${cocktail.type}"
+            val imageId = cnt.resources.getIdentifier(cocktail.image, "drawable", cnt.packageName);
+            imageView.setImageResource(imageId)
         }
     }
 }
