@@ -8,10 +8,11 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.parcel.Parcelize
-import kotlinx.android.synthetic.main.activity_scrolling.*
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.android.parcel.Parcelize
+import kotlinx.android.synthetic.main.activity_scrolling.*
+
 
 @Parcelize
 data class Cocktail(val name: String, val type: String, val steps: Array<String>, val ingredients: Array<String>, val image: String): Parcelable
@@ -31,11 +32,16 @@ class ScrollingActivity : AppCompatActivity() {
     }
 
     private fun initRecyclerview() {
-        val columns = resources.getInteger(R.integer.gridColumnNum)
         recyclerView = findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = GridLayoutManager(this, columns)
+        recyclerView.layoutManager = GridLayoutManager(this, getColumnNum())
         recyclerView.adapter = adapter
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() { })
+    }
+
+    private fun getColumnNum() : Int {
+        //        val columns = resources.getInteger(R.integer.gridColumnNum)
+        val screenWidthDp: Float = resources.displayMetrics.widthPixels / resources.displayMetrics.density
+       return ((screenWidthDp / 202 + 0.5).toInt()) // +0.5 for correct rounding to int.
     }
 
     private fun initAdapter() {
@@ -51,7 +57,6 @@ class ScrollingActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.

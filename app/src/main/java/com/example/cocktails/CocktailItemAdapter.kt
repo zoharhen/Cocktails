@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 
 class CocktailItemAdapter internal constructor(context: Context, data: List<Cocktail>) :
     RecyclerView.Adapter<CocktailItemAdapter.ViewHolder>() {
@@ -46,8 +47,16 @@ class CocktailItemAdapter internal constructor(context: Context, data: List<Cock
         fun bind(cocktail: Cocktail) {
             header.text = cocktail.name
             description.text = "Type: ${cocktail.type}"
-            val imageId = cnt.resources.getIdentifier(cocktail.image, "drawable", cnt.packageName);
-            imageView.setImageResource(imageId)
+            (cnt.applicationContext as Cocktails).mStorageRef
+                .child("cliparts/" + cocktail.image + ".png")
+                .downloadUrl.addOnSuccessListener {
+                    Glide.with(cnt)
+                        .load(it)
+                        .into(imageView)
+                }
+            // get image from local storage (drawable folder):
+            //            val imageId = cnt.resources.getIdentifier(cocktail.image, "drawable", cnt.packageName);
+            //            imageView.setImageResource(imageId)
         }
     }
 }
