@@ -6,4 +6,19 @@
     <string name="my_cocktails">My Cocktails</string>
     <string name="favorites">Favorites</string>
     <string name="contact_us">Contact Us</string>
+    <string name="search">Search</string>
+    <string-array name="cocktailTypes_array">
+        <item>Vodka</item>
+        <item>Tequila</item>
+        <item>Rye Whiskey</item>
+        <item>Gin</item>
+        <item>Classic</item>
+        <item>Rum</item>
+        <item>Bourbon</item>
+        <item>Scotch</item>
+        <item>Brandy</item>
+        <item>Other</item>
+        <item>Cognac</item>
+        <item>Herbaceous</item>
+    </string-array>
 </resources>
