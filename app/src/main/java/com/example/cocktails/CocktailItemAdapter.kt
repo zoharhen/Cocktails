@@ -45,8 +45,7 @@ class CocktailItemAdapter internal constructor(context: Context, data: List<Cock
                 onItemClick?.invoke(items[adapterPosition])
             }
 
-            favorite.setOnFavoriteChangeListener{ btn: MaterialFavoriteButton, value: Boolean ->
-
+            favorite.setOnFavoriteChangeListener{ _: MaterialFavoriteButton, value: Boolean ->
                 (cnt.applicationContext as Cocktails).mFavorites.edit()
                     .putBoolean(adapterPosition.toString(), value).apply()
             }

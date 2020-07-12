@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#2D2D2D</color>
     <color name="colorPrimaryDark">#2D2D2D</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorAccent">#D5D3D3</color>
 
     <!-- Cocktails App -->
     <color name="colorAppBackground1">#EAEAEA</color>
