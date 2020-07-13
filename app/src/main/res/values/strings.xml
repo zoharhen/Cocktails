@@ -7,18 +7,67 @@
     <string name="favorites">Favorites</string>
     <string name="contact_us">Contact Us</string>
     <string name="search">Search</string>
+    <string name="no_data">No data</string>
     <string-array name="cocktailTypes_array">
-        <item>Vodka</item>
-        <item>Tequila</item>
-        <item>Rye Whiskey</item>
-        <item>Gin</item>
-        <item>Classic</item>
-        <item>Rum</item>
         <item>Bourbon</item>
-        <item>Scotch</item>
         <item>Brandy</item>
-        <item>Other</item>
+        <item>Classic</item>
         <item>Cognac</item>
+        <item>Gin</item>
         <item>Herbaceous</item>
+        <item>Other</item>
+        <item>Rum</item>
+        <item>Rye Whiskey</item>
+        <item>Scotch</item>
+        <item>Tequila</item>
+        <item>Vodka</item>
+    </string-array>
+    <string-array name="ingredients">
+        <item>Allspice dram</item>
+        <item>Amer Picon</item>
+        <item>Angostura bitters</item>
+        <item>Beet</item>
+        <item>Blue curacao</item>
+        <item>Bourbon</item>
+        <item>Brandy</item>
+        <item>Cachaca</item>
+        <item>Campari</item>
+        <item>Celery salt</item>
+        <item>Cherry</item>
+        <item>Cilantro</item>
+        <item>Cinnamon</item>
+        <item>Clamato</item>
+        <item>Coconut</item>
+        <item>Cognac</item>
+        <item>Cointreau</item>
+        <item>Cucumber</item>
+        <item>Egg</item>
+        <item>Gin</item>
+        <item>Grapefruit</item>
+        <item>Grenadine</item>
+        <item>Honey</item>
+        <item>Horseradish</item>
+        <item>Lemon</item>
+        <item>Lime</item>
+        <item>Midori</item>
+        <item>Mint</item>
+        <item>Orange</item>
+        <item>Parsley</item>
+        <item>Pineapple</item>
+        <item>Pisco</item>
+        <item>Prosecco</item>
+        <item>Rum</item>
+        <item>Rye</item>
+        <item>Scotch</item>
+        <item>Soda</item>
+        <item>Tabasco sauce</item>
+        <item>Tapatio hot sauce</item>
+        <item>Tequila</item>
+        <item>Tomato juice</item>
+        <item>Tonic</item>
+        <item>Vermouth</item>
+        <item>Vodka</item>
+        <item>Whiskey</item>
+        <item>Worcestershire sauce</item>
     </string-array>
 </resources>

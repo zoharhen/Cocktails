@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.github.ivbaranov.mfb.MaterialFavoriteButton
 import java.util.*
 import kotlin.collections.ArrayList
@@ -66,10 +67,10 @@ class CocktailItemAdapter internal constructor(context: Context, data: List<Cock
     }
 
     inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var header: TextView = itemView.findViewById(R.id.item_title)
-        var description: TextView = itemView.findViewById(R.id.item_description)
-        var imageView: ImageView = itemView.findViewById(R.id.item_clipart)
-        var favorite: MaterialFavoriteButton = itemView.findViewById(R.id.favorite_button)
+        private var header: TextView = itemView.findViewById(R.id.item_title)
+        private var description: TextView = itemView.findViewById(R.id.item_description)
+        private var imageView: ImageView = itemView.findViewById(R.id.item_clipart)
+        private var favorite: MaterialFavoriteButton = itemView.findViewById(R.id.favorite_button)
 
         init {
             itemView.setOnClickListener{
@@ -91,6 +92,7 @@ class CocktailItemAdapter internal constructor(context: Context, data: List<Cock
                 .downloadUrl.addOnSuccessListener {
                     Glide.with(cnt)
                         .load(it)
+                        .apply(RequestOptions().placeholder(null).dontAnimate().fitCenter()) // todo: (zohar) fix slow loading!!
                         .into(imageView)
                 }
             favorite.isFavorite = applicationContext.mFavorites.getBoolean(cocktail.name, false)

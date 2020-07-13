@@ -5,22 +5,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorAppBackground"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    android:paddingBottom="48dp"
     android:clipToPadding="false"
+    android:paddingBottom="48dp"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".ScrollingActivity"
     tools:showIn="@layout/activity_scrolling">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:scrollbars="vertical"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        android:numColumns="auto_fit"
-        tools:listitem="@layout/grid_item">
+        android:orientation="vertical">
 
-    </androidx.recyclerview.widget.RecyclerView>
+        <TextView
+            android:id="@+id/no_data_textView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/no_data"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:visibility="invisible" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:numColumns="auto_fit"
+            android:scrollbars="vertical"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            tools:listitem="@layout/grid_item">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+    </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>
