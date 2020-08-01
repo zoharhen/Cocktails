@@ -26,7 +26,7 @@ import kotlinx.android.synthetic.main.content_scrolling.*
 
 
 @Parcelize
-data class Cocktail(val name: String, val type: String, val steps: Array<String>, val ingredients: Array<String>, val image: String): Parcelable
+data class Cocktail(val name: String, val type: String, val steps: Array<String>, val ingredients: Array<String>, val image: String, val isCustom: Boolean = false): Parcelable
 
 class ScrollingActivity : AppCompatActivity() {
 
@@ -88,6 +88,7 @@ class ScrollingActivity : AppCompatActivity() {
         searchView.findViewById<AutoCompleteTextView>(R.id.search_src_text).threshold = 1
         val searchPlate = searchView.findViewById(androidx.appcompat.R.id.search_src_text) as EditText
         searchPlate.hint = "Search"
+        searchPlate.background = resources.getDrawable(R.drawable.rounded_corner, theme)
         searchPlate.setHintTextColor(Color.parseColor("#D5D3D3"))
         searchPlate.setTextColor(Color.parseColor("#D5D3D3"))
         val searchPlateView: View = searchView.findViewById(androidx.appcompat.R.id.search_plate)
@@ -111,11 +112,21 @@ class ScrollingActivity : AppCompatActivity() {
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             R.id.action_filter -> openFilterDialog()
-            R.id.action_favorites -> true
-            R.id.action_myCocktails -> true
+            R.id.action_favorites -> openFilteredActivityView("favorites")
+            R.id.action_myCocktails -> openFilteredActivityView("custom")
             R.id.action_help -> true
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun openFilteredActivityView(filter: String) : Boolean {
+        val favoritesActivity: Intent = Intent(this, ScrollingActivity::class.java)
+        favoritesActivity.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+        gridViewAdapter?.filter?.filter(filter)
+        startActivity(favoritesActivity)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        return true
     }
 
     private fun openFilterDialog(): Boolean {

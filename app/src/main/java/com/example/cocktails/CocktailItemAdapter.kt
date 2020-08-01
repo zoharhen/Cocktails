@@ -44,15 +44,7 @@ class CocktailItemAdapter internal constructor(context: Context, data: List<Cock
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 val charSearch = constraint.toString()
-                if (charSearch.isEmpty()) {
-                    filteredItems = items
-                } else {
-                    val resultList = ArrayList<Cocktail>()
-                    for (row in items) if (row.name.toLowerCase(Locale.ROOT).contains(charSearch.toLowerCase(Locale.ROOT))) {
-                        resultList.add(row)
-                    }
-                    filteredItems = resultList
-                }
+                filteredItems = if (charSearch.isEmpty()) items else manageFiltering(charSearch)
                 val filterResults = FilterResults()
                 filterResults.values = filteredItems
                 return filterResults
@@ -64,6 +56,17 @@ class CocktailItemAdapter internal constructor(context: Context, data: List<Cock
                 notifyDataSetChanged()
             }
         }
+    }
+
+    private fun manageFiltering(toSearch: String): ArrayList<Cocktail> {
+        val resultList = ArrayList<Cocktail>()
+        val favoriteList = (cnt.applicationContext as Cocktails).mFavorites
+        when (toSearch) {
+            "favorites" -> items.filter { favoriteList.getBoolean(it.name, false)}.forEach { resultList.add(it) }
+            "custom" -> items.filter { it.isCustom }.forEach { resultList.add(it) }
+            else -> items.filter { it.name.toLowerCase(Locale.ROOT).contains(toSearch.toLowerCase(Locale.ROOT))}.forEach { resultList.add(it) }
+        }
+        return resultList
     }
 
     inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {

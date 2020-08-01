@@ -2,6 +2,7 @@ package com.example.cocktails
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
@@ -21,15 +22,16 @@ class ItemDetailsActivity : AppCompatActivity() {
         val tabs: TabLayout = findViewById(R.id.tabs)
         tabs.setupWithViewPager(viewPager)
 
-//        val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar1)
-//        setSupportActionBar(toolbar)
-//        supportActionBar?.setHomeButtonEnabled(true)
-//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar1)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setHomeButtonEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val cocktail = intent.getParcelableExtra<Cocktail>("cocktail")
-
         val activityTitle: TextView = findViewById(R.id.title)
         activityTitle.text = cocktail?.name
+
+        supportActionBar!!.setDisplayShowTitleEnabled(false)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
