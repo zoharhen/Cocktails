@@ -33,7 +33,7 @@ class CocktailItemAdapter internal constructor(context: Context, data: List<Cock
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item: Cocktail = filteredItems[position]
-        holder.bind(item)
+        holder.bind(item, position)
     }
 
     override fun getItemCount(): Int {
@@ -87,17 +87,22 @@ class CocktailItemAdapter internal constructor(context: Context, data: List<Cock
         }
 
         @SuppressLint("SetTextI18n")
-        fun bind(cocktail: Cocktail) {
+        fun bind(cocktail: Cocktail, position: Int) {
             val applicationContext = (cnt.applicationContext as Cocktails)
             header.text = cocktail.name
             description.text = "Type: ${cocktail.type}"
-            applicationContext.mStorageRef.child("cliparts/" + cocktail.image + ".png")
-                .downloadUrl.addOnSuccessListener {
-                    Glide.with(cnt)
-                        .load(it)
-                        .apply(RequestOptions().placeholder(null).dontAnimate().fitCenter()) // todo: (zohar) fix slow loading!!
-                        .into(imageView)
-                }
+            // continue only if ViewHolder still displays the same position as it was requested to
+            // display when started downloading the image
+            if (this.adapterPosition == position) {
+                applicationContext.mStorageRef.child("cliparts/" + cocktail.image + ".png")
+                    .downloadUrl.addOnSuccessListener {
+                        Glide.with(applicationContext)
+                            .load(it)
+                            .apply(RequestOptions().placeholder(null).dontAnimate().fitCenter())
+                            .into(imageView)
+                            .clearOnDetach()
+                    }
+            }
             favorite.isFavorite = applicationContext.mFavorites.getBoolean(cocktail.name, false)
 
             // get image from local storage (drawable folder):

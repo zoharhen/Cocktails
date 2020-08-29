@@ -6,11 +6,13 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Parcelable
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.AutoCompleteTextView
 import android.widget.EditText
+import android.widget.ScrollView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -18,11 +20,14 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_scrolling.*
 import kotlinx.android.synthetic.main.content_scrolling.*
+import kotlinx.android.synthetic.main.filter_dialog.view.*
 
 
 @Parcelize
@@ -46,6 +51,7 @@ class ScrollingActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = GridLayoutManager(this, getColumnNum())
         recyclerView.adapter = gridViewAdapter
+        recyclerView.itemAnimator = null
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() { })
     }
 
@@ -130,20 +136,20 @@ class ScrollingActivity : AppCompatActivity() {
     }
 
     private fun openFilterDialog(): Boolean {
-//        val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-//        val layout = inflater.inflate(R.layout.filter_dialog, null) as ScrollView
-//        resources.getStringArray(R.array.cocktailTypes_array).forEach { addChip(it, layout.CategoryChipGroup) }
-//        resources.getStringArray(R.array.ingredients).forEach { addChip(it, layout.IngredientChipGroup) }
+        val layout = layoutInflater.inflate(R.layout.filter_dialog, null) as ScrollView
+        resources.getStringArray(R.array.cocktailTypes_array).forEach { addChip(it, layout.CategoryChipGroup) }
+        resources.getStringArray(R.array.ingredients).forEach { addChip(it, layout.IngredientChipGroup) }
 
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
-        builder.setView(R.layout.filter_dialog).create().show()
+        builder.setView(layout).create().show()
         return true
     }
 
-//    private fun addChip(item: String, chipGroup: ChipGroup) {
-//        val chip = Chip(applicationContext)
-//        chip.text = item
-//        chipGroup.addView(chip)
-//    } // todo: (zohar) fix dynamic add!
+    private fun addChip(item: String, chipGroup: ChipGroup) {
+        val chip = Chip(chipGroup.context)
+        chip.text = item
+        chip.isCheckable = true
+        chipGroup.addView(chip)
+    }
 
 }
