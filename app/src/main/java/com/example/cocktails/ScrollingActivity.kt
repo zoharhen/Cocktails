@@ -7,6 +7,8 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.LayoutInflater
+import com.google.firebase.auth.FirebaseUser
+import android.widget.Toast
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -45,6 +47,20 @@ class ScrollingActivity : AppCompatActivity() {
 
         initAdapter()
         initRecyclerview()
+    }
+
+    public override fun onStart() {
+        super.onStart()
+        val mAuth = (applicationContext.applicationContext as Cocktails).mAuth
+        mAuth.signInAnonymously()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val user: FirebaseUser? = mAuth.currentUser
+                    // todo: einav - get user custom cocktails objects? (remember to save the object once being created). maybe use SP instead?
+                } else {
+                    Toast.makeText(applicationContext, "Error loading data", Toast.LENGTH_SHORT).show()
+                }
+            }
     }
 
     private fun initRecyclerview() {

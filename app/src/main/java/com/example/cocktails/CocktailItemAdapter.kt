@@ -13,6 +13,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.github.ivbaranov.mfb.MaterialFavoriteButton
+import android.app.Activity
+import android.graphics.Rect
+import android.view.MotionEvent
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -32,6 +35,9 @@ class CocktailItemAdapter internal constructor(context: Context, data: List<Cock
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
+        val imageView: ImageView = holder.itemView.findViewById(R.id.item_clipart)
+        imageView.setImageDrawable(null)
         val item: Cocktail = filteredItems[position]
         holder.bind(item, position)
     }
@@ -76,8 +82,23 @@ class CocktailItemAdapter internal constructor(context: Context, data: List<Cock
         private var favorite: MaterialFavoriteButton = itemView.findViewById(R.id.favorite_button)
 
         init {
-            itemView.setOnClickListener{
-                onItemClick?.invoke(filteredItems[adapterPosition])
+            itemView.setOnTouchListener { v, event ->
+                // decreasing the clickable area as gridItem padding is too big
+                val rect = Rect()
+                v.getHitRect(rect)
+
+                val scaleX = 0.5f ; val scaleY = 0.65f
+                val x = event.x ; val y = event.y
+                val minX = v.width * 0.5f * (1.0f - scaleY) ; val maxX = v.width * 0.5f * (1.0f + scaleY)
+                val minY = v.height * 0.5f * (1.0f - scaleX) ; val maxY = v.height * 0.5f * (1.0f + scaleX)
+
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> if (x > minX && x < maxX && y > minY && y < maxY) {
+                        onItemClick?.invoke(filteredItems[adapterPosition])
+                    }
+                }
+
+                return@setOnTouchListener true
             }
 
             favorite.setOnFavoriteChangeListener{ _: MaterialFavoriteButton, value: Boolean ->
@@ -93,7 +114,8 @@ class CocktailItemAdapter internal constructor(context: Context, data: List<Cock
             description.text = "Type: ${cocktail.type}"
             // continue only if ViewHolder still displays the same position as it was requested to
             // display when started downloading the image
-            if (this.adapterPosition == position) {
+            fun Context.isValidGlideContext() = this !is Activity || (!this.isDestroyed && !this.isFinishing)
+            if (cnt.isValidGlideContext() && this.adapterPosition == position) {
                 applicationContext.mStorageRef.child("cliparts/" + cocktail.image + ".png")
                     .downloadUrl.addOnSuccessListener {
                         Glide.with(applicationContext)
