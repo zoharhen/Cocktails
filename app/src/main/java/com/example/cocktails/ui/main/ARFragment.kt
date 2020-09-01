@@ -42,7 +42,7 @@ class ARFragment(context: Context) : Fragment() {
     ): View? {
 
         // Check compatibility to AR. if none, just return.
-        if (!checkIsSupportedDeviceOrFinish(requireActivity())) {
+        if (!checkCompatibility(requireActivity())) {
             return super.onCreateView(inflater, container, savedInstanceState)
         }
 
@@ -60,7 +60,7 @@ class ARFragment(context: Context) : Fragment() {
         super.onResume()
     }
 
-    fun checkIsSupportedDeviceOrFinish(activity: Activity): Boolean {
+    fun checkCompatibility(activity: Activity): Boolean {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             Log.e(TAG, "Sceneform requires Android N or later")
             Toast.makeText(activity, "Sceneform requires Android N or later", Toast.LENGTH_LONG)
