@@ -2,6 +2,8 @@ package com.example.cocktails.ui.main
 
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Debug
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.cocktails.R
+import timber.log.Timber
 
 /**
  * A placeholder fragment containing a simple view.
@@ -34,6 +37,7 @@ class PlaceholderFragment : Fragment() {
         pageViewModel.text.observe(viewLifecycleOwner, Observer<String> {
             textView.text = it
         })
+
         return root
     }
 
@@ -53,6 +57,12 @@ class PlaceholderFragment : Fragment() {
             return PlaceholderFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_SECTION_NUMBER, sectionNumber)
+                }
+
+                if (sectionNumber == 1) {
+                    Timber.e("Yo this is section 1")
+                } else {
+                    Timber.e("Yo this is NOT")
                 }
             }
         }
