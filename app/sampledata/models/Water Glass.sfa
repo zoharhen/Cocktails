@@ -1,27 +1,27 @@
 {
   materials: [
     {
-      name: 'Staklo',
+      name: 'Material.003',
       parameters: [
         {
           baseColor: null,
         },
         {
           baseColorTint: [
-            0.59999999999999998,
-            0.59999999999999998,
-            0.59999999999999998,
+            0.64000000000000001,
+            0.64000000000000001,
+            0.64000000000000001,
             1,
           ],
         },
         {
-          metallic: 0,
+          metallic: 0.5,
         },
         {
-          roughness: 1,
+          roughness: 0.14280000000000001,
         },
         {
-          opacity: null,
+          opacity: 0.35,
         },
       ],
       source: 'build/sceneform_sdk/default_materials/obj_material.sfm',
@@ -30,14 +30,13 @@
   model: {
     attributes: [
       'Position',
-      'TexCoord',
       'Orientation',
     ],
     collision: {},
-    file: 'sampledata/models/cocktail_glass.obj',
-    name: 'cocktail_glass',
+    file: 'sampledata/models/Water Glass.obj',
+    name: 'Water Glass',
     recenter: 'root',
-    scale: 0.19494300000000001,
+    scale: 0.05,
   },
   version: '0.54:2',
 }

@@ -62,7 +62,7 @@ class ARFragment(context: Context) : Fragment() {
         // Build the 3D model. Load it from the sceneform binary file (sfb)
         // This action is asynchronous.
         ModelRenderable.builder()
-            .setSource(activity, Uri.parse("cocktail_glass.sfb"))
+            .setSource(activity, Uri.parse("Water Glass.sfb"))
             .build()
                 // Once it's built set our renderable
             .thenAccept(Consumer { renderable: ModelRenderable ->
@@ -89,11 +89,11 @@ class ARFragment(context: Context) : Fragment() {
             val anchor = hitResult.createAnchor()
             val anchorNode = AnchorNode(anchor)
             anchorNode.setParent(arFragment!!.arSceneView.scene)
-            val lamp =
+            val glass =
                 TransformableNode(arFragment!!.transformationSystem)
-            lamp.setParent(anchorNode)
-            lamp.renderable = glassRenderable
-            lamp.select()
+            glass.setParent(anchorNode)
+            glass.renderable = glassRenderable
+            glass.select()
         }
 
         return root

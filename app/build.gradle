@@ -3,6 +3,9 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.google.gms.google-services'
 
+// AR
+apply plugin: 'com.google.ar.sceneform.plugin'
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
@@ -71,13 +74,12 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     // AR
+    implementation 'com.google.ar.sceneform:core:1.15.0'
     implementation "com.google.ar.sceneform.ux:sceneform-ux:1.15.0"
 }
 
 // Workaround for sceneform compatibility issue
-apply plugin: 'com.google.ar.sceneform.plugin'
-
-sceneform.asset('sampledata/models/cocktail_glass.obj', // 'Source Asset Path' specified during import.
-        'default',                    // 'Material Path' specified during import.
-        'sampledata/models/cocktail_glass.sfa', // '.sfa Output Path' specified during import.
-        'src/main/assets/cocktail_glass')      // '.sfb Output Path' specified during import.
+sceneform.asset('sampledata/models/Water Glass.obj', // 'Source Asset Path' specified during import.
+        'default', // 'sampledata/sceneform_face_mesh_occluder_material.mat',  // 'Material Path' specified during import.
+        'sampledata/models/Water Glass.sfa', // '.sfa Output Path' specified during import.
+        'src/main/assets/Water Glass')      // '.sfb Output Path' specified during import.
