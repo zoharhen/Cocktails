@@ -54,7 +54,7 @@ class ARFragment(context: Context) : Fragment() {
         // Create the AR layout and return it
         val root = inflater.inflate(R.layout.ar_layout, container, false)
 
-        arFragment = requireActivity().supportFragmentManager.findFragmentById(R.id.ux_fragment)
+        arFragment = childFragmentManager.findFragmentById(R.id.ux_fragment)
                 as ArFragment
         ModelRenderable.builder()
             .setSource(activity, Uri.parse("cocktail_glass.sfb"))
@@ -64,9 +64,9 @@ class ARFragment(context: Context) : Fragment() {
             })
             .exceptionally {
                 val toast: Toast =
-                    Toast.makeText(activity, "Unable to load renderable", Toast.LENGTH_LONG)
+                    Toast.makeText(activity, "Sorry, Something went wrong!", Toast.LENGTH_LONG)
                 toast.setGravity(Gravity.CENTER, 0, 0)
-                toast.show()
+                toast.show()  // Unable to  load renderer
                 null
             }
 
@@ -81,7 +81,7 @@ class ARFragment(context: Context) : Fragment() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             Log.e(TAG, "Sceneform requires Android N or later")
             Toast.makeText(activity,
-                "AR requires Android version" + Build.VERSION_CODES.N + "or later",
+                "This feature requires Android version" + Build.VERSION_CODES.N + "or later",
                 Toast.LENGTH_LONG)
                 .show()
             activity.finish()
@@ -93,7 +93,8 @@ class ARFragment(context: Context) : Fragment() {
                 .glEsVersion
         if (openGlVersionString.toDouble() < MIN_OPENGL_VERSION) {
             Log.e(TAG, "Sceneform requires OpenGL ES 3.0 later")
-            Toast.makeText(activity, "AR requires Android 4.3 or higher", Toast.LENGTH_LONG)
+            Toast.makeText(activity, "This feature requires Android 4.3 or higher",
+                Toast.LENGTH_LONG)
                 .show()
             activity.finish()
             return false
