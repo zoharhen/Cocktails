@@ -17,8 +17,8 @@ import com.google.ar.core.HitResult
 import com.google.ar.core.Plane
 import com.google.ar.sceneform.AnchorNode
 import com.google.ar.sceneform.rendering.ModelRenderable
-import com.google.ar.sceneform.ux.ArFragment
-import com.google.ar.sceneform.ux.TransformableNode
+import com.google.ar.sceneform.rendering.Renderable
+import com.google.ar.sceneform.ux.*
 import java.util.function.Consumer
 
 
@@ -65,9 +65,16 @@ class ARFragment(context: Context) : Fragment() {
             .setSource(activity, Uri.parse("Water Glass.sfb"))
             .build()
                 // Once it's built set our renderable
-            .thenAccept(Consumer { renderable: ModelRenderable ->
-                glassRenderable = renderable
-            })
+            .thenAccept { renderable ->
+                run {
+                    glassRenderable = renderable
+                    glassRenderable?.apply {
+                        renderPriority = Renderable.RENDER_PRIORITY_LAST
+                        isShadowCaster = false
+                        isShadowReceiver = false
+                    }
+                }
+            }
                 // Error handling
             .exceptionally {
                 val toast: Toast =
@@ -86,6 +93,7 @@ class ARFragment(context: Context) : Fragment() {
             if (glassRenderable == null) {
                 return@setOnTapArPlaneListener
             }
+
             val anchor = hitResult.createAnchor()
             val anchorNode = AnchorNode(anchor)
             anchorNode.setParent(arFragment!!.arSceneView.scene)
@@ -96,6 +104,10 @@ class ARFragment(context: Context) : Fragment() {
             glass.select()
         }
 
+        // Make blank selection visuals (no ring)
+        arFragment!!.transformationSystem
+            .selectionVisualizer = BlankSelectionVisualizer()
+
         return root
     }
 
@@ -103,6 +115,9 @@ class ARFragment(context: Context) : Fragment() {
         super.onResume()
     }
 
+    /**
+     * Check the device's compatibility with AR
+     */
     fun checkCompatibility(activity: Activity): Boolean {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             Log.e(TAG, "Sceneform requires Android N or later")
@@ -128,4 +143,12 @@ class ARFragment(context: Context) : Fragment() {
         return true
     }
 
+}
+
+/**
+ * Just a blank selection class for an object, to remove the selection ring.
+ */
+class BlankSelectionVisualizer: SelectionVisualizer {
+    override fun applySelectionVisual(var1: BaseTransformableNode) { }
+    override fun removeSelectionVisual(var1: BaseTransformableNode) { }
 }
