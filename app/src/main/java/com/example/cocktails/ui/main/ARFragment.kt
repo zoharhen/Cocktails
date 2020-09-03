@@ -2,7 +2,6 @@ package com.example.cocktails.ui.main
 
 import android.app.Activity
 import android.app.ActivityManager
-import android.content.Context
 import android.content.Context.ACTIVITY_SERVICE
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -13,6 +12,7 @@ import android.view.*
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import com.example.cocktails.Cocktail
 import com.example.cocktails.R
 import com.google.ar.core.Anchor
 import com.google.ar.core.HitResult
@@ -30,18 +30,15 @@ import com.google.ar.sceneform.ux.SelectionVisualizer
 import com.google.ar.sceneform.ux.TransformableNode
 
 
-class ARFragment(context: Context) : Fragment() {
+class ARFragment(private val cocktail: Cocktail) : Fragment() {
 
     private var TAG: String = "COMPATIBILITY"
     private var MIN_OPENGL_VERSION: Double = 3.0
 
     var arFragment: ArFragment? = null
     var glassPlaced: Boolean = false
-//    var glassRenderable: ModelRenderable? = null
 
-    @RequiresApi(Build.VERSION_CODES.N)
     @Override
-//    @SuppressWarnings({"AndroidApiChecker", "FutureReturnValueIgnored"})
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -87,7 +84,7 @@ class ARFragment(context: Context) : Fragment() {
                     glassPlaced = true
                     placeObject(arFragment!!,
                         hitResult.createAnchor(),
-                        Uri.parse("Water Glass.sfb"))
+                        cocktail.glass)
                 }
             }
         }
