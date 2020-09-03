@@ -16,7 +16,9 @@ class ItemDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.tabbed_item)
 
-        val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
+        val cocktail = intent.getParcelableExtra<Cocktail>("cocktail")
+
+        val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager, cocktail)
         val viewPager: ViewPager = findViewById(R.id.view_pager)
         viewPager.adapter = sectionsPagerAdapter
         val tabs: TabLayout = findViewById(R.id.tabs)
@@ -27,7 +29,6 @@ class ItemDetailsActivity : AppCompatActivity() {
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val cocktail = intent.getParcelableExtra<Cocktail>("cocktail")
         val activityTitle: TextView = findViewById(R.id.title)
         activityTitle.text = cocktail?.name
 

@@ -4,6 +4,7 @@ import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.LayoutInflater
@@ -33,7 +34,9 @@ import kotlinx.android.synthetic.main.filter_dialog.view.*
 
 
 @Parcelize
-data class Cocktail(val name: String, val type: String, val steps: Array<String>, val ingredients: Array<String>, val image: String, val isCustom: Boolean = false): Parcelable
+data class Cocktail(val name: String, val type: String, val steps: Array<String>,
+                    val ingredients: Array<String>, val image: String, val isCustom: Boolean = false,
+                    val glass: Uri = Uri.parse("Water Glass.sfb")): Parcelable
 
 class ScrollingActivity : AppCompatActivity() {
 
