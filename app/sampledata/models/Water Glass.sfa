@@ -36,7 +36,7 @@
     file: 'sampledata/models/Water Glass.obj',
     name: 'Water Glass',
     recenter: 'root',
-    scale: 0.05,
+    scale: 0.03,
   },
   version: '0.54:2',
 }

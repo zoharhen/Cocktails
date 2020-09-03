@@ -16,6 +16,7 @@ import com.example.cocktails.R
 import com.google.ar.core.HitResult
 import com.google.ar.core.Plane
 import com.google.ar.sceneform.AnchorNode
+import com.google.ar.sceneform.Node
 import com.google.ar.sceneform.rendering.ModelRenderable
 import com.google.ar.sceneform.rendering.Renderable
 import com.google.ar.sceneform.ux.*
@@ -126,11 +127,12 @@ class ARFragment(context: Context) : Fragment() {
         val anchor = hitResult.createAnchor()
         val anchorNode = AnchorNode(anchor)
         anchorNode.setParent(arFragment!!.arSceneView.scene)
-        val glass =
-            TransformableNode(arFragment!!.transformationSystem)
-        glass.setParent(anchorNode)
-        glass.renderable = glassRenderable
-//        glass.select()  // Not needed.
+
+        val glass = TransformableNode(arFragment!!.transformationSystem)
+            .apply {
+                setParent(anchorNode)
+                renderable = glassRenderable
+            }
     }
 
     override fun onResume() {
