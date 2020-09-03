@@ -60,11 +60,31 @@ class ARFragment(context: Context) : Fragment() {
                 as ArFragment
 
         // Build the 3D model. Load it from the sceneform binary file (sfb)
-        // This action is asynchronous.
+        buildModel(activity, "Water Glass.sfb")
+
+        // Add the rendered model to the scene.
+        // the scene is where the 3D objects are rendered.
+        arFragment!!.setOnTapArPlaneListener { hitResult: HitResult, _: Plane?, _: MotionEvent? ->
+            renderGlass(hitResult)
+        }
+
+        // Make blank selection visuals (no ring)
+        arFragment!!.transformationSystem
+            .selectionVisualizer = BlankSelectionVisualizer()
+
+        return root
+    }
+
+    /**
+     * Asynchronously build a glass model based on 'toBuild'.
+     * @param toBuild An asset path for .sfb file
+     */
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun buildModel(activity: Activity, toBuild: String) {
         ModelRenderable.builder()
-            .setSource(activity, Uri.parse("Water Glass.sfb"))
+            .setSource(activity, Uri.parse(toBuild))
             .build()
-                // Once it's built set our renderable
+            // Once it's built set our renderable
             .thenAccept { renderable ->
                 run {
                     glassRenderable = renderable
@@ -75,40 +95,42 @@ class ARFragment(context: Context) : Fragment() {
                     }
                 }
             }
-                // Error handling
+            // Error handling
             .exceptionally {
-                val toast: Toast =
-                    Toast.makeText(activity, "Sorry, Something went wrong!", Toast.LENGTH_LONG)
-                toast.setGravity(Gravity.CENTER, 0, 0)
-                toast.show()  // Unable to  load renderer
+                renderError(activity)
                 null
             }
+    }
 
-        // Add the rendered model to the scene
-        // the scene is where the 3D objects are rendered.
-        // HitResult is a ray-cast on the object.
-        // Anchor is a fixed point in the 3D space.
-        // AnchorNode positions itself in the world. This is the first node to be set.
-        arFragment!!.setOnTapArPlaneListener { hitResult: HitResult, _: Plane?, _: MotionEvent? ->
-            if (glassRenderable == null) {
-                return@setOnTapArPlaneListener
-            }
+    /**
+     * Handle rendering errors
+     */
+    private fun renderError(activity: Activity) {
+        val toast: Toast =
+            Toast.makeText(activity, "Sorry, Something went wrong!", Toast.LENGTH_LONG)
+        toast.setGravity(Gravity.CENTER, 0, 0)
+        toast.show()  // Unable to load renderer
+    }
 
-            val anchor = hitResult.createAnchor()
-            val anchorNode = AnchorNode(anchor)
-            anchorNode.setParent(arFragment!!.arSceneView.scene)
-            val glass =
-                TransformableNode(arFragment!!.transformationSystem)
-            glass.setParent(anchorNode)
-            glass.renderable = glassRenderable
-            glass.select()
+    /**
+     * Actually render the glass object
+     * HitResult is a ray-cast on the object.
+     * Anchor is a fixed point in the 3D space.
+     * AnchorNode positions itself in the world. This is the first node to be set.
+     */
+    private fun renderGlass(hitResult: HitResult) {
+        if (glassRenderable == null) {
+            return
         }
 
-        // Make blank selection visuals (no ring)
-        arFragment!!.transformationSystem
-            .selectionVisualizer = BlankSelectionVisualizer()
-
-        return root
+        val anchor = hitResult.createAnchor()
+        val anchorNode = AnchorNode(anchor)
+        anchorNode.setParent(arFragment!!.arSceneView.scene)
+        val glass =
+            TransformableNode(arFragment!!.transformationSystem)
+        glass.setParent(anchorNode)
+        glass.renderable = glassRenderable
+//        glass.select()  // Not needed.
     }
 
     override fun onResume() {
