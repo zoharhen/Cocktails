@@ -36,7 +36,7 @@ import kotlinx.android.synthetic.main.filter_dialog.view.*
 @Parcelize
 data class Cocktail(val name: String, val type: String, val steps: Array<String>,
                     val ingredients: Array<String>, val image: String, val isCustom: Boolean = false,
-                    val glass: Uri = Uri.parse("Water Glass.sfb")): Parcelable
+                    val glass: Uri?): Parcelable
 
 class ScrollingActivity : AppCompatActivity() {
 

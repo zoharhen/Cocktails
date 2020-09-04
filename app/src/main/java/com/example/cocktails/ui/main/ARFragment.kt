@@ -84,7 +84,7 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
                     glassPlaced = true
                     placeObject(arFragment!!,
                         hitResult.createAnchor(),
-                        cocktail.glass)
+                        Uri.parse("Water Glass.sfb"))
                 }
             }
         }
