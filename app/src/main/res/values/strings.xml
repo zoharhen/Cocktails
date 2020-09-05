@@ -8,6 +8,8 @@
     <string name="contact_us">Contact Us</string>
     <string name="search">Search</string>
     <string name="no_data">No data</string>
+    <string name="preparation">PREPARATION</string>
+    <string name="ingredients">INGREDIENTS</string>
     <string-array name="cocktailTypes_array">
         <item>Bourbon</item>
         <item>Brandy</item>

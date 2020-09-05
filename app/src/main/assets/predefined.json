@@ -1,7 +1,8 @@
 [
     {
         "type": "Vodka",
-		"image": "c_blue",
+		"clipart": "c_blue",
+		"image": "blueLagoon",
         "name": "Blue Lagoon",
         "ingredients": [
             "1 oz Vodka",
@@ -18,7 +19,8 @@
     },	    
 	{
         "type": "Tequila",
-		"image": "c_highball_red",
+		"clipart": "c_highball_red",
+		"image": "bloodyMaria",
         "name": "Bloody Maria",
         "ingredients": [
             "2 oz Tequila",
@@ -27,7 +29,7 @@
             "4 dashes Worcestershire sauce",
             "2 dashes Tabasco sauce",
             "2 dashes Tapatio hot sauce",
-            "1/2 tbsp Prepared horseradish, to taste",
+            "1/2 tbsp Prepared horseradish",
             "1 pinch Celery salt",
             "1 pinch Ground black pepper",
             "Garnish: Lime wedge",
@@ -40,13 +42,13 @@
         "steps": [
             "Add all the ingredients to a shaker and fill with ice.",
             "Shake briefly and strain into a pint glass filled with fresh ice.",
-            "Garnish with a lime wedge, a lemon wedge, a cucumber spear and a skewer of sweet pepper slices, jalapeno slices and queso fresco.",
-            "."
+            "Garnish with a lime wedge, a lemon wedge, a cucumber spear and a skewer of sweet pepper slices, jalapeno slices and queso fresco."
         ]
     },
 	{
         "type": "Rye Whiskey",
-		"image": "c_manhattan",
+		"clipart": "c_manhattan",
+		"image": "waldorf",
         "name": "Waldorf",
         "ingredients": [
             "Absinthe, to rinse",
@@ -63,11 +65,12 @@
     },
 	{
         "type": "Gin",
-		"image": "c_cocktail_orange",
+		"clipart": "c_cocktail_orange",
+		"image": "gin-and-juice",
         "name": "Gin & Juice",
         "ingredients": [
             "1 1/2 oz Gin",
-            "Juice, to top (choose your favorite juice or combination of juices—half orange and half grapefruit works well)"
+            "Juice, to top"
         ],
         "steps": [
             "Fill a Collins glass with ice and add the gin.",
@@ -76,7 +79,8 @@
     },
     {
         "type": "Classic",
-		"image": "c_icetea_brown",
+		"clipart": "c_icetea_brown",
+		"image": "iced-Tea",
         "name": "Iced Tea",
         "ingredients": [
             "3/4 oz Vodka",
@@ -98,7 +102,8 @@
     },
 	{
         "type": "Gin",
-		"image": "c_martini_white",
+		"clipart": "c_martini_white",
+		"image": "dry-martini",
         "name": "Dry Martini",
         "ingredients": [
             "2 1/2 oz Gin",
@@ -114,7 +119,8 @@
     },
     {
         "type": "Gin",
-		"image": "c_red",
+		"clipart": "c_red",
+		"image": "bebbo",
         "name": "Bebbo",
         "ingredients": [
             "1 1/2 ounces London dry gin",
@@ -131,7 +137,8 @@
     },
     {
         "type": "Rum",
-		"image": "c_cocktail_lime",
+		"clipart": "c_cocktail_lime",
+		"image": "mojito",
         "name": "Mojito",
         "ingredients": [
             "2 oz White rum",
@@ -152,7 +159,8 @@
     },
     {
         "type": "Bourbon",
-		"image": "c_martini_orange",
+		"clipart": "c_martini_orange",
+		"image": "lions-tail",
         "name": "Lion's Tail",
         "ingredients": [
             "2 ounces bourbon",
@@ -170,7 +178,8 @@
     },
     {
         "type": "Bourbon",
-		"image": "c_rocks_brown",
+		"clipart": "c_rocks_brown",
+		"image": "old-fashioned",
         "name": "Old Fashioned",
         "ingredients": [
             "1/2 tsp sugar",
@@ -187,7 +196,8 @@
     },
     {
         "type": "Rum",
-		"image": "c_margarita_green",
+		"clipart": "c_margarita_green",
+		"image": "daiquiri",
         "name": "Daiquiri",
         "ingredients": [
             "2 oz Light rum",
@@ -203,7 +213,8 @@
     },
     {
         "type": "Rum",
-		"image": "c_irish_coffee",
+		"clipart": "c_irish_coffee",
+		"image": "hot-buttered-rum",
         "name": "Buttered Rum",
         "ingredients": [
             "2 oz Gold rum",
@@ -219,7 +230,8 @@
     },
     {
         "type": "Scotch",
-		"image": "c_manhattan",
+		"clipart": "c_manhattan",
+		"image": "blood-and-sand",
         "name": "Blood & Sand",
         "ingredients": [
             "3/4 oz Scotch",
@@ -236,7 +248,8 @@
     },
     {
         "type": "Rye Whiskey",
-		"image": "c_rocks_brown",
+		"clipart": "c_rocks_brown",
+		"image": "sazerac",
         "name": "Sazerac",
         "ingredients": [
             "Absinthe",
@@ -256,7 +269,8 @@
     },
     {
         "type": "Brandy",
-		"image": "c_brandy_brown",
+		"clipart": "c_brandy_brown",
+		"image": "picon-punch",
         "name": "Picon Punch",
         "ingredients": [
             "1 1/2 oz Amer Picon*",
@@ -275,7 +289,8 @@
     },
     {
         "type": "Bourbon",
-		"image": "c_martini_yellow",
+		"clipart": "c_martini_yellow",
+		"image": "brown-derby",
         "name": "Brown Derby",
         "ingredients": [
             "1 1/2 oz Bourbon",
@@ -292,7 +307,8 @@
     },
     {
         "type": "Tequila",
-		"image": "c_sunrise",
+		"clipart": "c_sunrise",
+		"image": "tequila-sunrise",
         "name": "Tequila Sunrise",
         "ingredients": [
             "2 oz Blanco tequila",
@@ -309,7 +325,8 @@
     },
     {
         "type": "Other",
-		"image": "c_transparent",
+		"clipart": "c_transparent",
+		"image": "pisco-sour",
         "name": "Pisco Sour",
         "ingredients": [
             "2 oz Pisco",
@@ -326,7 +343,8 @@
     },
     {
         "type": "Tequila",
-		"image": "c_margarita_green",
+		"clipart": "c_margarita_green",
+		"image": "margarita",
         "name": "Margarita",
         "ingredients": [
             "3/4 oz Fresh squeezed lime juice",
@@ -339,13 +357,13 @@
             "Add the ingredients to a shaker filled with ice and shake.",
             "Strain into a chilled cocktail glass or rocks glass filled with fresh ice.",
             "Garnish with a lime wheel.",
-            "For a slightly sweeter drink, add a dash of agave syrup (one part water, two parts agave nectar) before shaking.",
-            "."
+            "For a slightly sweeter drink, add a dash of agave syrup (one part water, two parts agave nectar) before shaking."
         ]
     },
 	{
         "type": "Cognac",
-		"image": "c_martini_yellow",
+		"clipart": "c_martini_yellow",
+		"image": "sidecar",
         "name": "Sidecar",
         "ingredients": [
             "1 1/2 oz Cognac",
@@ -363,7 +381,8 @@
     },
     {
         "type": "Vodka",
-		"image": "c_highball_red",
+		"clipart": "c_highball_red",
+		"image": "bloody-ceasar",
         "name": "Bloody Caesar",
         "ingredients": [
             "celery salt",
@@ -386,7 +405,8 @@
     },
     {
         "type": "Scotch",
-		"image": "c_manhattan",
+		"clipart": "c_manhattan",
+		"image": "Rob-Roy",
         "name": "Rob Roy",
         "ingredients": [
             "2 oz Scotch",
@@ -402,7 +422,8 @@
     },
     {
         "type": "Other",
-		"image": "c_cocktail_lime",
+		"clipart": "c_cocktail_lime",
+		"image": "caipirinha",
         "name": "Caipirinha",
         "ingredients": [
             "Lime, cut into wedges",
@@ -418,7 +439,8 @@
     },
     {
         "type": "Bourbon",
-		"image": "c_transparent",
+		"clipart": "c_transparent",
+		"image": "whiskey-sour",
         "name": "Whiskey Sour",
         "ingredients": [
             "2 oz Bourbon",
@@ -435,7 +457,8 @@
     },
     {
         "type": "Rum",
-		"image": "c_blue",
+		"clipart": "c_blue",
+		"image": "blue-hawaiian",
         "name": "Blue Hawaiian",
         "ingredients": [
 			"1 1/2 oz Light rum",
@@ -455,7 +478,8 @@
     },
     {
         "type": "Rye Whiskey",
-		"image": "c_red",
+		"clipart": "c_red",
+		"image": "old-pal",
         "name": "Old Pal",
         "ingredients": [
             "1 oz Rye whiskey",
@@ -471,7 +495,8 @@
     },
 	{
         "type": "Herbaceous",
-		"image": "c_margarita_green",
+		"clipart": "c_margarita_green",
+		"image": "compromise",
         "name": "Compromise",
         "ingredients": [
             "1 1/2 ounces Tequila Ocho plata",
@@ -490,7 +515,8 @@
     },
 	{
         "type": "Other",
-		"image": "c_cocktail_lime",
+		"clipart": "c_cocktail_lime",
+		"image": "cobra-verde",
         "name": "Cobra Verde",
         "ingredients": [
             "1 1/4 oz Midori",
@@ -506,7 +532,8 @@
     },
 	{
         "type": "Vodka",
-		"image": "c_highball_red",
+		"clipart": "c_highball_red",
+		"image": "Beet-Rose",
         "name": "Beet Rose",
         "ingredients": [
             "2 ounces Ketel One vodka",
@@ -526,7 +553,8 @@
     },
 	{
         "type": "Classic",
-		"image": "c_icetea_brown",
+		"clipart": "c_icetea_brown",
+		"image": "pimms-cup",
         "name": "Pimm's Cup",
         "ingredients": [
             "2 oz Pimm's No. 1 Cup",
@@ -545,7 +573,8 @@
     },
 	{
         "type": "Bourbon",
-		"image": "c_manhattan",
+		"clipart": "c_manhattan",
+		"image": "manhattan",
         "name": "Manhattan",
         "ingredients": [
             "2 ounces bourbon or rye",
@@ -562,7 +591,8 @@
     },
 	{
         "type": "Gin",
-		"image": "c_rocks_brown",
+		"clipart": "c_rocks_brown",
+		"image": "negroni",
         "name": "Negroni",
         "ingredients": [
             "1 ounce gin",
@@ -578,7 +608,8 @@
     },
     {
         "type": "Scotch",
-		"image": "c_transparent",
+		"clipart": "c_transparent",
+		"image": "scotch-and-soda",
         "name": "Scotch & Soda",
         "ingredients": [
             "2 ounces scotch whisky",
@@ -591,7 +622,8 @@
     },
 	{
         "type": "Other",
-		"image": "c_sunrise",
+		"clipart": "c_sunrise",
+		"image": "americano",
         "name": "Americano",
         "ingredients": [
             "1 1/2 oz Campari",

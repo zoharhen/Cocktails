@@ -16,18 +16,16 @@ private val TAB_TITLES = arrayOf(
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
  * one of the sections/tabs/pages.
  */
-class SectionsPagerAdapter(private val context: Context,
-                           fm: FragmentManager,
-                           val cocktail: Cocktail) :
+class SectionsPagerAdapter(private val context: Context, fm: FragmentManager, private val cocktail: Cocktail) :
     FragmentPagerAdapter(fm, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     override fun getItem(position: Int): Fragment {
         // getItem is called to instantiate the fragment for the given page.
         if (position == 0) { // Recipe tab
-            // return a recipe fragment
+            return RecipeFragment.newInstance(cocktail) as Fragment
         }
         else if (position == 1) {  // AR tab
-            return ARFragment(cocktail)
+//            return ARFragment(cocktail)
         }
 
         // Return a PlaceholderFragment (defined as a static inner class below).
@@ -39,7 +37,6 @@ class SectionsPagerAdapter(private val context: Context,
     }
 
     override fun getCount(): Int {
-        // Show 2 total pages.
-        return 2
+        return TAB_TITLES.size
     }
 }
