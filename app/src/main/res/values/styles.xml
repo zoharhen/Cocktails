@@ -58,6 +58,17 @@
         <item name="android:fontFamily">@font/raleway_light</item>
     </style>
 
+    <style name="Regular" parent="android:TextAppearance">
+        <item name="font">@font/paytone_one</item>
+    </style>
+
+    <style name="Text14Reg">
+        <item name="android:textSize">@dimen/h3</item>
+        <item name="android:textColor">@color/colorRipple</item>
+        <item name="android:textAppearance">@style/Regular</item>
+    </style>
+
+
 </resources>
 
 

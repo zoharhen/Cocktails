@@ -1,5 +1,6 @@
 package com.example.cocktails
 
+import android.annotation.SuppressLint
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
@@ -7,7 +8,6 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
-import android.view.LayoutInflater
 import com.google.firebase.auth.FirebaseUser
 import android.widget.Toast
 import android.view.Menu
@@ -35,8 +35,8 @@ import kotlinx.android.synthetic.main.filter_dialog.view.*
 
 @Parcelize
 data class Cocktail(val name: String, val type: String, val steps: Array<String>,
-                    val ingredients: Array<String>, val image: String, val isCustom: Boolean = false,
-                    val glass: Uri?): Parcelable
+                    val ingredients: Array<String>, val clipart: String, val image: String,
+                    val isCustom: Boolean = false, val glass: String?): Parcelable
 
 class ScrollingActivity : AppCompatActivity() {
 
@@ -55,15 +55,15 @@ class ScrollingActivity : AppCompatActivity() {
     public override fun onStart() {
         super.onStart()
         val mAuth = (applicationContext.applicationContext as Cocktails).mAuth
-        mAuth.signInAnonymously()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val user: FirebaseUser? = mAuth.currentUser
-                    // todo: einav - get user custom cocktails objects? (remember to save the object once being created). maybe use SP instead?
-                } else {
-                    Toast.makeText(applicationContext, "Error loading data", Toast.LENGTH_SHORT).show()
-                }
-            }
+//        mAuth.signInAnonymously()
+//            .addOnCompleteListener { task ->
+//                if (task.isSuccessful) {
+//                    val user: FirebaseUser? = mAuth.currentUser
+//                    // todo: einav - get user custom cocktails objects? (remember to save the object once being created). maybe use SP instead?
+//                } else {
+//                    Toast.makeText(applicationContext, "Error loading data", Toast.LENGTH_SHORT).show()
+//                }
+//            }
     }
 
     private fun initRecyclerview() {
@@ -145,7 +145,7 @@ class ScrollingActivity : AppCompatActivity() {
     }
 
     private fun openFilteredActivityView(filter: String) : Boolean {
-        val favoritesActivity: Intent = Intent(this, ScrollingActivity::class.java)
+        val favoritesActivity = Intent(this, ScrollingActivity::class.java)
         favoritesActivity.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         gridViewAdapter?.filter?.filter(filter)
         startActivity(favoritesActivity)
@@ -154,6 +154,7 @@ class ScrollingActivity : AppCompatActivity() {
         return true
     }
 
+    @SuppressLint("InflateParams")
     private fun openFilterDialog(): Boolean {
         val layout = layoutInflater.inflate(R.layout.filter_dialog, null) as ScrollView
         resources.getStringArray(R.array.cocktailTypes_array).forEach { addChip(it, layout.CategoryChipGroup) }

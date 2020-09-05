@@ -116,7 +116,7 @@ class CocktailItemAdapter internal constructor(context: Context, data: List<Cock
             // display when started downloading the image
             fun Context.isValidGlideContext() = this !is Activity || (!this.isDestroyed && !this.isFinishing)
             if (cnt.isValidGlideContext() && this.adapterPosition == position) {
-                applicationContext.mStorageRef.child("cliparts/" + cocktail.image + ".png")
+                applicationContext.mStorageRef.child("cliparts/" + cocktail.clipart + ".png")
                     .downloadUrl.addOnSuccessListener {
                         Glide.with(applicationContext)
                             .load(it)
