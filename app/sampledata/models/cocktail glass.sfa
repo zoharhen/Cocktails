@@ -1,0 +1,43 @@
+{
+  materials: [
+    {
+      name: 'Staklo',
+      parameters: [
+        {
+          baseColor: null,
+        },
+        {
+          baseColorTint: [
+            0.59999999999999998,
+            0.59999999999999998,
+            0.59999999999999998,
+            1,
+          ],
+        },
+        {
+          metallic: 0.5,
+        },
+        {
+          roughness: 0.7,
+        },
+        {
+          opacity: 0.3,
+        },
+      ],
+      source: 'build/sceneform_sdk/default_materials/obj_material.sfm',
+    },
+  ],
+  model: {
+    attributes: [
+      'Position',
+      'TexCoord',
+      'Orientation',
+    ],
+    collision: {},
+    file: 'sampledata/models/cocktail glass.obj',
+    name: 'cocktail glass',
+    recenter: 'root',
+    scale: 0.02,
+  },
+  version: '0.54:2',
+}

@@ -18,7 +18,7 @@ class ItemDetailsActivity : AppCompatActivity() {
 
         val cocktail = intent.getParcelableExtra<Cocktail>("cocktail")
 
-        val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager, cocktail)
+        val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager, cocktail!!)
         val viewPager: ViewPager = findViewById(R.id.view_pager)
         viewPager.adapter = sectionsPagerAdapter
         val tabs: TabLayout = findViewById(R.id.tabs)

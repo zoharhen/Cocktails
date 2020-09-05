@@ -77,6 +77,36 @@ dependencies {
 
 // Workaround for sceneform compatibility issue
 sceneform.asset('sampledata/models/Water Glass.obj', // 'Source Asset Path' specified during import.
-        'default', // 'sampledata/sceneform_face_mesh_occluder_material.mat',  // 'Material Path' specified during import.
+        'default', // 'Material Path' specified during import.
         'sampledata/models/Water Glass.sfa', // '.sfa Output Path' specified during import.
         'src/main/assets/Water Glass')      // '.sfb Output Path' specified during import.
+
+sceneform.asset('sampledata/models/whiskey1.obj', // 'Source Asset Path' specified during import.
+        'default', // 'Material Path' specified during import.
+        'sampledata/models/whiskey1.sfa', // '.sfa Output Path' specified during import.
+        'src/main/assets/whiskey1')      // '.sfb Output Path' specified during import.
+
+sceneform.asset('sampledata/models/whiskey2.obj', // 'Source Asset Path' specified during import.
+        'default', // 'Material Path' specified during import.
+        'sampledata/models/whiskey2.sfa', // '.sfa Output Path' specified during import.
+        'src/main/assets/whiskey2')      // '.sfb Output Path' specified during import.
+
+sceneform.asset('sampledata/models/whiskey3.obj', // 'Source Asset Path' specified during import.
+        'default', // 'Material Path' specified during import.
+        'sampledata/models/whiskey3.sfa', // '.sfa Output Path' specified during import.
+        'src/main/assets/whiskey3')      // '.sfb Output Path' specified during import.
+
+sceneform.asset('sampledata/models/cocktail glass.obj', // 'Source Asset Path' specified during import.
+        'default', // 'Material Path' specified during import.
+        'sampledata/models/cocktail glass.sfa', // '.sfa Output Path' specified during import.
+        'src/main/assets/cocktail glass')      // '.sfb Output Path' specified during import.
+
+sceneform.asset('sampledata/models/Wine_Glass.obj', // 'Source Asset Path' specified during import.
+        'default', // 'Material Path' specified during import.
+        'sampledata/models/Wine_Glass.sfa', // '.sfa Output Path' specified during import.
+        'src/main/assets/Wine_Glass')      // '.sfb Output Path' specified during import.
+
+sceneform.asset('sampledata/models/martini.obj', // 'Source Asset Path' specified during import.
+        'default', // 'Material Path' specified during import.
+        'sampledata/models/martini.sfa', // '.sfa Output Path' specified during import.
+        'src/main/assets/martini')      // '.sfb Output Path' specified during import.

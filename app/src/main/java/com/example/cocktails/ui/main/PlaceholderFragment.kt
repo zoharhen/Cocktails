@@ -58,12 +58,6 @@ class PlaceholderFragment : Fragment() {
                 arguments = Bundle().apply {
                     putInt(ARG_SECTION_NUMBER, sectionNumber)
                 }
-
-                if (sectionNumber == 1) {
-                    Timber.e("Yo this is section 1")
-                } else {
-                    Timber.e("Yo this is NOT")
-                }
             }
         }
     }
