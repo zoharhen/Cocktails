@@ -1,0 +1,42 @@
+{
+  materials: [
+    {
+      name: 'Glass',
+      parameters: [
+        {
+          baseColor: null,
+        },
+        {
+          baseColorTint: [
+            0.44150699999999998,
+            0.58544799999999997,
+            0.64000000000000001,
+            1,
+          ],
+        },
+        {
+          metallic: 0.7,
+        },
+        {
+          roughness: 0.2,
+        },
+        {
+          opacity: 0.35,
+        },
+      ],
+      source: 'build/sceneform_sdk/default_materials/obj_material.sfm',
+    },
+  ],
+  model: {
+    attributes: [
+      'Position',
+      'Orientation',
+    ],
+    collision: {},
+    file: 'sampledata/models/martini.obj',
+    name: 'martini',
+    recenter: 'root',
+    scale: 0.01,
+  },
+  version: '0.54:2',
+}

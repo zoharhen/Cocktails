@@ -19,11 +19,7 @@ import com.google.ar.core.HitResult
 import com.google.ar.core.Plane
 import com.google.ar.sceneform.AnchorNode
 import com.google.ar.sceneform.math.Vector3
-import com.google.ar.sceneform.rendering.MaterialFactory
-import com.google.ar.sceneform.rendering.ModelRenderable
-import com.google.ar.sceneform.rendering.Renderable
-import com.google.ar.sceneform.rendering.ShapeFactory
-import com.google.ar.sceneform.rendering.Texture
+import com.google.ar.sceneform.rendering.*
 import com.google.ar.sceneform.ux.ArFragment
 import com.google.ar.sceneform.ux.BaseTransformableNode
 import com.google.ar.sceneform.ux.SelectionVisualizer
@@ -35,8 +31,11 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
     private var TAG: String = "COMPATIBILITY"
     private var MIN_OPENGL_VERSION: Double = 3.0
 
-    var arFragment: ArFragment? = null
-    var glassPlaced: Boolean = false
+    private var arFragment: ArFragment? = null
+    private var glassPlaced: Boolean = false
+
+    private var mInflater: LayoutInflater? = null
+    private var mContainer: ViewGroup? = null
 
     @Override
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,6 +60,13 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
         // Create the AR layout and return it
         val root = inflater.inflate(R.layout.ar_layout, container, false)
 
+        initAr()
+
+        return root
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun initAr() {
         // Find the AR fragment
         arFragment = childFragmentManager.findFragmentById(R.id.ux_fragment)
                 as ArFragment
@@ -78,18 +84,18 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
         arFragment!!.setOnTapArPlaneListener { hitResult: HitResult, plane: Plane?,
                                                _: MotionEvent? ->
             // Don't allow placing on walls / ceiling
-            if (plane?.type == Plane.Type.HORIZONTAL_UPWARD_FACING){
+            if (plane?.type == Plane.Type.HORIZONTAL_UPWARD_FACING) {
                 // Don't allow more than 1 glass
                 if (!glassPlaced) {
                     glassPlaced = true
-                    placeObject(arFragment!!,
+                    placeObject(
+                        arFragment!!,
                         hitResult.createAnchor(),
-                        Uri.parse("Water Glass.sfb"))
+                        Uri.parse(cocktail.glass)
+                    )
                 }
             }
         }
-
-        return root
     }
 
     /**
