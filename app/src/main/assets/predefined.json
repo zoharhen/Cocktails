@@ -78,7 +78,7 @@
         ]
     },
     {
-        "type": "Classic",
+        "type": "Vodka",
 		"clipart": "c_icetea_brown",
 		"image": "iced-Tea",
         "name": "Iced Tea",
@@ -552,7 +552,7 @@
         ]
     },
 	{
-        "type": "Classic",
+        "type": "Gin",
 		"clipart": "c_icetea_brown",
 		"image": "pimms-cup",
         "name": "Pimm's Cup",

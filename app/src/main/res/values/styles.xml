@@ -66,6 +66,12 @@
         <item name="android:textSize">@dimen/h3</item>
         <item name="android:textColor">@color/colorRipple</item>
         <item name="android:textAppearance">@style/Regular</item>
+        <item name="font">@font/raleway_light</item>
+    </style>
+
+    <style name="simpletooltip_default" parent="@android:style/TextAppearance">
+        <item name="android:textSize">@dimen/textFontSize</item>
+        <item name="font">@font/raleway_light</item>
     </style>
 
 
