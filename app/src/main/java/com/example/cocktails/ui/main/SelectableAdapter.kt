@@ -29,7 +29,7 @@ abstract class SelectableAdapter<VH : RecyclerView.ViewHolder?> :   RecyclerView
     val selectedItemCount: Int
         get() = selectedItems.size()
 
-    fun getSelectedItems(): List<Int> {
+    private fun getSelectedItems(): List<Int> {
         val items: MutableList<Int> = ArrayList(selectedItems.size())
         for (i in 0 until selectedItems.size()) {
             items.add(selectedItems.keyAt(i))

@@ -13,7 +13,6 @@
     <string-array name="cocktailTypes_array">
         <item>Bourbon</item>
         <item>Brandy</item>
-        <item>Classic</item>
         <item>Cognac</item>
         <item>Gin</item>
         <item>Herbaceous</item>

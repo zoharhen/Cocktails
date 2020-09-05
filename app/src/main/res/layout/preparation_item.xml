@@ -18,8 +18,11 @@
         android:id="@+id/iv_done"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_search"
-        android:visibility="gone"
+        android:src="@drawable/ic_done_black_24dp"
+        android:tint="@color/doneIcon"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="4dp"
+        android:visibility="visible"
         android:contentDescription="iv_done" />
     <TextView
         android:id="@+id/tv_step"

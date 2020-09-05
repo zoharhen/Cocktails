@@ -29,6 +29,7 @@ class PreparationAdapter(context: Context, arrayList: List<ItemPreparation>, pri
         viewHolder.step.text = mArrayList[position].step
         if (isSelected(position)) {
             viewHolder.done.visibility = View.VISIBLE
+            viewHolder.number.text = ""
             viewHolder.step.setTextColor(mContext.resources.getColor(R.color.colorRipple))
         } else {
             viewHolder.step.setTextColor(mContext.resources.getColor(R.color.colorPrimaryDark))
@@ -43,21 +44,17 @@ class PreparationAdapter(context: Context, arrayList: List<ItemPreparation>, pri
         var number: TextView = itemView.findViewById(R.id.tv_number)
         var done: ImageView = itemView.findViewById(R.id.iv_done)
 
-        override fun onClick(v: View) {
-            listener?.onItemClicked(adapterPosition)
-        }
+        override fun onClick(v: View) { }
 
         override fun onLongClick(view: View): Boolean {
             return listener?.onItemLongClicked(adapterPosition) ?: false
         }
 
         interface ClickListener {
-            fun onItemClicked(position: Int)
             fun onItemLongClicked(position: Int): Boolean
         }
 
         init {
-            itemLayoutView.setOnClickListener(this)
             itemLayoutView.setOnLongClickListener(this)
         }
     }
