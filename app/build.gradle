@@ -114,3 +114,8 @@ sceneform.asset('sampledata/models/martini.obj', // 'Source Asset Path' specifie
         'default', // 'Material Path' specified during import.
         'sampledata/models/martini.sfa', // '.sfa Output Path' specified during import.
         'src/main/assets/martini')      // '.sfb Output Path' specified during import.
+
+sceneform.asset('sampledata/models/wine2.obj', // 'Source Asset Path' specified during import.
+        'default', // 'Material Path' specified during import.
+        'sampledata/models/wine2.sfa', // '.sfa Output Path' specified during import.
+        'src/main/assets/wine2')      // '.sfb Output Path' specified during import.
