@@ -3,7 +3,7 @@ package com.example.cocktails.ui.main
 import android.app.Activity
 import android.app.ActivityManager
 import android.content.Context.ACTIVITY_SERVICE
-import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -18,6 +18,8 @@ import com.google.ar.core.Anchor
 import com.google.ar.core.HitResult
 import com.google.ar.core.Plane
 import com.google.ar.sceneform.AnchorNode
+import com.google.ar.sceneform.Node
+import com.google.ar.sceneform.math.Quaternion
 import com.google.ar.sceneform.math.Vector3
 import com.google.ar.sceneform.rendering.*
 import com.google.ar.sceneform.ux.ArFragment
@@ -34,12 +36,19 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
     private var arFragment: ArFragment? = null
     private var glassPlaced: Boolean = false
 
-    private var mInflater: LayoutInflater? = null
-    private var mContainer: ViewGroup? = null
+    private var ingredientsPairs: MutableList<Pair<Float, String>> = ArrayList()
+    private var ingredients: MutableList<String> = ArrayList()
 
     @Override
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Load the current cocktail's glass properties
+        cocktail.glass?.let {
+            Glass.loadProperties(it)
+        }
+        // Extract lists of the ingredients and quantities
+        getIngredients()
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -75,12 +84,11 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
         arFragment!!.transformationSystem
             .selectionVisualizer = BlankSelectionVisualizer()
 
-        // Hide the dots indicating a viable surface
+        //--- Hide the dots indicating a viable surface - NOT RECOMMENDED
         // arFragment!!.planeDiscoveryController.hide()
 
         // Build and add the rendered 3D model to the scene.
-        // the scene is where the 3D objects are rendered.
-        // HitResult is a ray-cast on the object.
+        // The scene is where the 3D objects are rendered. HitResult is a ray-cast on the object.
         arFragment!!.setOnTapArPlaneListener { hitResult: HitResult, plane: Plane?,
                                                _: MotionEvent? ->
             // Don't allow placing on walls / ceiling
@@ -111,7 +119,7 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
             .thenAccept { renderable: ModelRenderable ->
                 addNodeToScene(fragment, anchor, renderable)
             }
-            .exceptionally { throwable: Throwable ->
+            .exceptionally {
                 renderError(requireActivity())
                 null
             }
@@ -119,43 +127,98 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
 
     /**
      * Add a new node of the given renderable to the given fragment's scene, at the given anchor.
-     */
-    private fun addNodeToScene(fragment: ArFragment, anchor: Anchor, renderable: Renderable) {
-        val anchorNode = AnchorNode(anchor)
-        val glassNode = TransformableNode(fragment.transformationSystem)
-        glassNode.renderable = renderable.apply {
-            renderPriority = Renderable.RENDER_PRIORITY_LAST
-            isShadowCaster = false
-            isShadowReceiver = false
-        }
-        glassNode.setParent(anchorNode)
-        fragment.arSceneView.scene.addChild(anchorNode)
-//        glassNode.select()
-    }
-
-    /**
-     * Constructs a line (as a cube of radius width 1f and very thin height and depth)
-     * at position 0.0f, 0.15f, 0.0f and with TEXTURE
-     * @param hitResult - If the hit result is a plane
-     * @param res - Image res for texture, or a color
+     * The render tree is as follows:
+     *                  scene
+     *                    |
+     *                  anchor
+     *                    |
+     *                  glass
+     *                /  / \  \
+     *             line ..... line
      */
     @RequiresApi(Build.VERSION_CODES.N)
-    private fun makeLine(hitResult: HitResult, res: Int) {
-        Texture.builder().setSource(BitmapFactory.decodeResource(resources, res))
-            .build()
-            .thenAccept {
-                MaterialFactory.makeOpaqueWithTexture(requireActivity(), it)
-                    .thenAccept { material ->
-                        addNodeToScene(arFragment!!, hitResult.createAnchor(),
-                            ShapeFactory.makeCube(
-                                Vector3(1f, 0.2f, 0.2f),
-                                Vector3(0.0f, 0.15f, 0.0f),
-                                material
-                            )
-                        )
+    private fun addNodeToScene(fragment: ArFragment,
+                               anchor: Anchor,
+                               renderableGlass: Renderable) {
+        val anchorNode = AnchorNode(anchor).apply {
+            setParent(fragment.arSceneView.scene)
+        }
 
-                    }
+        // Add the glass node
+        val glassNode = TransformableNode(fragment.transformationSystem).apply {
+            setParent(anchorNode)
+            renderable = renderableGlass.apply {
+                renderPriority = Renderable.RENDER_PRIORITY_LAST
+                isShadowCaster = false
+                isShadowReceiver = false
             }
+        }
+
+        // Add a line node
+        val lineNode = Node()
+        MaterialFactory.makeOpaqueWithColor(requireActivity(), Color(Color.RED))
+            .thenAccept { material ->
+                // Set the node with a new line (cylinder) with the material.
+                lineNode.apply {
+                    setParent(glassNode)
+
+                    // Render the actual model
+                    renderable = ShapeFactory.makeCylinder(
+                        0.0005f,
+                        Glass.bottomSize,
+                        Vector3(),
+                        material).apply {
+                            // Applies to the renderable
+                            renderPriority = Renderable.RENDER_PRIORITY_LAST
+                            isShadowCaster = false
+                            isShadowReceiver = false
+                        }
+
+                    // Position according to the ingredient and the glass's capacity.
+                    localPosition = Glass.bottomPos
+
+                    // Rotate the line by 90 degrees around the Z axis
+                    localRotation = Quaternion.axisAngle(Vector3(0f, 0f, 1f), 90f)
+                }
+            }
+
+        // Create a text node
+        val ingredientNode = Node().apply {
+            setParent(lineNode)
+            isEnabled = false
+
+            // Set the position to the right of the line
+            // TODO: set the Y axis in regard to the glass's max width.
+            localPosition = Vector3(-0.009f, 0.08f, 0f)
+
+            // Rotate the text by -90 degrees around the Z axis
+            localRotation = Quaternion.axisAngle(Vector3(0f, 0f, 1f), -90f)
+
+            // Scale the text down
+            localScale = Vector3(
+                localScale.x / 5,
+                localScale.y / 5,
+                localScale.z / 5)
+        }
+        // Render it from layout with a textView
+        ViewRenderable.builder()
+            .setView(requireContext(), R.layout.ar_text_layout)
+            .build()
+            .thenAccept { renderableText ->
+                    ingredientNode.apply {
+                        renderable = renderableText.apply {
+                            // Applies to the renderable
+                            renderPriority = Renderable.RENDER_PRIORITY_LAST
+                            isShadowCaster = false
+                            isShadowReceiver = false
+                        }
+                        isEnabled = true
+                    }
+                }
+            .exceptionally {
+                    renderError(requireActivity())
+                    null
+                }
     }
 
     /**
@@ -166,10 +229,6 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
             Toast.makeText(activity, "Sorry, Something went wrong!", Toast.LENGTH_LONG)
         toast.setGravity(Gravity.CENTER, 0, 0)
         toast.show()  // Unable to load renderer
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 
     /**
@@ -198,6 +257,55 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
             return false
         }
         return true
+    }
+
+    /**
+     * Parse the ingredients for the cocktail
+     */
+    private fun getIngredients() {
+        val curIngredients: Array<String> = cocktail.ingredients
+        for (i in curIngredients) {
+            // For example, i = "1 1/2 oz Vodka"
+            val regex: Regex = Regex("[0-9/]*\\s([0-9/]*\\s)?\\w*\\s")
+            val match = regex.find(i)
+            val matchString: String = match!!.value.toString()
+
+            // Now matchString should be "1 1/2 oz "
+            val quantityRegex: Regex = Regex("[0-9/]+")
+            // quantities should be ["1", "1/2"]
+            // If no quantity found, this is a Garnish or something else. Continue.
+            var quantities: MatchResult? = quantityRegex.find(matchString) ?: continue
+
+            var quantity = parseFraction(quantities!!.value)
+
+            // Get next quantity if available
+            quantities = quantities.next()
+            if (quantities != null) {
+                quantity += parseFraction(quantities.value)
+            }
+
+            val unitRegex: Regex = Regex("[^0-9/\\s]\\w*")
+            var unit: String = unitRegex.find(matchString)?.value.toString()
+            // unit should be "oz"
+
+            // The following is used for AR display.
+            // Add the pairs to a list.
+            ingredientsPairs.add(Pair(quantity, unit))
+            // Add the whole ingredient to a list. Only add the ones with quantity.
+            ingredients.add(i)
+        }
+    }
+
+    /**
+     * Take a String of the form "x/y" and turn it into a decimal point Float number.
+     */
+    private fun parseFraction(ratio: String): Float {
+        return if (ratio.contains("/")) {
+            val rat = ratio.split("/".toRegex()).toTypedArray()
+            rat[0].toFloat() / rat[1].toFloat()
+        } else {
+            ratio.toFloat()
+        }
     }
 
 }

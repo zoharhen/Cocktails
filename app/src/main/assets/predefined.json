@@ -1,8 +1,8 @@
 [
     {
         "type": "Vodka",
-		"clipart": "c_blue",
-		"image": "blueLagoon",
+        "clipart": "c_blue",
+        "image": "blueLagoon",
         "name": "Blue Lagoon",
         "ingredients": [
             "1 oz Vodka",
@@ -17,11 +17,11 @@
             "Garnish with a lemon wheel and maraschino cherry."
         ],
         "glass": "cocktail glass.sfb"
-    },	    
-	{
+    },
+    {
         "type": "Tequila",
-		"clipart": "c_highball_red",
-		"image": "bloodyMaria",
+        "clipart": "c_highball_red",
+        "image": "bloodyMaria",
         "name": "Bloody Maria",
         "ingredients": [
             "2 oz Tequila",
@@ -47,10 +47,10 @@
         ],
         "glass": "cocktail glass.sfb"
     },
-	{
+    {
         "type": "Rye Whiskey",
-		"clipart": "c_manhattan",
-		"image": "waldorf",
+        "clipart": "c_manhattan",
+        "image": "waldorf",
         "name": "Waldorf",
         "ingredients": [
             "Absinthe, to rinse",
@@ -66,12 +66,13 @@
         ],
         "glass": "martini.sfb"
     },
-	{
+    {
         "type": "Gin",
-		"clipart": "c_cocktail_orange",
-		"image": "gin-and-juice",
+        "clipart": "c_cocktail_orange",
+        "image": "gin-and-juice",
         "name": "Gin & Juice",
         "ingredients": [
+            "3/4 cup ice",
             "1 1/2 oz Gin",
             "Juice, to top"
         ],
@@ -83,8 +84,8 @@
     },
     {
         "type": "Vodka",
-		"clipart": "c_icetea_brown",
-		"image": "iced-Tea",
+        "clipart": "c_icetea_brown",
+        "image": "iced-Tea",
         "name": "Iced Tea",
         "ingredients": [
             "3/4 oz Vodka",
@@ -105,10 +106,10 @@
         ],
         "glass": "Water Glass.sfb"
     },
-	{
+    {
         "type": "Gin",
-		"clipart": "c_martini_white",
-		"image": "dry-martini",
+        "clipart": "c_martini_white",
+        "image": "dry-martini",
         "name": "Dry Martini",
         "ingredients": [
             "2 1/2 oz Gin",
@@ -125,14 +126,14 @@
     },
     {
         "type": "Gin",
-		"clipart": "c_red",
-		"image": "bebbo",
+        "clipart": "c_red",
+        "image": "bebbo",
         "name": "Bebbo",
         "ingredients": [
-            "1 1/2 ounces London dry gin",
-            "1 ounce honey syrup (equal parts honey and water)",
-            "3/4 ounce fresh lemon juice",
-            "1/4 ounce fresh blood orange juice",
+            "1 1/2 oz London dry gin",
+            "1 oz honey syrup (equal parts honey and water)",
+            "3/4 oz fresh lemon juice",
+            "1/4 oz fresh blood orange juice",
             "Garnish: lemon twist"
         ],
         "steps": [
@@ -144,12 +145,13 @@
     },
     {
         "type": "Rum",
-		"clipart": "c_cocktail_lime",
-		"image": "mojito",
+        "clipart": "c_cocktail_lime",
+        "image": "mojito",
         "name": "Mojito",
         "ingredients": [
+            "3 leaves of mint",
+            "1/2 cup ice",
             "2 oz White rum",
-            "3 Mint leaves",
             "3/4 oz Fresh lime juice",
             "1/2 oz Simple syrup",
             "Club soda, to top",
@@ -167,15 +169,15 @@
     },
     {
         "type": "Bourbon",
-		"clipart": "c_martini_orange",
-		"image": "lions-tail",
+        "clipart": "c_martini_orange",
+        "image": "lions-tail",
         "name": "Lion's Tail",
         "ingredients": [
-            "2 ounces bourbon",
+            "2 oz bourbon",
             "4 dashes Angostura bitters",
-            "1/2 ounce fresh lime juice",
-            "1/2 ounce simple syrup",
-            "1/2 ounce allspice dram",
+            "1/2 oz fresh lime juice",
+            "1/2 oz simple syrup",
+            "1/2 oz allspice dram",
             "Garnish: orange peel"
         ],
         "steps": [
@@ -187,14 +189,15 @@
     },
     {
         "type": "Bourbon",
-		"clipart": "c_rocks_brown",
-		"image": "old-fashioned",
+        "clipart": "c_rocks_brown",
+        "image": "old-fashioned",
         "name": "Old Fashioned",
         "ingredients": [
             "1/2 tsp sugar",
             "3 dashes Angostura bitters",
             "1 tsp water",
-            "2 ounces bourbon",
+            "3/4 cup ice",
+            "2 oz bourbon",
             "Garnish: orange peel"
         ],
         "steps": [
@@ -206,8 +209,8 @@
     },
     {
         "type": "Rum",
-		"clipart": "c_margarita_green",
-		"image": "daiquiri",
+        "clipart": "c_margarita_green",
+        "image": "daiquiri",
         "name": "Daiquiri",
         "ingredients": [
             "2 oz Light rum",
@@ -220,17 +223,17 @@
             "Strain into a chilled coupe.",
             "Garnish with a lime twist."
         ],
-        "glass": "Wine_Glass.sfb"
+        "glass": "wine2.sfb"
     },
     {
         "type": "Rum",
-		"clipart": "c_irish_coffee",
-		"image": "hot-buttered-rum",
+        "clipart": "c_irish_coffee",
+        "image": "hot-buttered-rum",
         "name": "Buttered Rum",
         "ingredients": [
             "2 oz Gold rum",
             "1 tbsp Hot buttered rum batter",
-            "Boiling water",
+            "3/4 cup Boiling water",
             "Garnish: Cinnamon stick",
             "Garnish: Freshly grated nutmeg"
         ],
@@ -242,8 +245,8 @@
     },
     {
         "type": "Scotch",
-		"clipart": "c_manhattan",
-		"image": "blood-and-sand",
+        "clipart": "c_manhattan",
+        "image": "blood-and-sand",
         "name": "Blood & Sand",
         "ingredients": [
             "3/4 oz Scotch",
@@ -261,8 +264,8 @@
     },
     {
         "type": "Rye Whiskey",
-		"clipart": "c_rocks_brown",
-		"image": "sazerac",
+        "clipart": "c_rocks_brown",
+        "image": "sazerac",
         "name": "Sazerac",
         "ingredients": [
             "Absinthe",
@@ -270,6 +273,7 @@
             "3 dashes Peychaud's bitters",
             "2 dashes Angostura bitters",
             "2 oz Russell's Reserve rye whiskey",
+            "3/4 cup ice",
             "Garnish: Lemon peel"
         ],
         "steps": [
@@ -283,18 +287,18 @@
     },
     {
         "type": "Brandy",
-		"clipart": "c_brandy_brown",
-		"image": "picon-punch",
+        "clipart": "c_brandy_brown",
+        "image": "picon-punch",
         "name": "Picon Punch",
         "ingredients": [
             "1 1/2 oz Amer Picon*",
             "1/4 oz Grenadine*",
-            "Soda water, to top",
+            "3/4 cup Soda water, to top",
             "1/2 oz Brandy",
             "Garnish: Lemon peel"
         ],
         "steps": [
-            "Pour the Amer Picon and grenadine into a Georgian Irish Coffee glass over ice and stir briefly.",
+            "Pour the Amer Picon and Grenadine into a Georgian Irish Coffee glass over ice and stir briefly.",
             "Fill almost to top with the soda water.",
             "Float the brandy on top.",
             "Garnish with a lemon peel.",
@@ -304,8 +308,8 @@
     },
     {
         "type": "Bourbon",
-		"clipart": "c_martini_yellow",
-		"image": "brown-derby",
+        "clipart": "c_martini_yellow",
+        "image": "brown-derby",
         "name": "Brown Derby",
         "ingredients": [
             "1 1/2 oz Bourbon",
@@ -323,8 +327,8 @@
     },
     {
         "type": "Tequila",
-		"clipart": "c_sunrise",
-		"image": "tequila-sunrise",
+        "clipart": "c_sunrise",
+        "image": "tequila-sunrise",
         "name": "Tequila Sunrise",
         "ingredients": [
             "2 oz Blanco tequila",
@@ -342,10 +346,11 @@
     },
     {
         "type": "Other",
-		"clipart": "c_transparent",
-		"image": "pisco-sour",
+        "clipart": "c_transparent",
+        "image": "pisco-sour",
         "name": "Pisco Sour",
         "ingredients": [
+            "3/4 cup ice",
             "2 oz Pisco",
             "1 oz Fresh lime juice",
             "1/2 oz Simple syrup",
@@ -357,14 +362,15 @@
             "Strain into a chilled rocks glass over fresh ice. (Alternately, you can pour it neat into a Nick & Nora glass.).",
             "Garnish with 3 drops of the bitters. Using a straw, swirl the bitters into a simple design."
         ],
-        "glass": "Wine_Glass.sfb"
+        "glass": "wine2.sfb"
     },
     {
         "type": "Tequila",
-		"clipart": "c_margarita_green",
-		"image": "margarita",
+        "clipart": "c_margarita_green",
+        "image": "margarita",
         "name": "Margarita",
         "ingredients": [
+            "3/4 cup ice",
             "3/4 oz Fresh squeezed lime juice",
             "1 oz Cointreau, triple sec or another orange liqueur",
             "1 1/2 oz Blanco tequila",
@@ -379,10 +385,10 @@
         ],
         "glass": "martini.sfb"
     },
-	{
+    {
         "type": "Cognac",
-		"clipart": "c_martini_yellow",
-		"image": "sidecar",
+        "clipart": "c_martini_yellow",
+        "image": "sidecar",
         "name": "Sidecar",
         "ingredients": [
             "1 1/2 oz Cognac",
@@ -401,13 +407,14 @@
     },
     {
         "type": "Vodka",
-		"clipart": "c_highball_red",
-		"image": "bloody-ceasar",
+        "clipart": "c_highball_red",
+        "image": "bloody-ceasar",
         "name": "Bloody Caesar",
         "ingredients": [
             "celery salt",
-            "1 1/2 ounces vodka",
-            "4 ounces Clamato juice",
+            "3/4 cup ice",
+            "1 1/2 oz vodka",
+            "4 oz Clamato juice",
             "2 dashes Worcestershire sauce",
             "2 dashes Tabasco sauce",
             "prepared horseradish, to taste (optional)",
@@ -426,8 +433,8 @@
     },
     {
         "type": "Scotch",
-		"clipart": "c_manhattan",
-		"image": "Rob-Roy",
+        "clipart": "c_manhattan",
+        "image": "Rob-Roy",
         "name": "Rob Roy",
         "ingredients": [
             "2 oz Scotch",
@@ -444,12 +451,13 @@
     },
     {
         "type": "Other",
-		"clipart": "c_cocktail_lime",
-		"image": "caipirinha",
+        "clipart": "c_cocktail_lime",
+        "image": "caipirinha",
         "name": "Caipirinha",
         "ingredients": [
-            "Lime, cut into wedges",
+            "1 Lime, cut into wedges",
             "2 tsp Sugar",
+            "3/4 cup ice",
             "2 oz Cachaca",
             "Garnish: Lime wheel"
         ],
@@ -462,8 +470,8 @@
     },
     {
         "type": "Bourbon",
-		"clipart": "c_transparent",
-		"image": "whiskey-sour",
+        "clipart": "c_transparent",
+        "image": "whiskey-sour",
         "name": "Whiskey Sour",
         "ingredients": [
             "2 oz Bourbon",
@@ -481,18 +489,18 @@
     },
     {
         "type": "Rum",
-		"clipart": "c_blue",
-		"image": "blue-hawaiian",
+        "clipart": "c_blue",
+        "image": "blue-hawaiian",
         "name": "Blue Hawaiian",
         "ingredients": [
-			"1 1/2 oz Light rum",
+            "1 1/2 oz Light rum",
             "3/4 oz Blue curaçao",
             "2 oz Pineapple juice",
             "3/4 oz Creme de coconut",
             "1/2 oz Fresh lemon juice",
             "Garnish: Pineapple wedge",
-			"Garnish: Cherry",
-			"Garnish: Cocktail umbrella"
+            "Garnish: Cherry",
+            "Garnish: Cocktail umbrella"
         ],
         "steps": [
             "Add all ingredients into a shaker with ice and shake until well-chilled.",
@@ -503,13 +511,14 @@
     },
     {
         "type": "Rye Whiskey",
-		"clipart": "c_red",
-		"image": "old-pal",
+        "clipart": "c_red",
+        "image": "old-pal",
         "name": "Old Pal",
         "ingredients": [
             "1 oz Rye whiskey",
             "1 oz Dry vermouth",
             "1 oz Campari",
+            "1 cup ice",
             "Garnish: Lemon twist"
         ],
         "steps": [
@@ -519,38 +528,40 @@
         ],
         "glass": "martini.sfb"
     },
-	{
+    {
         "type": "Herbaceous",
-		"clipart": "c_margarita_green",
-		"image": "compromise",
+        "clipart": "c_margarita_green",
+        "image": "compromise",
         "name": "Compromise",
         "ingredients": [
-            "1 1/2 ounces Tequila Ocho plata",
-			"3/4 ounce Midori", 
-			"3/4 ounce fresh lime juice",
-			"1/2 ounce agave nectar",
-			"2 slices jalapeño pepper",
-			"7 slices cilantro",
-			"Garnish: cilantro"
+            "3/4 cup crushed ice",
+            "1 1/2 oz Tequila Ocho plata",
+            "3/4 oz Midori",
+            "3/4 oz fresh lime juice",
+            "1/2 oz agave nectar",
+            "2 slices jalapeño pepper",
+            "7 slices cilantro",
+            "Garnish: cilantro"
         ],
         "steps": [
             "Add all ingredients into a shaker with ice and hard-shake until well-chilled.",
             "Double-strain into a rocks glass over crushed ice.",
-			"Garnish with a tight bunch of cilantro."
+            "Garnish with a tight bunch of cilantro."
         ],
         "glass": "martini.sfb"
     },
-	{
+    {
         "type": "Other",
-		"clipart": "c_cocktail_lime",
-		"image": "cobra-verde",
+        "clipart": "c_cocktail_lime",
+        "image": "cobra-verde",
         "name": "Cobra Verde",
         "ingredients": [
+            "3/4 cup ice",
             "1 1/4 oz Midori",
-			"1/2 oz Ancho Reyes chile liqueur", 
-			"1/2 oz Fresh lemon juice",
-			"Fever-Tree aromatic tonic, to top",
-			"Garnish: Thyme sprig"
+            "1/2 oz Ancho Reyes chile liqueur",
+            "1/2 oz Fresh lemon juice",
+            "Fever-Tree aromatic tonic, to top",
+            "Garnish: Thyme sprig"
         ],
         "steps": [
             "Add all ingredients into a Collins glass over ice and stir.",
@@ -558,34 +569,36 @@
         ],
         "glass": "cocktail glass.sfb"
     },
-	{
+    {
         "type": "Vodka",
-		"clipart": "c_highball_red",
-		"image": "Beet-Rose",
+        "clipart": "c_highball_red",
+        "image": "Beet-Rose",
         "name": "Beet Rose",
         "ingredients": [
-            "2 ounces Ketel One vodka",
-			"1 ounce fresh beet juice", 
-			"3/4 ounce fresh lemon juice",
-			"6 mint leaves",
-			"prosecco, chilled, to top",
-			"Garnish: mint sprig",
-			"Garnish: lemon twist"
+            "3/4 cup ice",
+            "2 oz Ketel One vodka",
+            "1 oz fresh beet juice",
+            "3/4 oz fresh lemon juice",
+            "6 mint leaves",
+            "prosecco, chilled, to top",
+            "Garnish: mint sprig",
+            "Garnish: lemon twist"
         ],
         "steps": [
             "Add all ingredients except prosecco into a shaker with ice and shake until well-chilled.",
             "Double-strain into a highball glass over fresh ice.",
-			"Top with prosecco.",
-			"Garnish with a mint sprig and lemon twist."
+            "Top with prosecco.",
+            "Garnish with a mint sprig and lemon twist."
         ],
         "glass": "cocktail glass.sfb"
     },
-	{
+    {
         "type": "Gin",
-		"clipart": "c_icetea_brown",
-		"image": "pimms-cup",
+        "clipart": "c_icetea_brown",
+        "image": "pimms-cup",
         "name": "Pimm's Cup",
         "ingredients": [
+            "3/4 cup ice",
             "2 oz Pimm's No. 1 Cup",
             "3 oz Sprite, 7Up or ginger ale",
             "1 slice Cucumber",
@@ -601,14 +614,15 @@
         ],
         "glass": "Water Glass.sfb"
     },
-	{
+    {
         "type": "Bourbon",
-		"clipart": "c_manhattan",
-		"image": "manhattan",
+        "clipart": "c_manhattan",
+        "image": "manhattan",
         "name": "Manhattan",
         "ingredients": [
-            "2 ounces bourbon or rye",
-            "1 ounce sweet vermouth",
+            "3/4 cup ice",
+            "2 oz bourbon or rye",
+            "1 oz sweet vermouth",
             "2 dashes Angostura bitters",
             "1 dash orange bitters",
             "Garnish: brandied cherry"
@@ -620,15 +634,16 @@
         ],
         "glass": "martini.sfb"
     },
-	{
+    {
         "type": "Gin",
-		"clipart": "c_rocks_brown",
-		"image": "negroni",
+        "clipart": "c_rocks_brown",
+        "image": "negroni",
         "name": "Negroni",
         "ingredients": [
-            "1 ounce gin",
-            "1 ounce Campari",
-            "1 ounce sweet vermouth",
+            "3/4 cup ice",
+            "1 oz gin",
+            "1 oz Campari",
+            "1 oz sweet vermouth",
             "Garnish: orange peel"
         ],
         "steps": [
@@ -640,12 +655,13 @@
     },
     {
         "type": "Scotch",
-		"clipart": "c_transparent",
-		"image": "scotch-and-soda",
+        "clipart": "c_transparent",
+        "image": "scotch-and-soda",
         "name": "Scotch & Soda",
         "ingredients": [
-            "2 ounces scotch whisky",
-            "club soda, to top"
+            "3/4 cup ice",
+            "2 oz scotch whisky",
+            "1/4 cup club soda, to top"
         ],
         "steps": [
             "Add the scotch to a highball glass filled with ice.",
@@ -653,12 +669,13 @@
         ],
         "glass": "Wine_Glass.sfb"
     },
-	{
+    {
         "type": "Other",
-		"clipart": "c_sunrise",
-		"image": "americano",
+        "clipart": "c_sunrise",
+        "image": "americano",
         "name": "Americano",
         "ingredients": [
+            "3/4 cup ice",
             "1 1/2 oz Campari",
             "1 1/2 oz Sweet vermouth",
             "1 splash Club soda",

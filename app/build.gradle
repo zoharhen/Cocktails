@@ -72,8 +72,7 @@ dependencies {
 
     // todo: remove if not needed
     implementation 'androidx.paging:paging-runtime-ktx:2.1.2'
-    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
-    // load and display small chunks of data at a time
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0' // load and display small chunks of data at a time
     implementation 'com.google.android.play:core:1.8.0' // contact Google Play Store
     implementation 'com.google.dagger:dagger:2.25.3' // for errors
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
@@ -116,3 +115,7 @@ sceneform.asset('sampledata/models/martini.obj', // 'Source Asset Path' specifie
         'sampledata/models/martini.sfa', // '.sfa Output Path' specified during import.
         'src/main/assets/martini')      // '.sfb Output Path' specified during import.
 
+sceneform.asset('sampledata/models/wine2.obj', // 'Source Asset Path' specified during import.
+        'default', // 'Material Path' specified during import.
+        'sampledata/models/wine2.sfa', // '.sfa Output Path' specified during import.
+        'src/main/assets/wine2')      // '.sfb Output Path' specified during import.
