@@ -3,7 +3,7 @@ package com.example.cocktails.ui.main
 import android.app.Activity
 import android.app.ActivityManager
 import android.content.Context.ACTIVITY_SERVICE
-import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -18,12 +18,15 @@ import com.google.ar.core.Anchor
 import com.google.ar.core.HitResult
 import com.google.ar.core.Plane
 import com.google.ar.sceneform.AnchorNode
+import com.google.ar.sceneform.Node
+import com.google.ar.sceneform.math.Quaternion
 import com.google.ar.sceneform.math.Vector3
 import com.google.ar.sceneform.rendering.*
 import com.google.ar.sceneform.ux.ArFragment
 import com.google.ar.sceneform.ux.BaseTransformableNode
 import com.google.ar.sceneform.ux.SelectionVisualizer
 import com.google.ar.sceneform.ux.TransformableNode
+import java.util.*
 
 
 class ARFragment(private val cocktail: Cocktail) : Fragment() {
@@ -119,42 +122,70 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
 
     /**
      * Add a new node of the given renderable to the given fragment's scene, at the given anchor.
+     * The render tree is as follows:
+     *                  scene
+     *                    |
+     *                  anchor
+     *                    |
+     *                  glass
+     *                /  / \  \
+     *             line ..... line
      */
-    private fun addNodeToScene(fragment: ArFragment, anchor: Anchor, renderable: Renderable) {
-        val anchorNode = AnchorNode(anchor)
-        val glassNode = TransformableNode(fragment.transformationSystem)
-        glassNode.renderable = renderable.apply {
-            renderPriority = Renderable.RENDER_PRIORITY_LAST
-            isShadowCaster = false
-            isShadowReceiver = false
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun addNodeToScene(fragment: ArFragment,
+                               anchor: Anchor,
+                               renderableGlass: Renderable) {
+        val anchorNode = AnchorNode(anchor).apply {
+            setParent(fragment.arSceneView.scene)
         }
-        glassNode.setParent(anchorNode)
-        fragment.arSceneView.scene.addChild(anchorNode)
-//        glassNode.select()
+
+        // Add the glass node
+        val glassNode = TransformableNode(fragment.transformationSystem).apply {
+            setParent(anchorNode)
+            renderable = renderableGlass.apply {
+                renderPriority = Renderable.RENDER_PRIORITY_LAST
+                isShadowCaster = false
+                isShadowReceiver = false
+            }
+        }
+
+        // Add a line node
+        MaterialFactory.makeOpaqueWithColor(requireActivity(), Color(Color.RED))
+            .thenAccept { material ->
+                val lineNode = Node().apply {
+                    setParent(glassNode)
+                    renderable = ShapeFactory.makeCylinder(
+                        0.0005f,
+                        0.05f,
+                        Vector3(),
+                        material)
+
+                    localPosition = Vector3(0f, 0.05f, 0f)
+
+                    // Rotate the line by 90 degrees around the Z axis
+                    localRotation = Quaternion.axisAngle(Vector3(0f, 0f, 1f), 90f)
+                }
+            }
     }
 
     /**
-     * Constructs a line (as a cube of radius width 1f and very thin height and depth)
+     * Constructs a line (as a cylinder of radius width 0.01f and very thin height and depth)
      * at position 0.0f, 0.15f, 0.0f and with TEXTURE
      * @param hitResult - If the hit result is a plane
-     * @param res - Image res for texture, or a color
+     * @param color - a color
      */
     @RequiresApi(Build.VERSION_CODES.N)
-    private fun makeLine(hitResult: HitResult, res: Int) {
-        Texture.builder().setSource(BitmapFactory.decodeResource(resources, res))
-            .build()
-            .thenAccept {
-                MaterialFactory.makeOpaqueWithTexture(requireActivity(), it)
-                    .thenAccept { material ->
-                        addNodeToScene(arFragment!!, hitResult.createAnchor(),
-                            ShapeFactory.makeCube(
-                                Vector3(1f, 0.2f, 0.2f),
-                                Vector3(0.0f, 0.15f, 0.0f),
-                                material
-                            )
-                        )
+    private fun makeLine(hitResult: HitResult, color: Int) {
+        MaterialFactory.makeOpaqueWithColor(requireActivity(), Color(color))
+            .thenAccept { material ->
+                addNodeToScene(arFragment!!, hitResult.createAnchor(),
+                    ShapeFactory.makeCylinder(
+                        0.01f,
+                        0.3f,
+                        Vector3(0.0f, 0.15f, 0.0f),
+                        material)
+                )
 
-                    }
             }
     }
 
