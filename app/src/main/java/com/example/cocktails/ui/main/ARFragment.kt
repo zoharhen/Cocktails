@@ -37,12 +37,13 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
     private var arFragment: ArFragment? = null
     private var glassPlaced: Boolean = false
 
-    private var mInflater: LayoutInflater? = null
-    private var mContainer: ViewGroup? = null
-
     @Override
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        cocktail.glass?.let {
+            Glass.loadProperties(it)
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -156,11 +157,11 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
                     setParent(glassNode)
                     renderable = ShapeFactory.makeCylinder(
                         0.0005f,
-                        0.05f,
+                        Glass.bottomSize,
                         Vector3(),
                         material)
 
-                    localPosition = Vector3(0f, 0.05f, 0f)
+                    localPosition = Glass.bottomPos
 
                     // Rotate the line by 90 degrees around the Z axis
                     localRotation = Quaternion.axisAngle(Vector3(0f, 0f, 1f), 90f)
