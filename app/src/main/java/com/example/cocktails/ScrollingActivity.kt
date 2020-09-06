@@ -5,17 +5,12 @@ import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
-import com.google.firebase.auth.FirebaseUser
-import android.widget.Toast
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.AutoCompleteTextView
-import android.widget.EditText
-import android.widget.ScrollView
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -23,6 +18,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
+import com.example.cocktails.ui.newItem.NewUserItem
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.gson.Gson
@@ -42,6 +38,8 @@ class ScrollingActivity : AppCompatActivity() {
 
     private var gridViewAdapter: CocktailItemAdapter? = null
     private lateinit var recyclerView: RecyclerView
+    private lateinit var addUserItemFab: View
+    private val NEW_USER_ITEM_RESULT_CODE = 3
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +48,7 @@ class ScrollingActivity : AppCompatActivity() {
 
         initAdapter()
         initRecyclerview()
+        initButtons()
     }
 
     public override fun onStart() {
@@ -74,6 +73,29 @@ class ScrollingActivity : AppCompatActivity() {
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() { })
     }
 
+    private fun initButtons(){
+        initAddUserItemButton()
+    }
+
+    private fun initAddUserItemButton(){
+        addUserItemFab= findViewById(R.id.add_user_item_fab)
+        addUserItemFab.setOnClickListener {
+            val createNewItemIntent = Intent(applicationContext, NewUserItem::class.java)
+            startActivityForResult(createNewItemIntent,NEW_USER_ITEM_RESULT_CODE)
+        }
+    }
+
+    @Override
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if( requestCode == NEW_USER_ITEM_RESULT_CODE){
+            if(resultCode== RESULT_OK){
+                TODO("if user mark item as favorite -> add to favorite")
+                TODO("add to cocktails list")
+                TODO("if user add new ingredients/new spirit type ")
+            }
+        }
+    }
     private fun getColumnNum() : Int {
         //        val columns = resources.getInteger(R.integer.gridColumnNum)
         val screenWidthDp: Float = resources.displayMetrics.widthPixels / resources.displayMetrics.density
