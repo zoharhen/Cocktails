@@ -25,7 +25,7 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager, pr
             // Recipe Tab
             1 -> return RecipeFragment.newInstance(cocktail) as Fragment
             // AR tab
-//            0 -> return ARFragment(cocktail)
+            0 -> return ARFragment(cocktail)
         }
 
         // Return a PlaceholderFragment (defined as a static inner class below).
