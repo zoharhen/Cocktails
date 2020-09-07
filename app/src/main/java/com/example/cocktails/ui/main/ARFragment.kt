@@ -3,6 +3,7 @@ package com.example.cocktails.ui.main
 import android.app.Activity
 import android.app.ActivityManager
 import android.content.Context.ACTIVITY_SERVICE
+import android.graphics.Color.parseColor
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -11,8 +12,6 @@ import android.view.*
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.content.res.ResourcesCompat.getFont
 import androidx.fragment.app.Fragment
 import com.example.cocktails.Cocktail
@@ -29,6 +28,10 @@ import com.google.ar.sceneform.ux.ArFragment
 import com.google.ar.sceneform.ux.BaseTransformableNode
 import com.google.ar.sceneform.ux.SelectionVisualizer
 import com.google.ar.sceneform.ux.TransformableNode
+import org.json.JSONException
+import org.json.JSONObject
+import java.io.IOException
+import java.io.InputStream
 
 
 class ARFragment(private val cocktail: Cocktail) : Fragment() {
@@ -38,12 +41,12 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
 
     private var arFragment: ArFragment? = null
     private var glassPlaced: Boolean = false
+    private var arColor: String = ""
 
     private var ingredientsPairs: MutableList<Pair<Float, String>> = ArrayList()
     private var ingredients: MutableList<String> = ArrayList()
 
     private var leftSide: Boolean = true
-
 
     @Override
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,6 +59,18 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
 
         // Extract lists of the ingredients and quantities
         getIngredients()
+
+        try {
+            val jsonObject = JSONObject(loadJSONFromAsset("arColors.json"))
+            arColor = jsonObject.getString(cocktail.clipart)
+        } catch (e: JSONException) {
+            // thrown when:
+            // - the json string is malformed (can't be parsed)
+            // - there's no value for a requested key
+            // - the value for the requested key can't be coerced to String
+            // THIS SHOULDN'T HAPPEN
+            renderError(requireActivity())
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -229,7 +244,8 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
         arText.apply {
             typeface = getFont(requireContext(), R.font.raleway_light)
             text = ingredients[index]
-            setTextColor(ContextCompat.getColor(requireContext(), R.color.arIngridients))
+            setTextColor(parseColor(arColor))
+//            setTextColor(ContextCompat.getColor(requireContext(), R.color.arIngridients))
 //            setBackgroundColor()
         }
 
@@ -291,7 +307,8 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
         val lineNode = Node()
         MaterialFactory.makeOpaqueWithColor(
             requireActivity(),
-            Color(ContextCompat.getColor(requireContext(), R.color.arIngridients))
+            Color(parseColor(arColor))
+//            Color(ContextCompat.getColor(requireContext(), R.color.arIngridients))
         )
             .thenAccept { material ->
                 // Set the node with a new line (cylinder) with the material.
@@ -350,7 +367,6 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
                 )
             }
 
-
             // Rotate the text by -90 degrees around the Z axis
             localRotation = Quaternion.axisAngle(
                 Vector3(0f, 0f, 1f),
@@ -370,7 +386,8 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
         arText.apply {
             typeface = getFont(requireContext(), R.font.raleway_light)
             text = ingredients[index]
-            setTextColor(ContextCompat.getColor(requireContext(), R.color.arIngridients))
+            setTextColor(parseColor(arColor))
+//            setTextColor(ContextCompat.getColor(requireContext(), R.color.arIngridients))
         }
 
         // Render the text to the node
@@ -523,6 +540,10 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
         return gaps
     }
 
+    // ********************************************************* //
+    // *********************** UTILITIES *********************** //
+    // ********************************************************* //
+
     /**
      * Get the meter-distance between two vectors
      */
@@ -534,6 +555,23 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
 
         // Compute the straight-line distance (distanceMeters)
         return Math.sqrt(dx * dx + dy * dy + (dz * dz).toDouble()).toFloat()
+    }
+
+    /**
+     * Load a json from asset .json file
+     */
+    private fun loadJSONFromAsset(fileName: String): String {
+        return try {
+            val `is`: InputStream = requireActivity().assets.open(fileName)
+            val size: Int = `is`.available()
+            val buffer = ByteArray(size)
+            `is`.read(buffer)
+            `is`.close()
+            String(buffer, Charsets.UTF_8)
+        } catch (ex: IOException) {
+            renderError(requireActivity())
+            return ""
+        }
     }
 
 }
