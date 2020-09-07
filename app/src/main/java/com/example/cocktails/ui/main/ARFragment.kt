@@ -61,7 +61,7 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
         getIngredients()
 
         try {
-            val jsonObject = JSONObject(loadJSONFromAsset("arColors.json"))
+            val jsonObject = JSONObject(loadJSONFromAsset("clipartColors.json"))
             arColor = jsonObject.getString(cocktail.clipart)
         } catch (e: JSONException) {
             // thrown when:
