@@ -14,6 +14,9 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.res.ResourcesCompat.getFont
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.Lifecycle
 import com.example.cocktails.Cocktail
 import com.example.cocktails.R
 import com.google.ar.core.Anchor
@@ -45,8 +48,12 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
 
     private var ingredientsPairs: MutableList<Pair<Float, String>> = ArrayList()
     private var ingredients: MutableList<String> = ArrayList()
-
     private var leftSide: Boolean = true
+
+    private lateinit var mInflater: LayoutInflater
+    private var mContainer: ViewGroup? = null
+    private var root: View? = null
+    private var inflated: Boolean = false
 
     @Override
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -94,6 +101,26 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
         return root
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
+    override fun onResume() {
+        super.onResume()
+
+        arFragment?.arSceneView?.session?.resume()
+
+        // Show the dots indicating a viable surface
+        arFragment?.arSceneView?.planeRenderer?.isVisible = true
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        arFragment?.arSceneView?.session?.pause()
+        glassPlaced = false
+    }
+
+    /**
+     * Initialize the AR scene
+     */
     @RequiresApi(Build.VERSION_CODES.N)
     private fun initAr() {
         // Find the AR fragment
@@ -149,55 +176,11 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
             .setSource(fragment.context, model)
             .build()
             .thenAccept { renderableGlass: ModelRenderable ->
+                // ------ Create the glass
                 val glassNode = addGlassNode(fragment, anchor, renderableGlass)
 
-                // Add an anchor for top position
-                val top = Node().apply {
-                    setParent(glassNode)
-                    localPosition = Glass.topPos
-                }
-                // Add an anchor for bottom position
-                val bottom = Node().apply {
-                    setParent(glassNode)
-                    localPosition = Glass.bottomPos
-                }
-                // Get gaps
-                val gaps = calculateGaps(top, bottom)
-
-                var boxPrevZPos = 0.05f
-                var prevGap = 0f
-                for ((index, gap) in gaps.withIndex()) {
-                    val newGap = prevGap + gap
-
-                    if (gap == 0f) {
-                        boxPrevZPos += 0.01f
-                        // Add this ingredient to the box
-                        addBoxTextNode(glassNode, boxPrevZPos, index)
-
-                    } else {
-                        leftSide = if (newGap - prevGap < 0.008f) {
-                            !leftSide
-                        } else {
-                            true
-                        }
-
-                        // Create a line node
-                        val lineNode = addLineNode(
-                            glassNode,
-                            Glass.bottomSize,
-                            Vector3(
-                                Glass.bottomPos.x,
-                                Glass.bottomPos.y + newGap,
-                                Glass.bottomPos.z
-                            )
-                        )
-
-                        // Create a text node
-                        addTextNode(lineNode, index)
-                    }
-
-                    prevGap = newGap
-                }
+                // ------ Create text and lines
+                placeIngredients(glassNode)
             }
             .exceptionally {
                 renderError(requireActivity())
@@ -206,12 +189,71 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
     }
 
     /**
-     * Add a text node to the side box (for small measurements)
+     * Place all the lines and text related to ingredients in the scene.
      */
     @RequiresApi(Build.VERSION_CODES.N)
-    private fun addBoxTextNode(
+    private fun placeIngredients(glassNode: TransformableNode) {
+        // ------ Get gaps
+        val capacity = calculateCapacity(glassNode)
+        val gaps = calculateGaps(capacity)
+
+        var nqPrevZPos = 0.05f  // For non quantified text positioning
+        var prevGap = 0f  // For line positioning
+        for ((index, gap) in gaps.withIndex()) {
+            val newGap = prevGap + gap
+
+            if (gap == 0f) {  // This is a non-quantified ingredient
+                nqPrevZPos += 0.01f
+                // ------ Add this ingredient to the non quantified area
+                addNonQuantifiedTextNode(glassNode, nqPrevZPos, index)
+
+            } else {  // This is a quantified ingredient
+                // Just make sure the text don't overlap by switching sides when necessary
+                leftSide = if (newGap - prevGap < 0.008f) {
+                    !leftSide
+                } else {
+                    true
+                }
+
+                // Make sure we don't spill anything.... This shouldn't actually happen.
+                val yPos = if (Glass.bottomPos.y + newGap > Glass.topPos.y) {
+                    Glass.topPos.y
+                } else {
+                    Glass.bottomPos.y + newGap
+                }
+
+                // Adjust the line size to fit the position in the glass
+                var lineSize = Glass.topSize * ((yPos - Glass.bottomPos.y) / capacity)
+                if (lineSize < Glass.bottomSize) {
+                    lineSize = Glass.bottomSize
+                }
+
+                // ------ Create a line node
+                val lineNode = addLineNode(
+                    glassNode,
+                    lineSize, //Glass.bottomSize,
+                    Vector3(
+                        Glass.bottomPos.x,
+                        Glass.bottomPos.y + newGap,
+                        Glass.bottomPos.z
+                    )
+                )
+
+                // ------ Create a text node
+                addTextNode(lineNode, index)
+            }
+
+            prevGap = newGap
+        }
+    }
+
+    /**
+     * Add a text node to the non-quantified area (for small measurements), located on the Z axis.
+     */
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun addNonQuantifiedTextNode(
         glassNode: TransformableNode,
-        boxPrevZPos: Float,
+        prevZPos: Float,
         index: Int
     ) {
         // Create a text node
@@ -222,7 +264,7 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
             localPosition = Vector3(
                 0f,
                 0f,
-                boxPrevZPos
+                prevZPos
             )
 
             // Rotate the text by -90 degrees around the X axis
@@ -245,8 +287,7 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
             typeface = getFont(requireContext(), R.font.raleway_light)
             text = ingredients[index]
             setTextColor(parseColor(arColor))
-//            setTextColor(ContextCompat.getColor(requireContext(), R.color.arIngridients))
-//            setBackgroundColor()
+//            setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.arBackTextColor))
         }
 
         // Render the text to the node
@@ -287,7 +328,7 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
             setParent(anchorNode)
             renderable = renderableGlass.apply {
                 renderPriority = Renderable.RENDER_PRIORITY_LAST
-                isShadowCaster = false
+                isShadowCaster = true
                 isShadowReceiver = false
             }
         }
@@ -308,7 +349,6 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
         MaterialFactory.makeOpaqueWithColor(
             requireActivity(),
             Color(parseColor(arColor))
-//            Color(ContextCompat.getColor(requireContext(), R.color.arIngridients))
         )
             .thenAccept { material ->
                 // Set the node with a new line (cylinder) with the material.
@@ -387,7 +427,6 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
             typeface = getFont(requireContext(), R.font.raleway_light)
             text = ingredients[index]
             setTextColor(parseColor(arColor))
-//            setTextColor(ContextCompat.getColor(requireContext(), R.color.arIngridients))
         }
 
         // Render the text to the node
@@ -505,15 +544,34 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
             ratio.toFloat()
         }
     }
+
+    /**
+     * Calculate the given glass's capacity (in AR terms)
+     */
+    private fun calculateCapacity(glassNode: TransformableNode): Float {
+        // Add an anchor for top position
+        val top = Node().apply {
+            setParent(glassNode)
+            localPosition = Glass.topPos
+        }
+        // Add an anchor for bottom position
+        val bottom = Node().apply {
+            setParent(glassNode)
+            localPosition = Glass.bottomPos
+        }
+        // Calculate the glass's capacity.
+        val capacity = getDistanceBetweenVectorsInMeters(top.localPosition, bottom.localPosition)
+        return capacity
+    }
+
     /**
      * Calculate the gaps for each ingredient (in bottom-up order).
      * Uncomment a measurement unit to make it appear on the glass instead of the "under-box".
      */
-    private fun calculateGaps(top: Node, bottom: Node)
+    private fun calculateGaps(capacity: Float)
             : MutableList<Float> {
-        val capacity = getDistanceBetweenVectorsInMeters(top.localPosition, bottom.localPosition)
-        val gaps: MutableList<Float> = ArrayList()
 
+        val gaps: MutableList<Float> = ArrayList()
         for (value in ingredientsPairs) {
             val gap: Float = when (value.second) {
                 "cup", "cups" -> value.first * capacity
