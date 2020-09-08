@@ -2,11 +2,10 @@ package com.example.cocktails
 
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
-import com.example.cocktails.ui.main.SectionsPagerAdapter
+import com.example.cocktails.ItemDetails.SectionsPagerAdapter
 import com.google.android.material.tabs.TabLayout
 
 

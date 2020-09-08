@@ -1,4 +1,4 @@
-package com.example.cocktails.ui.main
+package com.example.cocktails.ItemDetails
 
 import android.app.Activity
 import android.app.ActivityManager
@@ -14,9 +14,6 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.res.ResourcesCompat.getFont
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.Lifecycle
 import com.example.cocktails.Cocktail
 import com.example.cocktails.R
 import com.google.ar.core.Anchor

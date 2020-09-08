@@ -1,4 +1,4 @@
-package com.example.cocktails.ui.main.ui.UserItem
+package com.example.cocktails.CustomItem
 
 import android.content.Intent
 import android.net.Uri

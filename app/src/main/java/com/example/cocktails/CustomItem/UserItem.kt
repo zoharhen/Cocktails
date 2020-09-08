@@ -1,4 +1,4 @@
-package com.example.cocktails.ui.main.ui.UserItem
+package com.example.cocktails.CustomItem
 
 import android.annotation.SuppressLint
 import android.app.Activity

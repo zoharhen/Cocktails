@@ -5,11 +5,8 @@ import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
-import com.google.firebase.auth.FirebaseUser
-import android.widget.Toast
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -23,7 +20,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
-import com.example.cocktails.ui.main.ui.UserItem.UserItem
+import com.example.cocktails.CustomItem.UserItem
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.gson.Gson

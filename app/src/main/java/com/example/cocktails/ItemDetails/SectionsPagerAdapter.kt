@@ -1,4 +1,4 @@
-package com.example.cocktails.ui.main
+package com.example.cocktails.ItemDetails
 
 import android.content.Context
 import androidx.fragment.app.Fragment

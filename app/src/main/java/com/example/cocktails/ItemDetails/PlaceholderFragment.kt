@@ -1,9 +1,6 @@
-package com.example.cocktails.ui.main
+package com.example.cocktails.ItemDetails
 
-import android.graphics.Color
 import android.os.Bundle
-import android.os.Debug
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.cocktails.R
-import timber.log.Timber
 
 /**
  * A placeholder fragment containing a simple view.
