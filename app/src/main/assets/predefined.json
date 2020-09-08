@@ -72,7 +72,7 @@
         "image": "gin-and-juice",
         "name": "Gin & Juice",
         "ingredients": [
-            "3/4 cup ice",
+            "Ice",
             "1 1/2 oz Gin",
             "Juice, to top"
         ],
@@ -88,6 +88,7 @@
         "image": "iced-Tea",
         "name": "Iced Tea",
         "ingredients": [
+            "Ice",
             "3/4 oz Vodka",
             "3/4 oz White rum",
             "3/4 oz Silver tequila",
@@ -149,8 +150,8 @@
         "image": "mojito",
         "name": "Mojito",
         "ingredients": [
-            "3 leaves of mint",
-            "1/2 cup ice",
+            "8 leaves of mint",
+            "Ice",
             "2 oz White rum",
             "3/4 oz Fresh lime juice",
             "1/2 oz Simple syrup",
@@ -196,7 +197,7 @@
             "1/2 tsp sugar",
             "3 dashes Angostura bitters",
             "1 tsp water",
-            "3/4 cup ice",
+            "Ice",
             "2 oz bourbon",
             "Garnish: orange peel"
         ],
@@ -231,7 +232,7 @@
         "image": "hot-buttered-rum",
         "name": "Buttered Rum",
         "ingredients": [
-            "2 oz Gold rum",
+            "1 1/2 oz Gold rum",
             "1 tbsp Hot buttered rum batter",
             "3/4 cup Boiling water",
             "Garnish: Cinnamon stick",
@@ -239,6 +240,7 @@
         ],
         "steps": [
             "Add the rum and batter to a mug.",
+            "Add an extra 1/2 oz rum to make it stronger.",
             "Fill with boiling water and stir."
         ],
         "glass": "cocktail glass.sfb"
@@ -273,7 +275,7 @@
             "3 dashes Peychaud's bitters",
             "2 dashes Angostura bitters",
             "2 oz Russell's Reserve rye whiskey",
-            "3/4 cup ice",
+            "Ice",
             "Garnish: Lemon peel"
         ],
         "steps": [
@@ -350,7 +352,7 @@
         "image": "pisco-sour",
         "name": "Pisco Sour",
         "ingredients": [
-            "3/4 cup ice",
+            "Ice",
             "2 oz Pisco",
             "1 oz Fresh lime juice",
             "1/2 oz Simple syrup",
@@ -370,7 +372,7 @@
         "image": "margarita",
         "name": "Margarita",
         "ingredients": [
-            "3/4 cup ice",
+            "Ice",
             "3/4 oz Fresh squeezed lime juice",
             "1 oz Cointreau, triple sec or another orange liqueur",
             "1 1/2 oz Blanco tequila",
@@ -412,7 +414,7 @@
         "name": "Bloody Caesar",
         "ingredients": [
             "celery salt",
-            "3/4 cup ice",
+            "Ice",
             "1 1/2 oz vodka",
             "4 oz Clamato juice",
             "2 dashes Worcestershire sauce",
@@ -457,7 +459,7 @@
         "ingredients": [
             "1 Lime, cut into wedges",
             "2 tsp Sugar",
-            "3/4 cup ice",
+            "Ice",
             "2 oz Cachaca",
             "Garnish: Lime wheel"
         ],
@@ -518,7 +520,7 @@
             "1 oz Rye whiskey",
             "1 oz Dry vermouth",
             "1 oz Campari",
-            "1 cup ice",
+            "Ice",
             "Garnish: Lemon twist"
         ],
         "steps": [
@@ -534,7 +536,7 @@
         "image": "compromise",
         "name": "Compromise",
         "ingredients": [
-            "3/4 cup crushed ice",
+            "Crushed ice",
             "1 1/2 oz Tequila Ocho plata",
             "3/4 oz Midori",
             "3/4 oz fresh lime juice",
@@ -556,7 +558,7 @@
         "image": "cobra-verde",
         "name": "Cobra Verde",
         "ingredients": [
-            "3/4 cup ice",
+            "Ice",
             "1 1/4 oz Midori",
             "1/2 oz Ancho Reyes chile liqueur",
             "1/2 oz Fresh lemon juice",
@@ -575,7 +577,7 @@
         "image": "Beet-Rose",
         "name": "Beet Rose",
         "ingredients": [
-            "3/4 cup ice",
+            "Ice",
             "2 oz Ketel One vodka",
             "1 oz fresh beet juice",
             "3/4 oz fresh lemon juice",
@@ -598,7 +600,7 @@
         "image": "pimms-cup",
         "name": "Pimm's Cup",
         "ingredients": [
-            "3/4 cup ice",
+            "Ice",
             "2 oz Pimm's No. 1 Cup",
             "3 oz Sprite, 7Up or ginger ale",
             "1 slice Cucumber",
@@ -620,7 +622,7 @@
         "image": "manhattan",
         "name": "Manhattan",
         "ingredients": [
-            "3/4 cup ice",
+            "Ice",
             "2 oz bourbon or rye",
             "1 oz sweet vermouth",
             "2 dashes Angostura bitters",
@@ -640,7 +642,7 @@
         "image": "negroni",
         "name": "Negroni",
         "ingredients": [
-            "3/4 cup ice",
+            "Ice",
             "1 oz gin",
             "1 oz Campari",
             "1 oz sweet vermouth",
@@ -659,7 +661,7 @@
         "image": "scotch-and-soda",
         "name": "Scotch & Soda",
         "ingredients": [
-            "3/4 cup ice",
+            "Ice",
             "2 oz scotch whisky",
             "1/4 cup club soda, to top"
         ],
@@ -675,7 +677,7 @@
         "image": "americano",
         "name": "Americano",
         "ingredients": [
-            "3/4 cup ice",
+            "Ice",
             "1 1/2 oz Campari",
             "1 1/2 oz Sweet vermouth",
             "1 splash Club soda",
