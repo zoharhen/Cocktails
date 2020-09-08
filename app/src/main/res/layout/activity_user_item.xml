@@ -1,64 +1,178 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.cocktails.ui.main.UserItem">
+    tools:context="com.example.cocktails.ui.main.ui.UserItem.UserItem">
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
+        android:orientation="vertical"
         android:gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:paddingVertical="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints">
 
-        <TextView
-            android:id="@+id/tv_level_1"
+            <LinearLayout
+                android:id="@+id/levels"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:paddingVertical="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="MissingConstraints">
+
+                <TextView
+                    android:id="@+id/tv_level_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_circle_cur_level"
+                    android:gravity="center"
+                    android:text="@string/level1"
+                    android:textColor="#000000" />
+
+                <View
+                    android:id="@+id/tv_row1"
+                    android:layout_width="60dp"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center"
+                    android:background="#020202" />
+
+                <TextView
+                    android:id="@+id/tv_level_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_circle_level"
+                    android:gravity="center"
+                    android:text="@string/level2"
+                    android:textColor="#000000" />
+
+                <View
+                    android:layout_width="60dp"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center"
+                    android:background="#020202" />
+
+                <TextView
+                    android:id="@+id/tv_level_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:background="@drawable/ic_circle_level"
+                    android:text="@string/level3"
+                    android:textColor="#000000" />
+
+            </LinearLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/cocktailNameText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            app:counterEnabled="true"
+            app:counterMaxLength="20"
+            app:endIconMode="clear_text">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Cocktail Name" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="Category"
+                android:textAlignment="center"
+                android:textSize="18dp" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/selectCategoryChipGroup"
+                app:singleSelection="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            </com.google.android.material.chip.ChipGroup>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:paddingTop="5dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/select_img_Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="select icon" />
+
+                <View
+                    android:layout_width="10dp"
+                    android:layout_height="2dp"/>
+
+                <ImageView
+                    android:id="@+id/selected_img_image_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minWidth="100dp"
+                    android:minHeight="100dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:paddingTop="5dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:layout_width="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/upload_user_img_Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="UPLOAD COCKTAIL IMAGE" />
+
+            <View
+                android:layout_width="10dp"
+                android:layout_height="2dp"/>
+
+            <ImageView
+                android:id="@+id/upload_user_img_TV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:minWidth="100dp"
+                android:minHeight="100dp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/nextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/ic_circle_cur_level"
-            android:gravity="center"
-            android:text="1"
-            android:text="1"
-            android:textColor="#000000" />
-
-        <View
-            android:id="@+id/tv_row1"
-            android:layout_width="60dp"
-            android:layout_height="1dp"
-            android:layout_gravity="center"
-            android:layout_marginStart="@+id/tv_level_1"
-            android:background="#020202" />
-
-        <TextView
-            android:id="@+id/tv_level_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_circle_level"
-            android:gravity="center"
-            android:text="2"
-            android:textColor="#000000" />
-
-        <View
-            android:layout_width="60dp"
-            android:layout_height="1dp"
-            android:layout_gravity="center"
-            android:layout_marginStart="@+id/tv_level_2"
-            android:background="#020202" />
-
-        <TextView
-            android:id="@+id/tv_level_3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:background="@drawable/ic_circle_level"
-            android:text="3"
-            android:textColor="#000000" />
-
+            android:text="next" />
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</ScrollView>
