@@ -174,7 +174,6 @@ class ScrollingActivity : AppCompatActivity() {
         chipGroup.addView(chip)
     }
 
-
     private fun initUserItemButton(){
         val userItemButton:View= findViewById(R.id.userItemFab)
         userItemButton.setOnClickListener {

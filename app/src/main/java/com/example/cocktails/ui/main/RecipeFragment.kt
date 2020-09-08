@@ -25,7 +25,7 @@ import io.github.douglasjunior.androidSimpleTooltip.SimpleTooltip
 class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
 
     private var mAdapterPreparation: PreparationAdapter? = null
-    lateinit var rootView: View
+    private lateinit var rootView: View
     lateinit var cocktail: Cocktail
 
     companion object {
@@ -41,7 +41,7 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
     @Override
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        cocktail = arguments?.getParcelable<Cocktail>("cocktail")!!
+        cocktail = arguments?.getParcelable("cocktail")!!
         retainInstance = true
     }
 
@@ -68,6 +68,17 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
                 }
             }
 
+        rootView.findViewById<TextView>(R.id.tv_cocktailTitle).text = cocktail.name
+        rootView.findViewById<TextView>(R.id.ingredientContent).text = cocktail.ingredients.joinToString(separator = "\n")
+
+        this.initCustomCocktailButtons()
+        this.initFavoriteButton()
+        this.initPreparationSection()
+        this.initTooltipIfNeeded()
+        this.initShareButtons()
+    }
+
+    private fun initCustomCocktailButtons() {
         if (cocktail.isCustom) {
             rootView.findViewById<ImageButton>(R.id.editAction).visibility = ImageButton.VISIBLE
             rootView.findViewById<ImageButton>(R.id.deleteAction).visibility = ImageButton.VISIBLE
@@ -75,24 +86,20 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
             rootView.findViewById<View>(R.id.deleteActionSeparator).visibility = View.VISIBLE
         }
 
-        val ingredients = rootView.findViewById<TextView>(R.id.ingredientContent)
-        ingredients.text = cocktail.ingredients.joinToString(separator = "\n")
+        //todo: Einav: add edit + delete 'onClick' methods
+    }
 
+    private fun initFavoriteButton() {
         val isFavorite = (activity?.applicationContext as Cocktails).mFavorites.getBoolean(cocktail.name, false)
         val favorite = rootView.findViewById<ImageButton>(R.id.favoriteAction)
         favorite.setImageResource(if (isFavorite) R.drawable.ic_favorite_black_24dp else R.drawable.ic_favorite_border_black_24dp)
 
-        favorite.setOnClickListener { v: View ->
+        favorite.setOnClickListener {
             val oldVal = (activity?.applicationContext as Cocktails).mFavorites.getBoolean(cocktail.name, false)
             (activity?.applicationContext as Cocktails).mFavorites.edit()
                 .putBoolean(cocktail.name, !oldVal).apply()
             favorite.setImageResource(if (!oldVal) R.drawable.ic_favorite_black_24dp else R.drawable.ic_favorite_border_black_24dp)
         }
-
-        this.initPreparationSection()
-        this.initTooltipIfNeeded()
-
-        //todo: Einav: add edit + delete 'onClick' methods
     }
 
     private fun initTooltipIfNeeded() {
@@ -114,6 +121,11 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
                 return@setOnSystemUiVisibilityChangeListener
             }
         }
+    }
+
+    private fun initShareButtons() {
+        // todo: add shareLink block in the end of the page + dialog when clicking on share button
+
     }
 
     private fun initPreparationSection() {

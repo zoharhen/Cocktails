@@ -19,109 +19,133 @@
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
-        <cn.gavinliu.android.lib.shapedimageview.ShapedImageView
-            android:id="@+id/iv_cocktail"
-            app:shape_mode="circle"
-            app:stroke_color="#009688"
-            app:stroke_width="3dp"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:layout_marginTop="56dp"
-            android:layout_marginBottom="@dimen/space8"
-            android:scaleType="fitXY"
-            android:contentDescription="TODO" />
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_margin="10dp"
+            app:cardElevation="0dp"
+            app:cardCornerRadius="10dp">
 
-        <LinearLayout
-            android:id="@+id/ll_action"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space16"
-            android:background="@android:color/transparent"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/favoriteAction"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="@null"
-                android:gravity="center"
-                android:paddingLeft="@dimen/space24"
-                android:paddingRight="@dimen/space24"
-                android:contentDescription="TODO" />
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
 
-            <View
-                android:layout_width="1.5dp"
-                android:layout_height="@dimen/space8"
-                android:background="@color/colorRipple" />
+                <developer.shivam.crescento.CrescentoImageView
+                    android:id="@+id/iv_cocktail"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_alignParentTop="true"
+                    android:elevation="5dp"
+                    android:scaleType="centerCrop" />
 
-            <ImageButton
-                android:id="@+id/editAction"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:gravity="center"
-                android:visibility="gone"
-                android:src="@drawable/ic_edit_black_24dp"
-                android:paddingLeft="@dimen/space24"
-                android:paddingRight="@dimen/space24"
-                android:contentDescription="TODO" />
+                <TextView
+                    android:id="@+id/tv_cocktailTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space16"
+                    android:textColor="@color/colorPrimaryDark"
+                    style="@style/Regular"
+                    android:text="Title"
+                    android:fontFamily="@font/paytone_one"
+                    android:textSize="@dimen/h2" />
 
-            <View
-                android:id="@+id/editActionSeparator"
-                android:layout_width="1.5dp"
-                android:visibility="gone"
-                android:layout_height="@dimen/space8"
-                android:background="@color/colorRipple" />
+                <LinearLayout
+                    android:id="@+id/ll_action"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space16"
+                    android:background="@android:color/transparent"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-            <ImageButton
-                android:id="@+id/deleteAction"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:gravity="center"
-                android:visibility="gone"
-                android:src="@drawable/ic_delete_black_24dp"
-                android:paddingLeft="@dimen/space24"
-                android:paddingRight="@dimen/space24"
-                android:contentDescription="TODO" />
+                    <ImageButton
+                        android:id="@+id/favoriteAction"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:gravity="center"
+                        android:paddingLeft="@dimen/space24"
+                        android:paddingRight="@dimen/space24"
+                        android:contentDescription="TODO" />
 
-            <View
-                android:id="@+id/deleteActionSeparator"
-                android:layout_width="1.5dp"
-                android:layout_height="@dimen/space8"
-                android:visibility="gone"
-                android:background="@color/colorRipple" />
+                    <View
+                        android:layout_width="1.2dp"
+                        android:layout_height="@dimen/space8"
+                        android:background="@color/colorRipple" />
 
-            <ImageButton
-                android:id="@+id/tts"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:gravity="center"
-                android:src="@drawable/ic_play_circle_outline_black_24dp"
-                android:paddingLeft="@dimen/space24"
-                android:paddingRight="@dimen/space24"
-                android:contentDescription="TODO" />
+                    <ImageButton
+                        android:id="@+id/editAction"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        android:src="@drawable/ic_edit_black_24dp"
+                        android:paddingLeft="@dimen/space24"
+                        android:paddingRight="@dimen/space24"
+                        android:contentDescription="TODO" />
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="@dimen/space8"
-                android:background="@color/colorRipple" />
+                    <View
+                        android:id="@+id/editActionSeparator"
+                        android:layout_width="1.2dp"
+                        android:visibility="gone"
+                        android:layout_height="@dimen/space8"
+                        android:background="@color/colorRipple" />
 
-            <ImageButton
-                android:id="@+id/share"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:gravity="center"
-                android:src="@drawable/ic_share_black_24dp"
-                android:paddingLeft="@dimen/space24"
-                android:paddingRight="@dimen/space24"
-                android:contentDescription="TODO" />
-        </LinearLayout>
+                    <ImageButton
+                        android:id="@+id/deleteAction"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        android:src="@drawable/ic_delete_black_24dp"
+                        android:paddingLeft="@dimen/space24"
+                        android:paddingRight="@dimen/space24"
+                        android:contentDescription="TODO" />
+
+                    <View
+                        android:id="@+id/deleteActionSeparator"
+                        android:layout_width="1.2dp"
+                        android:layout_height="@dimen/space8"
+                        android:visibility="gone"
+                        android:background="@color/colorRipple" />
+
+                    <ImageButton
+                        android:id="@+id/tts"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:gravity="center"
+                        android:src="@drawable/ic_play_circle_outline_black_24dp"
+                        android:paddingLeft="@dimen/space24"
+                        android:paddingRight="@dimen/space24"
+                        android:contentDescription="TODO" />
+
+                    <View
+                        android:layout_width="1.2dp"
+                        android:layout_height="@dimen/space8"
+                        android:background="@color/colorRipple" />
+
+                    <ImageButton
+                        android:id="@+id/share"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:gravity="center"
+                        android:src="@drawable/ic_share_black_24dp"
+                        android:paddingLeft="@dimen/space24"
+                        android:paddingRight="@dimen/space24"
+                        android:contentDescription="TODO" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:layout_width="wrap_content"
