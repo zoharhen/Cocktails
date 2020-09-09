@@ -10,18 +10,21 @@
     <string name="no_data">No data</string>
     <string name="preparation">PREPARATION</string>
     <string name="ingredients">INGREDIENTS</string>
+    <string name="level2">2</string>
+    <string name="level3">3</string>
+    <string name="level1">1</string>
     <string-array name="cocktailTypes_array">
         <item>Bourbon</item>
         <item>Brandy</item>
         <item>Cognac</item>
         <item>Gin</item>
         <item>Herbaceous</item>
-        <item>Other</item>
         <item>Rum</item>
         <item>Rye Whiskey</item>
         <item>Scotch</item>
         <item>Tequila</item>
         <item>Vodka</item>
+        <item>Other</item>
     </string-array>
     <string-array name="ingredients">
         <item>Allspice dram</item>
