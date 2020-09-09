@@ -38,7 +38,6 @@ class ImageAdapter internal constructor(
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
         val curIcon: IconItem = mIcons[position]
-        holder.textView.text = curIcon.name
         val applicationContext = (mContext.applicationContext as Cocktails)
         val ref = applicationContext.mStorageRef.child("cliparts/" + curIcon.name)
         ref.downloadUrl.addOnSuccessListener {
@@ -52,7 +51,6 @@ class ImageAdapter internal constructor(
 
     inner class ImageViewHolder(itemView: View) :RecyclerView.ViewHolder(itemView),View
     .OnClickListener {
-        var textView: TextView = itemView.findViewById(R.id.text_view_name)
         var imageView: ImageView = itemView.findViewById(R.id.selected_img_image_view)
         override fun onClick(v: View?) {
             val position:Int=adapterPosition
