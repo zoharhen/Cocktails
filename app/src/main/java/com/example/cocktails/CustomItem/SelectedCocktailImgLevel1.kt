@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.cocktails.Cocktails
 import com.example.cocktails.R
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -29,7 +30,7 @@ class SelectedCocktailImgLevel1 : AppCompatActivity(),ImageAdapter.ItemClickList
         mRecyclerView.layoutManager=GridLayoutManager(this, 3)
         mIcons = ArrayList()
 
-        mDataRef = FirebaseStorage.getInstance().reference
+        mDataRef = (this.applicationContext as Cocktails).mStorageRef
         val listRef=mDataRef.child("cliparts")
         listRef.listAll()
             .addOnSuccessListener { listResult ->

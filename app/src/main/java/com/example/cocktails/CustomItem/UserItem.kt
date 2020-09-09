@@ -22,16 +22,14 @@ class UserItem : AppCompatActivity() {
     private lateinit var mImgView: ImageView
     private lateinit var mUserImg: ImageView
     private lateinit var mImgUri: Uri
+    val ACTIVITY_TITLE :String ="CREATE NEW COCKTAIL"
 
+    @SuppressLint("InflateParams")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_item)
 
-        //dropdown
-//        val items = resources.getStringArray(R.array.cocktailTypes_array)
-//        val adapter: ArrayAdapter<String> = ArrayAdapter(this, R.layout.dropdown_menu_popup_item, items)
-//        val editText:AutoCompleteTextView=findViewById(R.id.filled_exposed_dropdown)
-//        editText.setAdapter(adapter)
+        supportActionBar?.title =ACTIVITY_TITLE
 
         initNextButton()
         initCategory()
