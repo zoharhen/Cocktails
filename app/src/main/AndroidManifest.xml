@@ -22,7 +22,7 @@
         android:supportsRtl="false"
         android:theme="@style/AppTheme"
         tools:replace="android:supportsRtl">
-        <activity android:name="com.example.cocktails.CustomItem.SelectedCocktailImgLevel1"></activity>
+        <activity android:name="com.example.cocktails.CustomItem.CocktailIconLevel1"></activity>
         <activity android:name="com.example.cocktails.CustomItem.UserItem" />
         <activity
             android:name=".ScrollingActivity"

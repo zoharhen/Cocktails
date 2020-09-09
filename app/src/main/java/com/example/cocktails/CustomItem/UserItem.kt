@@ -86,7 +86,7 @@ class UserItem : AppCompatActivity() {
     }
 
     private fun openImagesActivity(){
-        val intent=Intent(this,SelectedCocktailImgLevel1::class.java)
+        val intent=Intent(this,CocktailIconLevel1::class.java)
         intent.action=Intent.ACTION_GET_CONTENT
         startActivityForResult(intent,2)
     }

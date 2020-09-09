@@ -14,7 +14,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 
 
-class SelectedCocktailImgLevel1 : AppCompatActivity(),ImageAdapter.ItemClickListener {
+class CocktailIconLevel1 : AppCompatActivity(),ImageAdapter.ItemClickListener {
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mAdapter: ImageAdapter
     private lateinit var mIcons:ArrayList<IconItem>
