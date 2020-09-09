@@ -14,9 +14,6 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.res.ResourcesCompat.getFont
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.Lifecycle
 import com.example.cocktails.Cocktail
 import com.example.cocktails.R
 import com.google.ar.core.Anchor
@@ -31,6 +28,7 @@ import com.google.ar.sceneform.ux.ArFragment
 import com.google.ar.sceneform.ux.BaseTransformableNode
 import com.google.ar.sceneform.ux.SelectionVisualizer
 import com.google.ar.sceneform.ux.TransformableNode
+import kotlinx.android.synthetic.main.ar_layout.*
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
@@ -42,18 +40,13 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
     private var TAG: String = "COMPATIBILITY"
     private var MIN_OPENGL_VERSION: Double = 3.0
 
-    private var arFragment: ArFragment? = null
+    private lateinit var arFragment: ArFragment
     private var glassPlaced: Boolean = false
     private var arColor: String = ""
 
     private var ingredientsPairs: MutableList<Pair<Float, String>> = ArrayList()
     private var ingredients: MutableList<String> = ArrayList()
     private var leftSide: Boolean = true
-
-    private lateinit var mInflater: LayoutInflater
-    private var mContainer: ViewGroup? = null
-    private var root: View? = null
-    private var inflated: Boolean = false
 
     @Override
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -105,17 +98,56 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        arFragment?.arSceneView?.session?.resume()
+        arFragment.arSceneView.session?.resume()
 
-        // Show the dots indicating a viable surface
-        arFragment?.arSceneView?.planeRenderer?.isVisible = true
+        val transaction =
+            requireActivity().supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.ar_fragment, arFragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
+
+//        requireActivity().supportFragmentManager
+//            .beginTransaction()
+//            .add(R.id.ar_fragment, arFragment)
+//            .commit()
+
+//
+//        // Show the dots indicating a viable surface
+//        if (!glassPlaced) {
+//            arFragment!!.arSceneView.planeRenderer.isVisible = true
+//        }
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onPause() {
         super.onPause()
 
-        arFragment?.arSceneView?.session?.pause()
-        glassPlaced = false
+        arFragment.arSceneView.session!!.pause()
+
+        val transaction =
+            requireActivity().supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.ar_fragment, arFragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
+
+
+
+//        val tabhost: TabLayout = requireActivity().findViewById<View>(R.id.tabs) as TabLayout
+//        tabhost.getTabAt(1)?.select()
+//        super.onResume()
+//        tabhost.getTabAt(0)?.select()
+//
+//        super.onPause()
+//        arFragment!!.arSceneView.session!!.pause()
+
+//        arFragment!!.arSceneView.session!!.pause()
+
+//        requireActivity().supportFragmentManager
+//            .beginTransaction()
+//            .remove(arFragment)
+//            .commit()
+
+//        glassPlaced = false
     }
 
     /**
@@ -124,27 +156,26 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
     @RequiresApi(Build.VERSION_CODES.N)
     private fun initAr() {
         // Find the AR fragment
-        arFragment = childFragmentManager.findFragmentById(R.id.ux_fragment)
-                as ArFragment
+        arFragment = childFragmentManager.findFragmentById(R.id.ar_fragment) as ArFragment
 
         // Make blank selection visuals (no ring)
-        arFragment!!.transformationSystem
+        arFragment.transformationSystem
             .selectionVisualizer = BlankSelectionVisualizer()
 
         // Build and add the rendered 3D model to the scene.
         // The scene is where the 3D objects are rendered. HitResult is a ray-cast on the object.
-        arFragment!!.setOnTapArPlaneListener { hitResult: HitResult, plane: Plane?,
+        arFragment.setOnTapArPlaneListener { hitResult: HitResult, plane: Plane?,
                                                _: MotionEvent? ->
             // Don't allow placing on walls / ceiling
             if (plane?.type == Plane.Type.HORIZONTAL_UPWARD_FACING) {
                 // Don't allow more than 1 glass
                 if (!glassPlaced) {
                     // Hide the dots indicating a viable surface
-                    arFragment!!.arSceneView.planeRenderer.isVisible = false
+//                    arFragment.arSceneView.planeRenderer.isVisible = false
 
                     glassPlaced = true
                     placeObject(
-                        arFragment!!,
+                        arFragment,
                         hitResult.createAnchor(),
                         Uri.parse(cocktail.glass)
                     )
