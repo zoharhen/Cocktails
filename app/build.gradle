@@ -62,7 +62,7 @@ dependencies {
     implementation 'com.github.ivbaranov:materialfavoritebutton:0.1.5'
     implementation 'com.github.douglasjunior:android-simple-tooltip:0.2.3'
     implementation 'com.github.developer-shivam:Crescento:1.2.1'
-    compile 'com.github.robertsimoes:Shareable:0.1.0'
+    implementation 'com.github.robertsimoes:Shareable:0.1.0'
     // log
     implementation 'com.jakewharton.timber:timber:4.7.1' // logger
     implementation 'com.squareup.okhttp3:logging-interceptor:4.2.2'
@@ -79,11 +79,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     //User Item
-    implementation 'com.google.firebase:firebase-storage:19.2.0'
-    implementation 'com.google.firebase:firebase-auth:19.3.2'
     implementation 'com.google.firebase:firebase-database:19.4.0'
     implementation 'junit:junit:4.12'
-    implementation 'com.firebaseui:firebase-ui-storage:6.2.0'
     implementation 'com.github.bumptech.glide:glide:4.11.0'//adding glid library
 }
 
