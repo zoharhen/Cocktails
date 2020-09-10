@@ -20,7 +20,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
-import com.example.cocktails.CustomItem.UserItem
+import com.example.cocktails.CustomItem.UserItemLevel1
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.gson.Gson
@@ -174,7 +174,7 @@ class ScrollingActivity : AppCompatActivity() {
     private fun initUserItemButton(){
         val userItemButton:View= findViewById(R.id.userItemFab)
         userItemButton.setOnClickListener {
-        val createNewItemIntent = Intent(applicationContext, UserItem::class.java)
+        val createNewItemIntent = Intent(applicationContext, UserItemLevel1::class.java)
         startActivity(createNewItemIntent) }
     }
 

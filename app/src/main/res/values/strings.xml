@@ -13,6 +13,7 @@
     <string name="level2">2</string>
     <string name="level3">3</string>
     <string name="level1">1</string>
+    <string name="required_field">this Field is required</string>
     <string-array name="cocktailTypes_array">
         <item>Bourbon</item>
         <item>Brandy</item>

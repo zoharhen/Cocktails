@@ -10,7 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cocktails.Cocktails
 import com.example.cocktails.R
-import com.google.firebase.storage.FirebaseStorage
+import com.google.android.flexbox.AlignItems
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import com.google.firebase.storage.StorageReference
 
 
@@ -27,7 +30,14 @@ class CocktailIconLevel1 : AppCompatActivity(),ImageAdapter.ItemClickListener {
         mRecyclerView = findViewById(R.id.recyclerView)
         mRecyclerView.setHasFixedSize(true)
         mRecyclerView.layoutManager = LinearLayoutManager(this)
-        mRecyclerView.layoutManager=GridLayoutManager(this, 3)
+
+        val layoutManager = FlexboxLayoutManager()
+        layoutManager.flexWrap = FlexWrap.WRAP
+
+        mRecyclerView.layoutManager = layoutManager
+        layoutManager.alignItems = AlignItems.BASELINE;
+        layoutManager.justifyContent = JustifyContent.CENTER;
+//        mRecyclerView.layoutManager=GridLayoutManager(this, 3)
         mIcons = ArrayList()
 
         mDataRef = (this.applicationContext as Cocktails).mStorageRef
@@ -58,7 +68,7 @@ class CocktailIconLevel1 : AppCompatActivity(),ImageAdapter.ItemClickListener {
     }
 
     override fun onItemClicked(position: Int) {
-        Toast.makeText(this, "Cell clicked", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Cell clicked", Toast.LENGTH_SHORT).show()//todo remove?
         val imgUrl:String=mIcons[position].name
         returnImgResult(imgUrl)
     }
