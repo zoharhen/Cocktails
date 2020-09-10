@@ -35,7 +35,7 @@ import java.io.IOException
 import java.io.InputStream
 
 
-class ARFragment(private val cocktail: Cocktail) : Fragment() {
+class ARFragment(val parent: SectionsPagerAdapter) : Fragment() {
 
     private var TAG: String = "COMPATIBILITY"
     private var MIN_OPENGL_VERSION: Double = 3.0
@@ -48,9 +48,26 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
     private var ingredients: MutableList<String> = ArrayList()
     private var leftSide: Boolean = true
 
+    private lateinit var rootView: View
+    lateinit var cocktail: Cocktail
+
+    private var inflated: Boolean = false
+
+    companion object {
+        fun newInstance(cocktail: Cocktail, parent: SectionsPagerAdapter): ARFragment? {
+            val args = Bundle()
+            args.putParcelable("cocktail", cocktail)
+            val f = ARFragment(parent)
+            f.arguments = args
+            return f
+        }
+    }
+
     @Override
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        cocktail = arguments?.getParcelable("cocktail")!!
 
         // Load the current cocktail's glass properties
         cocktail.glass?.let {
@@ -86,35 +103,36 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
             return super.onCreateView(inflater, container, savedInstanceState)
         }
 
+        rootView = inflater.inflate(R.layout.ar_layout_wrapper, container, false)
+        return rootView
+
         // Create the AR layout and return it
-        val root = inflater.inflate(R.layout.ar_layout, container, false)
-
-        initAr()
-
-        return root
+//        val root = inflater.inflate(R.layout.ar_layout, container, false)
+//
+//        initAr()
+//
+//        return root
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
+//    @RequiresApi(Build.VERSION_CODES.N)
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onResume() {
         super.onResume()
 
-        arFragment.arSceneView.session?.resume()
+        if (!inflated) {
+            inflated = true
 
-        val transaction =
-            requireActivity().supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.ar_fragment, arFragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
+            val inflater = LayoutInflater.from(context)
+            (rootView as ViewGroup).removeAllViews()
+            val inflatedView: View = inflater.inflate(R.layout.ar_layout, (rootView as ViewGroup), false)
+            (rootView as ViewGroup).addView(inflatedView)
 
-//        requireActivity().supportFragmentManager
-//            .beginTransaction()
-//            .add(R.id.ar_fragment, arFragment)
-//            .commit()
+            initAr()
 
-//
-//        // Show the dots indicating a viable surface
-//        if (!glassPlaced) {
-//            arFragment!!.arSceneView.planeRenderer.isVisible = true
+//            (parent.recipeFragmentInstance as RecipeFragment).initViews()
+
+        } //else {
+//            arFragment.arSceneView.session?.resume()
 //        }
     }
 
@@ -122,32 +140,9 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
     override fun onPause() {
         super.onPause()
 
-        arFragment.arSceneView.session!!.pause()
-
-        val transaction =
-            requireActivity().supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.ar_fragment, arFragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
-
-
-
-//        val tabhost: TabLayout = requireActivity().findViewById<View>(R.id.tabs) as TabLayout
-//        tabhost.getTabAt(1)?.select()
-//        super.onResume()
-//        tabhost.getTabAt(0)?.select()
-//
-//        super.onPause()
-//        arFragment!!.arSceneView.session!!.pause()
-
-//        arFragment!!.arSceneView.session!!.pause()
-
-//        requireActivity().supportFragmentManager
-//            .beginTransaction()
-//            .remove(arFragment)
-//            .commit()
-
-//        glassPlaced = false
+//        if (inflated && glassPlaced) {
+//            arFragment.arSceneView!!.session!!.pause()
+//        }
     }
 
     /**
@@ -156,7 +151,7 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
     @RequiresApi(Build.VERSION_CODES.N)
     private fun initAr() {
         // Find the AR fragment
-        arFragment = childFragmentManager.findFragmentById(R.id.ar_fragment) as ArFragment
+        arFragment = requireActivity().supportFragmentManager.findFragmentById(R.id.ar_fragment) as ArFragment
 
         // Make blank selection visuals (no ring)
         arFragment.transformationSystem

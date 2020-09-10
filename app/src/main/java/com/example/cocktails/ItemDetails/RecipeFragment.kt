@@ -58,7 +58,7 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun initViews() {
+    fun initViews() {
         (activity?.applicationContext as Cocktails).mStorageRef.child("images/" + cocktail.image + ".jpg")
             .downloadUrl.addOnSuccessListener { img ->
                 context?.let { it ->
