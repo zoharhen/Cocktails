@@ -63,6 +63,10 @@ class ARFragment(val parent: SectionsPagerAdapter) : Fragment() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+    }
+
     @Override
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -354,7 +358,7 @@ class ARFragment(val parent: SectionsPagerAdapter) : Fragment() {
             setParent(anchorNode)
             renderable = renderableGlass.apply {
                 renderPriority = Renderable.RENDER_PRIORITY_LAST
-                isShadowCaster = true
+                isShadowCaster = false
                 isShadowReceiver = false
             }
         }
