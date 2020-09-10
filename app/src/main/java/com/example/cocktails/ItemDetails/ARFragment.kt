@@ -1,8 +1,10 @@
 package com.example.cocktails.ItemDetails
 
+import android.Manifest
 import android.app.Activity
 import android.app.ActivityManager
 import android.content.Context.ACTIVITY_SERVICE
+import android.content.pm.PackageManager
 import android.graphics.Color.parseColor
 import android.net.Uri
 import android.os.Build
@@ -12,6 +14,7 @@ import android.view.*
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
 import androidx.core.content.res.ResourcesCompat.getFont
 import androidx.fragment.app.Fragment
 import com.example.cocktails.Cocktail
@@ -19,7 +22,9 @@ import com.example.cocktails.R
 import com.google.ar.core.Anchor
 import com.google.ar.core.HitResult
 import com.google.ar.core.Plane
+import com.google.ar.core.TrackingState
 import com.google.ar.sceneform.AnchorNode
+import com.google.ar.sceneform.FrameTime
 import com.google.ar.sceneform.Node
 import com.google.ar.sceneform.math.Quaternion
 import com.google.ar.sceneform.math.Vector3
@@ -34,12 +39,13 @@ import java.io.IOException
 import java.io.InputStream
 
 
-class ARFragment(private val cocktail: Cocktail) : Fragment() {
+class ARFragment(val parent: SectionsPagerAdapter) : Fragment() {
 
     private var TAG: String = "COMPATIBILITY"
     private var MIN_OPENGL_VERSION: Double = 3.0
+    private val REQUEST_CODE_PERMISSION_CAMERA = 1111
 
-    private var arFragment: ArFragment? = null
+    private lateinit var arFragment: ArFragment
     private var glassPlaced: Boolean = false
     private var arColor: String = ""
 
@@ -47,14 +53,29 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
     private var ingredients: MutableList<String> = ArrayList()
     private var leftSide: Boolean = true
 
-    private lateinit var mInflater: LayoutInflater
-    private var mContainer: ViewGroup? = null
-    private var root: View? = null
+    private lateinit var rootView: View
+    lateinit var cocktail: Cocktail
+
     private var inflated: Boolean = false
+    private var permissionRequested: Boolean = false
+    var firstRun: Boolean = true
+    var firstPause: Boolean = false
+
+    companion object {
+        fun newInstance(cocktail: Cocktail, parent: SectionsPagerAdapter): ARFragment? {
+            val args = Bundle()
+            args.putParcelable("cocktail", cocktail)
+            val f = ARFragment(parent)
+            f.arguments = args
+            return f
+        }
+    }
 
     @Override
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        cocktail = arguments?.getParcelable("cocktail")!!
 
         // Load the current cocktail's glass properties
         cocktail.glass?.let {
@@ -87,61 +108,138 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
 
         // Check compatibility to AR. if none, just return.
         if (!checkCompatibility(requireActivity())) {
+            renderError(requireActivity())
             return super.onCreateView(inflater, container, savedInstanceState)
         }
 
-        // Create the AR layout and return it
-        val root = inflater.inflate(R.layout.ar_layout, container, false)
-
-        initAr()
-
-        return root
+        rootView = inflater.inflate(R.layout.ar_layout_wrapper, container, false)
+        return rootView
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onResume() {
         super.onResume()
 
-        arFragment?.arSceneView?.session?.resume()
+        if (!inflated  && !permissionRequested) {
+            // Check for CAMERA permissions
+            val hasCameraPermission = ActivityCompat
+                .checkSelfPermission(requireContext(), Manifest.permission.CAMERA) ==
+                    PackageManager.PERMISSION_GRANTED
+            if (!hasCameraPermission) {
+                // Request if no permission
+                requestPermissions(arrayOf(
+                    Manifest.permission.CAMERA),
+                    REQUEST_CODE_PERMISSION_CAMERA)
 
-        // Show the dots indicating a viable surface
-        arFragment?.arSceneView?.planeRenderer?.isVisible = true
+            } else {
+                this.init()
+            }
+        }
+
+        permissionRequested = false
     }
 
+    /**
+     * Although ArFragment deals with permission, it does not give a rationale.
+     * @param requestCode The request code
+     * @param permissions The permissions requested
+     * @param grantResults The results, indices correspond to 'permissions'
+     */
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String?>,
+        grantResults: IntArray
+    ) {
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            this.init()
+
+        } else {
+            // Request denied
+            if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)
+            ) {
+                // Explain the necessity of the camera permission
+                val toast: Toast =
+                    Toast.makeText(requireActivity(), "This feature requires camera permission.", Toast.LENGTH_LONG)
+                toast.setGravity(Gravity.CENTER, 0, 0)
+                toast.show()
+            }
+
+            // Todo: create an image to show a sad face or something instead of just a white screen.
+
+            permissionRequested = true
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun init() {
+        inflated = true
+
+        val inflater = LayoutInflater.from(context)
+        // This will also attempt to request permission, but we won't get here without it.
+        val inflatedView: View = inflater.inflate(R.layout.ar_layout, (rootView as ViewGroup), false)
+        (rootView as ViewGroup).addView(inflatedView)
+
+        initAr()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onPause() {
         super.onPause()
 
-        arFragment?.arSceneView?.session?.pause()
-        glassPlaced = false
+        if (firstPause) {
+            (parent.recipeFragmentInstance as RecipeFragment).initViews(false)
+            firstPause = false
+        }
     }
 
     /**
      * Initialize the AR scene
      */
-    @RequiresApi(Build.VERSION_CODES.N)
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun initAr() {
         // Find the AR fragment
-        arFragment = childFragmentManager.findFragmentById(R.id.ux_fragment)
-                as ArFragment
+        arFragment = requireActivity().supportFragmentManager.findFragmentById(R.id.ar_fragment) as ArFragment
+
+        arFragment.arSceneView.scene.addOnUpdateListener {
+            //get the frame from the scene for shorthand
+            if (firstRun) {
+                val frame = arFragment.arSceneView.arFrame
+                if (frame != null) {
+                    //get the trackables to ensure planes are detected
+                    val var3 = frame.getUpdatedTrackables(Plane::class.java).iterator()
+                    while(var3.hasNext()) {
+                        val plane = var3.next() as Plane
+
+                        //If a plane has been detected & is being tracked by ARCore
+                        if (plane.trackingState == TrackingState.TRACKING) {
+//                            (parent.recipeFragmentInstance as RecipeFragment).reInflate(this)
+                            firstPause = true
+                            firstRun = false
+                        }
+                    }
+                }
+            }
+        }
 
         // Make blank selection visuals (no ring)
-        arFragment!!.transformationSystem
+        arFragment.transformationSystem
             .selectionVisualizer = BlankSelectionVisualizer()
 
         // Build and add the rendered 3D model to the scene.
         // The scene is where the 3D objects are rendered. HitResult is a ray-cast on the object.
-        arFragment!!.setOnTapArPlaneListener { hitResult: HitResult, plane: Plane?,
+        arFragment.setOnTapArPlaneListener { hitResult: HitResult, plane: Plane?,
                                                _: MotionEvent? ->
             // Don't allow placing on walls / ceiling
             if (plane?.type == Plane.Type.HORIZONTAL_UPWARD_FACING) {
                 // Don't allow more than 1 glass
                 if (!glassPlaced) {
                     // Hide the dots indicating a viable surface
-                    arFragment!!.arSceneView.planeRenderer.isVisible = false
+//                    arFragment.arSceneView.planeRenderer.isVisible = false
 
                     glassPlaced = true
                     placeObject(
-                        arFragment!!,
+                        arFragment,
                         hitResult.createAnchor(),
                         Uri.parse(cocktail.glass)
                     )
@@ -325,7 +423,7 @@ class ARFragment(private val cocktail: Cocktail) : Fragment() {
             setParent(anchorNode)
             renderable = renderableGlass.apply {
                 renderPriority = Renderable.RENDER_PRIORITY_LAST
-                isShadowCaster = true
+                isShadowCaster = false
                 isShadowReceiver = false
             }
         }

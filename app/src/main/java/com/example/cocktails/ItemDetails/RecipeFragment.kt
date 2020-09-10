@@ -12,6 +12,7 @@ import android.widget.ScrollView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -49,7 +50,7 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
     @Override
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.recipe_item, container, false)
-        this.initViews()
+        this.initViews(true)
         rootView.findViewById<ScrollView>(R.id.recipe_item).post {
             rootView.findViewById<ScrollView>(R.id.recipe_item).fullScroll(View.FOCUS_UP) // workaround, as tabs hide the ScrollView
         }
@@ -57,15 +58,33 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
         return rootView
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onResume() {
         super.onResume()
 
-        this.initViews()
+        // TODO: Need to implement this function.
+        //  Should only run (once) if storeData() ran before.
+        // this.restoreData()
     }
 
+    override fun onPause() {
+        super.onPause()
+
+        // TODO: Need to implemennt this function.
+        //  Should only run once, on the third time that onPause is executed.
+        //  This is because on creating this class onPause is being called twice as part of system init.
+        //  The third is an actual pause by the user.
+        // this.storeData()
+    }
+
+//    @RequiresApi(Build.VERSION_CODES.O)
+//    fun reInflate(arFragment: ARFragment) {
+//        this.initViews()
+//
+//        arFragment.firstRun = false
+//    }
+
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun initViews() {
+    fun initViews(withToolTip: Boolean) {
         (activity?.applicationContext as Cocktails).mStorageRef.child("images/" + cocktail.image + ".jpg")
             .downloadUrl.addOnSuccessListener { img ->
                 context?.let { it ->
@@ -81,7 +100,9 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
         this.initCustomCocktailButtons()
         this.initFavoriteButton()
         this.initPreparationSection()
-        this.initTooltipIfNeeded()
+        if (withToolTip) {
+            this.initTooltipIfNeeded()
+        }
         this.initShareButtons()
     }
 
