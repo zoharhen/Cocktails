@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -51,7 +50,7 @@ class ImageAdapter internal constructor(
 
     inner class ImageViewHolder(itemView: View) :RecyclerView.ViewHolder(itemView),View
     .OnClickListener {
-        var imageView: ImageView = itemView.findViewById(R.id.selected_img_image_view)
+        var imageView: ImageView = itemView.findViewById(R.id.selected_icon_IV)
         override fun onClick(v: View?) {
             val position:Int=adapterPosition
             if(position!=RecyclerView.NO_POSITION){

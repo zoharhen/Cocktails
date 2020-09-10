@@ -22,8 +22,9 @@
         android:supportsRtl="false"
         android:theme="@style/AppTheme"
         tools:replace="android:supportsRtl">
-        <activity android:name="com.example.cocktails.CustomItem.CocktailIconLevel1"></activity>
-        <activity android:name="com.example.cocktails.CustomItem.UserItem" />
+        <activity android:name=".CustomItem.UserItemLevel2"></activity>
+        <activity android:name=".CustomItem.CocktailIconLevel1" />
+        <activity android:name=".CustomItem.UserItemLevel1" />
         <activity
             android:name=".ScrollingActivity"
             android:theme="@style/AppTheme.NoActionBar">
