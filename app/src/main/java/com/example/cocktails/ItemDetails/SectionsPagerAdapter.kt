@@ -21,6 +21,7 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager, pr
     FragmentPagerAdapter(fm, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     lateinit var recipeFragmentInstance: Fragment
+    private val arFragmentInstance: Fragment = ARFragment.newInstance(cocktail, this) as Fragment
 
     override fun getItem(position: Int): Fragment {
         // getItem is called to instantiate the fragment for the given page.
@@ -31,7 +32,7 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager, pr
                 return recipeFragmentInstance
             }
             // AR tab
-            1 -> return ARFragment.newInstance(cocktail, this) as Fragment
+            1 -> return arFragmentInstance// ARFragment.newInstance(cocktail, this) as Fragment
         }
 
         // Return a PlaceholderFragment (defined as a static inner class below).
