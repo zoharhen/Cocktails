@@ -1,6 +1,7 @@
 package com.example.cocktails.ItemDetails
 
 import android.content.Context
+import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
@@ -19,13 +20,18 @@ private val TAB_TITLES = arrayOf(
 class SectionsPagerAdapter(private val context: Context, fm: FragmentManager, private val cocktail: Cocktail) :
     FragmentPagerAdapter(fm, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
+    lateinit var recipeFragmentInstance: Fragment
+
     override fun getItem(position: Int): Fragment {
         // getItem is called to instantiate the fragment for the given page.
         when (position) {
             // Recipe Tab
-            0 -> return RecipeFragment.newInstance(cocktail) as Fragment
+            0 -> {
+                recipeFragmentInstance = RecipeFragment.newInstance(cocktail) as Fragment
+                return recipeFragmentInstance
+            }
             // AR tab
-            1 -> return ARFragment(cocktail)
+            1 -> return ARFragment.newInstance(cocktail, this) as Fragment
         }
 
         // Return a PlaceholderFragment (defined as a static inner class below).
