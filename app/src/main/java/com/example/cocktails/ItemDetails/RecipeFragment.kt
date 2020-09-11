@@ -1,26 +1,35 @@
 package com.example.cocktails.ItemDetails
 
+import android.Manifest
+import android.app.Activity
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.RelativeLayout
-import android.widget.ScrollView
-import android.widget.TextView
+import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.blankj.utilcode.util.UriUtils.file2Uri
 import com.bumptech.glide.Glide
+import com.example.cocktails.BuildConfig
 import com.example.cocktails.Cocktail
 import com.example.cocktails.Cocktails
 import com.example.cocktails.R
+import github.nisrulz.screenshott.ScreenShott
 import io.github.douglasjunior.androidSimpleTooltip.SimpleTooltip
+import java.io.File
 
 
 class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
@@ -37,6 +46,8 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
             f.arguments = args
             return f
         }
+
+        const val PERMISSION_EXTERNAL_STORAGE = 222
     }
 
     @Override
@@ -75,13 +86,6 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
         //  The third is an actual pause by the user.
         // this.storeData()
     }
-
-//    @RequiresApi(Build.VERSION_CODES.O)
-//    fun reInflate(arFragment: ARFragment) {
-//        this.initViews()
-//
-//        arFragment.firstRun = false
-//    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun initViews(withToolTip: Boolean) {
@@ -131,9 +135,7 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
     }
 
     private fun initTooltipIfNeeded() {
-        if ((activity?.applicationContext as Cocktails).mFirstTimeModeSP.getBoolean("firstMode", true)) {
-            (activity?.applicationContext as Cocktails).mFirstTimeModeSP.edit().putBoolean("firstMode", false).apply()
-
+        if ((activity?.applicationContext as Cocktails).mFirstTimeModeSP.getBoolean("recipeTab", true)) {
             val preparationContext = rootView.findViewById<RecyclerView>(R.id.recyclerPreparation)
             preparationContext.setOnSystemUiVisibilityChangeListener {
                 SimpleTooltip.Builder(context)
@@ -143,6 +145,9 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
                     .animated(true)
                     .transparentOverlay(true)
                     .dismissOnInsideTouch(true)
+                    .onDismissListener {
+                        (activity?.applicationContext as Cocktails).mFirstTimeModeSP.edit().putBoolean("recipeTab", false).apply()
+                    }
                     .dismissOnOutsideTouch(false)
                     .build()
                     .show()
@@ -152,7 +157,32 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
     }
 
     private fun initShareButtons() {
-        // todo: add shareLink block in the end of the page + dialog when clicking on share button
+
+        val shareCocktail = rootView.findViewById<ImageButton>(R.id.share)
+        shareCocktail.setOnClickListener {
+            if (Build.VERSION.SDK_INT >= 23 && !checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                val permissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
+                requestPermissions(permissions, PERMISSION_EXTERNAL_STORAGE, true)
+            } else {
+                val bitmap: Bitmap = getScreenShot(rootView.findViewById<ScrollView>(R.id.recipe_item))
+                val screenshot : File = ScreenShott.getInstance().saveScreenshotToPicturesFolder(context, bitmap, cocktail.name)
+                val sendIntent = Intent()
+                sendIntent.action = Intent.ACTION_SEND
+                sendIntent.putExtra(Intent.EXTRA_STREAM, file2Uri(screenshot))
+                sendIntent.type = "image/jpeg"
+                sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                startActivity(sendIntent)
+            }
+        }
+
+        val shareApp = rootView.findViewById<ImageButton>(R.id.shareApp)
+        shareApp.setOnClickListener {
+            val sendIntent = Intent()
+            sendIntent.action = Intent.ACTION_SEND
+            sendIntent.putExtra(Intent.EXTRA_TEXT, "Check out Cocktails app at: https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID)
+            sendIntent.type = "text/plain"
+            startActivity(sendIntent)
+        }
 
     }
 
@@ -184,5 +214,40 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
         if (position == mAdapterPreparation!!.itemCount - 1) {
             rlShare.visibility = View.VISIBLE
         }
+    }
+
+    ///////////////// PERMISSIONS /////////////////
+
+    private fun checkPermission(permission: String): Boolean {
+        return context?.let { ActivityCompat.checkSelfPermission(it, permission) } == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun requestPermissions(permission: Array<String>, permissionId: Int, dummyParam: Boolean = true) {
+        // add dummyParam since it's not allowed to override requestPermissions inside a fragment
+        requestPermissions(permission, permissionId)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        if (requestCode == PERMISSION_EXTERNAL_STORAGE) {
+            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                val shareCocktail = rootView.findViewById<ImageButton>(R.id.share)
+                shareCocktail.performClick()
+            }
+            else {
+                Toast.makeText(context, "Can't share a cocktail recipe without storage permission", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    ///////////////// SCREENSHOT /////////////////
+
+    private fun getScreenShot(view: View): Bitmap {
+        val scrollView = rootView.findViewById<ScrollView>(R.id.recipe_item)
+        val returnedBitmap = Bitmap.createBitmap(scrollView.getChildAt(0).width*2, scrollView.getChildAt(0).height*2, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(returnedBitmap)
+        canvas.scale(2.0f, 2.0f)
+        context?.let { ContextCompat.getColor(it, R.color.recipeTabBg) }?.let { canvas.drawColor(it) }
+        scrollView.getChildAt(0).draw(canvas);
+        return returnedBitmap
     }
 }

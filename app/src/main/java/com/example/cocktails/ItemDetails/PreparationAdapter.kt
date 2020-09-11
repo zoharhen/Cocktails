@@ -8,6 +8,7 @@ import android.view.View.OnLongClickListener
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cocktails.R
 
@@ -30,9 +31,9 @@ class PreparationAdapter(context: Context, arrayList: List<ItemPreparation>, pri
         if (isSelected(position)) {
             viewHolder.done.visibility = View.VISIBLE
             viewHolder.number.text = ""
-            viewHolder.step.setTextColor(mContext.resources.getColor(R.color.colorRipple))
+            viewHolder.step.setTextColor(ContextCompat.getColor(mContext, R.color.colorRipple))
         } else {
-            viewHolder.step.setTextColor(mContext.resources.getColor(R.color.colorPrimaryDark))
+            viewHolder.step.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimaryDark))
             viewHolder.number.text = mArrayList[position].number.toString()
             viewHolder.done.visibility = View.GONE
         }
