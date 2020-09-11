@@ -1,18 +1,10 @@
 package com.example.cocktails
 
-import android.Manifest
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
-import android.view.Gravity
 import android.view.MenuItem
 import android.widget.TextView
-import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.viewpager.widget.ViewPager
-import com.example.cocktails.ItemDetails.ARFragment
 import com.example.cocktails.ItemDetails.SectionsPagerAdapter
 import com.google.android.material.tabs.TabLayout
 

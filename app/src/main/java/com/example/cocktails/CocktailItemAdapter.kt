@@ -80,7 +80,7 @@ class CocktailItemAdapter internal constructor(context: Context, data: List<Cock
         private var favorite: MaterialFavoriteButton = itemView.findViewById(R.id.favorite_button)
 
         init {
-            itemView.setOnClickListener { v ->
+            itemView.setOnClickListener {
                 onItemClick?.invoke(filteredItems[adapterPosition])
                 return@setOnClickListener
             }
