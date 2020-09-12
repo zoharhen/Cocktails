@@ -8,7 +8,7 @@
     android:fitsSystemWindows="false"
     android:paddingTop="100dp"
     android:layout_above="@android:id/tabs"
-    android:background="@color/recipeTabBg">
+    android:background="@color/lightColorBg">
 
     <LinearLayout
         android:id="@+id/recipe_wrapper"

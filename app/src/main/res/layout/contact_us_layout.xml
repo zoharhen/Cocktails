@@ -6,7 +6,8 @@
     android:id="@+id/contact_us_wrapper"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/lightColorBg">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/contact_us"
@@ -24,10 +25,10 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="@id/contact_us"
             app:layout_constraintStart_toStartOf="@id/contact_us"
-            android:text="We are here to help."
+            android:text="@string/contact_title"
             android:fontFamily="@font/paytone_one"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="18dp"
+            android:textSize="22dp"
             android:padding="@dimen/space16"
             />
 
@@ -46,7 +47,7 @@
                 android:id="@+id/subject_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="What is this about?"
+                android:text="@string/contact_subject_title"
                 android:textAppearance="@style/Regular"
                 android:textColor="@color/colorPrimaryDark"
                 />
@@ -77,18 +78,10 @@
                 android:id="@+id/content_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Mind to elaborate?"
+                android:text="@string/contact_body_title"
                 android:textAppearance="@style/Regular"
                 android:textColor="@color/colorPrimaryDark"
                 />
-
-    <!--        <EditText-->
-    <!--            android:id="@+id/content_input"-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:textAppearance="@style/Regular"-->
-    <!--            android:textColor="@color/colorPrimaryDark"-->
-    <!--            />-->
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/content"
@@ -117,6 +110,7 @@
             android:layout_marginTop="@dimen/space24"
             android:text="SUBMIT"
             android:textAppearance="@style/Regular"
+            android:enabled="false"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

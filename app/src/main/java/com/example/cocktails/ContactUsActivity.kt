@@ -1,19 +1,22 @@
 package com.example.cocktails
 
-import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.widget.addTextChangedListener
 import com.google.android.material.textfield.TextInputLayout
 
 
 class ContactUsActivity: AppCompatActivity() {
 
     private val ACTIVITY_TITLE: String = "CONTACT US"
+    private val EMAIL_ADDRESS: String = "cocktails.ppc@gmail.com"
+    private val MSG_TO_USER: String = "Contact Us"
     private val MAX_CHARACTERS: Int = 150
 
     private lateinit var content: TextInputLayout
@@ -21,7 +24,6 @@ class ContactUsActivity: AppCompatActivity() {
     private lateinit var subjectText: EditText
     private lateinit var submitButton: Button
 
-    @SuppressLint("InflateParams")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -32,6 +34,9 @@ class ContactUsActivity: AppCompatActivity() {
         initViews()
     }
 
+    /**
+     * Initialize the activity's views.
+     */
     private fun initViews() {
         content = findViewById(R.id.content)
         content.counterMaxLength = MAX_CHARACTERS
@@ -43,14 +48,46 @@ class ContactUsActivity: AppCompatActivity() {
 
         submitButton = findViewById(R.id.submit_button)
         submitButton.setOnClickListener{
-            // todo send email
+            submitAction()
         }
     }
 
+    private fun clearViews() {
+        contentText.setText("")
+        subjectText.setText("")
+    }
+
+    /**
+     * Define the submit button's functionality
+     */
+    private fun submitAction() {
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.type = "message/rfc822"
+        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(EMAIL_ADDRESS))
+        intent.putExtra(Intent.EXTRA_SUBJECT, subjectText.text.toString())
+        intent.putExtra(Intent.EXTRA_TEXT, contentText.text)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        try {
+            startActivity(Intent.createChooser(intent, MSG_TO_USER))
+        } catch (ex: ActivityNotFoundException) {
+            Toast.makeText(
+                this,
+                "There are no email clients installed.",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
+        clearViews()
+    }
+
+    /**
+     * Watch the contentText and act accordingly.
+     */
     private fun contentTextWatcher(): TextWatcher {
         return object : TextWatcher {
             override fun afterTextChanged(arg0: Editable) {
-                val enableButton: Boolean = contentText.text.length <= MAX_CHARACTERS
+                val enableButton: Boolean =
+                    (contentText.text.length <= MAX_CHARACTERS) && contentText.text.isNotBlank()
                 submitButton.isEnabled = enableButton
             }
 

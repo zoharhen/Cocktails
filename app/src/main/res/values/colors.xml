@@ -13,7 +13,7 @@
     <color name="colorRipple">#B8B7B7</color>
     <color name="searchBackground">#FF474747</color>
     <color name="doneIcon">#4CAF50</color>
-    <color name="recipeTabBg">#EAEAEA</color>
+    <color name="lightColorBg">#EAEAEA</color>
 
     <color name="arBackTextColor">#4D858585</color>
 
