@@ -120,6 +120,9 @@ class ARFragment(val parent: SectionsPagerAdapter) : Fragment() {
     override fun onResume() {
         super.onResume()
 
+        this.view?.visibility = View.VISIBLE
+        (parent.recipeFragmentInstance as RecipeFragment).view?.visibility = View.GONE
+
         if (!inflated  && !permissionRequested) {
             // Check for CAMERA permissions
             val hasCameraPermission = ActivityCompat
@@ -186,11 +189,12 @@ class ARFragment(val parent: SectionsPagerAdapter) : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onPause() {
         super.onPause()
+        view?.visibility = View.GONE
 
-        if (firstPause) {
-            (parent.recipeFragmentInstance as RecipeFragment).initViews(false)
-            firstPause = false
-        }
+//        if (firstPause) {
+//            (parent.recipeFragmentInstance as RecipeFragment).initViews()
+//            firstPause = false
+//        }
     }
 
     /**

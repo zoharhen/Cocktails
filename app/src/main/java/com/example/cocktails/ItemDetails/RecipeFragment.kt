@@ -1,12 +1,10 @@
 package com.example.cocktails.ItemDetails
 
 import android.Manifest
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.Gravity
@@ -37,6 +35,8 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
     private var mAdapterPreparation: PreparationAdapter? = null
     private lateinit var rootView: View
     lateinit var cocktail: Cocktail
+    lateinit var longPressTooltipBuilder: SimpleTooltip.Builder
+    lateinit var longPressTooltip: SimpleTooltip
 
     companion object {
         fun newInstance(cocktail: Cocktail): RecipeFragment? {
@@ -61,7 +61,7 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
     @Override
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.recipe_item, container, false)
-        this.initViews(true)
+        this.initViews()
         rootView.findViewById<ScrollView>(R.id.recipe_item).post {
             rootView.findViewById<ScrollView>(R.id.recipe_item).fullScroll(View.FOCUS_UP) // workaround, as tabs hide the ScrollView
         }
@@ -71,6 +71,8 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
 
     override fun onResume() {
         super.onResume()
+        view?.visibility = View.VISIBLE
+        this.initTooltipIfNeeded()
 
         // TODO: Need to implement this function.
         //  Should only run (once) if storeData() ran before.
@@ -80,6 +82,12 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
     override fun onPause() {
         super.onPause()
 
+        if (this::longPressTooltip.isInitialized) {
+            val oldVal = (activity?.applicationContext as Cocktails).mFirstTimeModeSP.getBoolean("recipeTab", true)
+            longPressTooltip.dismiss()
+            (activity?.applicationContext as Cocktails).mFirstTimeModeSP.edit().putBoolean("recipeTab", oldVal).apply()
+        }
+
         // TODO: Need to implemennt this function.
         //  Should only run once, on the third time that onPause is executed.
         //  This is because on creating this class onPause is being called twice as part of system init.
@@ -88,7 +96,7 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun initViews(withToolTip: Boolean) {
+    fun initViews() {
         (activity?.applicationContext as Cocktails).mStorageRef.child("images/" + cocktail.image + ".jpg")
             .downloadUrl.addOnSuccessListener { img ->
                 context?.let { it ->
@@ -104,9 +112,7 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
         this.initCustomCocktailButtons()
         this.initFavoriteButton()
         this.initPreparationSection()
-        if (withToolTip) {
-            this.initTooltipIfNeeded()
-        }
+        this.initTooltipIfNeeded()
         this.initShareButtons()
     }
 
@@ -138,7 +144,7 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
         if ((activity?.applicationContext as Cocktails).mFirstTimeModeSP.getBoolean("recipeTab", true)) {
             val preparationContext = rootView.findViewById<RecyclerView>(R.id.recyclerPreparation)
             preparationContext.setOnSystemUiVisibilityChangeListener {
-                SimpleTooltip.Builder(context)
+                longPressTooltipBuilder = SimpleTooltip.Builder(context)
                     .anchorView(preparationContext)
                     .text("Press a long click in order to mark a step as done  X")
                     .gravity(Gravity.TOP)
@@ -149,8 +155,8 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
                         (activity?.applicationContext as Cocktails).mFirstTimeModeSP.edit().putBoolean("recipeTab", false).apply()
                     }
                     .dismissOnOutsideTouch(false)
-                    .build()
-                    .show()
+                longPressTooltip = longPressTooltipBuilder.build()
+                longPressTooltip.show()
                 return@setOnSystemUiVisibilityChangeListener
             }
         }
@@ -164,7 +170,7 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
                 val permissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
                 requestPermissions(permissions, PERMISSION_EXTERNAL_STORAGE, true)
             } else {
-                val bitmap: Bitmap = getScreenShot(rootView.findViewById<ScrollView>(R.id.recipe_item))
+                val bitmap: Bitmap = getScreenShot()
                 val screenshot : File = ScreenShott.getInstance().saveScreenshotToPicturesFolder(context, bitmap, cocktail.name)
                 val sendIntent = Intent()
                 sendIntent.action = Intent.ACTION_SEND
@@ -241,7 +247,7 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
 
     ///////////////// SCREENSHOT /////////////////
 
-    private fun getScreenShot(view: View): Bitmap {
+    private fun getScreenShot(): Bitmap {
         val scrollView = rootView.findViewById<ScrollView>(R.id.recipe_item)
         val returnedBitmap = Bitmap.createBitmap(scrollView.getChildAt(0).width*2, scrollView.getChildAt(0).height*2, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(returnedBitmap)
