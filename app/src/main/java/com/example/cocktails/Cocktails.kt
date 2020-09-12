@@ -3,6 +3,8 @@ package com.example.cocktails
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.StrictMode
+import android.os.StrictMode.VmPolicy
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -21,6 +23,7 @@ class Cocktails : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
         mAuth = FirebaseAuth.getInstance()
         mFavorites = this.getSharedPreferences(FAVORITES, Context.MODE_PRIVATE)
         mStorageRef = FirebaseStorage.getInstance().reference

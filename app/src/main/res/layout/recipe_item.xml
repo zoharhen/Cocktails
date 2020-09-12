@@ -8,7 +8,7 @@
     android:fitsSystemWindows="false"
     android:paddingTop="100dp"
     android:layout_above="@android:id/tabs"
-    android:background="@color/recipeTabBg">
+    android:background="@color/lightColorBg">
 
     <LinearLayout
         android:id="@+id/recipe_wrapper"
@@ -182,8 +182,8 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerPreparation"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:background="@null"
             android:clipToPadding="false"
             android:nestedScrollingEnabled="false" />
@@ -214,41 +214,27 @@
                     android:text="WELL DONE"
                     android:textSize="@dimen/h2" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/space8"
-                    android:text="You did it! Let your friend know about it!" />
-
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space8"
                     android:orientation="horizontal">
 
-                    <ImageView
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:contentDescription="TODO"
-                        android:src="@drawable/ic_favorite_empty" />
+                        android:layout_marginTop="@dimen/space8"
+                        android:text="You did it! Share app with your friends!" />
 
-                    <ImageView
+                    <ImageButton
+                        android:id="@+id/shareApp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:contentDescription="TODO"
-                        android:src="@drawable/ic_favorite_empty" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="TODO"
-                        android:src="@drawable/ic_favorite_empty" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="TODO"
-                        android:src="@drawable/ic_favorite_empty" />
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@null"
+                        android:src="@drawable/ic_send_black_24dp" />
                 </LinearLayout>
             </LinearLayout>
         </RelativeLayout>
