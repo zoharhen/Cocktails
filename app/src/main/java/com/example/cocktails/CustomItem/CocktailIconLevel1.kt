@@ -68,7 +68,7 @@ class CocktailIconLevel1 : AppCompatActivity(),ImageAdapter.ItemClickListener {
     }
 
     override fun onItemClicked(position: Int) {
-        Toast.makeText(this, "Cell clicked", Toast.LENGTH_SHORT).show()//todo remove?
+//        Toast.makeText(this, "Cell clicked", Toast.LENGTH_SHORT).show()//todo remove?
         val imgUrl:String=mIcons[position].name
         returnImgResult(imgUrl)
     }
