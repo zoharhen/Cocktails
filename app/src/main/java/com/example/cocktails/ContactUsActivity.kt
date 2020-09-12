@@ -1,6 +1,5 @@
 package com.example.cocktails
 
-import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -8,7 +7,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputLayout
 
@@ -17,7 +15,6 @@ class ContactUsActivity: AppCompatActivity() {
 
     private val ACTIVITY_TITLE: String = "CONTACT US"
     private val EMAIL_ADDRESS: Array<String> = arrayOf("cocktails.ppc@gmail.com")
-    private val MSG_TO_USER: String = "Contact Us"
     private val MAX_CHARACTERS: Int = 150
 
     private lateinit var content: TextInputLayout
