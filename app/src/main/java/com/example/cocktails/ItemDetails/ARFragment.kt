@@ -11,6 +11,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -136,7 +137,7 @@ class ARFragment(val parent: SectionsPagerAdapter) : Fragment() {
                     REQUEST_CODE_PERMISSION_CAMERA)
 
             } else {
-                this.init()
+                this.initAr()
             }
         }
 
@@ -156,35 +157,38 @@ class ARFragment(val parent: SectionsPagerAdapter) : Fragment() {
         grantResults: IntArray
     ) {
         if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            this.init()
+            this.initAr()
 
         } else {
             // Request denied
             if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)
             ) {
                 // Explain the necessity of the camera permission
-                val toast: Toast =
-                    Toast.makeText(requireActivity(), "This feature requires camera permission.", Toast.LENGTH_LONG)
-                toast.setGravity(Gravity.CENTER, 0, 0)
-                toast.show()
-            }
+//                val toast: Toast =
+//                    Toast.makeText(requireActivity(), "This feature requires camera permission.", Toast.LENGTH_LONG)
+//                toast.setGravity(Gravity.BOTTOM, 0, 0)
+//                toast.show()
 
-            // Todo: create an image to show a sad face or something instead of just a white screen.
+                initError()
+            }
 
             permissionRequested = true
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun init() {
-        inflated = true
+    fun initError() {
+//        inflated = true
 
         val inflater = LayoutInflater.from(context)
         // This will also attempt to request permission, but we won't get here without it.
-        val inflatedView: View = inflater.inflate(R.layout.ar_layout, (rootView as ViewGroup), false)
+        val inflatedView: View = inflater.inflate(R.layout.ar_error_layout, (rootView as ViewGroup), false)
         (rootView as ViewGroup).addView(inflatedView)
 
-        initAr()
+        val permButton: Button = rootView.findViewById(R.id.perm_button)
+        permButton.setOnClickListener {
+
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -203,6 +207,13 @@ class ARFragment(val parent: SectionsPagerAdapter) : Fragment() {
      */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun initAr() {
+        inflated = true
+
+        val inflater = LayoutInflater.from(context)
+        // This will also attempt to request permission, but we won't get here without it.
+        val inflatedView: View = inflater.inflate(R.layout.ar_layout, (rootView as ViewGroup), false)
+        (rootView as ViewGroup).addView(inflatedView)
+
         // Find the AR fragment
         arFragment = requireActivity().supportFragmentManager.findFragmentById(R.id.ar_fragment) as ArFragment
 
