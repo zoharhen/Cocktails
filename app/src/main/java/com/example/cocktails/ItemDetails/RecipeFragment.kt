@@ -96,7 +96,7 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun initViews() {
+    fun initViews(withTooltip: Boolean = true) {
         (activity?.applicationContext as Cocktails).mStorageRef.child("images/" + cocktail.image + ".jpg")
             .downloadUrl.addOnSuccessListener { img ->
                 context?.let { it ->
@@ -112,7 +112,9 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
         this.initCustomCocktailButtons()
         this.initFavoriteButton()
         this.initPreparationSection()
-        this.initTooltipIfNeeded()
+        if (withTooltip) {
+            this.initTooltipIfNeeded()
+        }
         this.initShareButtons()
     }
 
