@@ -191,10 +191,10 @@ class ARFragment(val parent: SectionsPagerAdapter) : Fragment() {
         super.onPause()
         view?.visibility = View.GONE
 
-//        if (firstPause) {
-//            (parent.recipeFragmentInstance as RecipeFragment).initViews()
-//            firstPause = false
-//        }
+        if (firstPause) {
+            (parent.recipeFragmentInstance as RecipeFragment).initViews()
+            firstPause = false
+        }
     }
 
     /**
