@@ -2,6 +2,7 @@ package com.example.cocktails
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,7 +16,7 @@ import com.google.android.material.textfield.TextInputLayout
 class ContactUsActivity: AppCompatActivity() {
 
     private val ACTIVITY_TITLE: String = "CONTACT US"
-    private val EMAIL_ADDRESS: String = "cocktails.ppc@gmail.com"
+    private val EMAIL_ADDRESS: Array<String> = arrayOf("cocktails.ppc@gmail.com")
     private val MSG_TO_USER: String = "Contact Us"
     private val MAX_CHARACTERS: Int = 150
 
@@ -61,23 +62,25 @@ class ContactUsActivity: AppCompatActivity() {
      * Define the submit button's functionality
      */
     private fun submitAction() {
-        val intent = Intent(Intent.ACTION_SEND)
-        intent.type = "message/rfc822"
-        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(EMAIL_ADDRESS))
-        intent.putExtra(Intent.EXTRA_SUBJECT, subjectText.text.toString())
-        intent.putExtra(Intent.EXTRA_TEXT, contentText.text)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        try {
-            startActivity(Intent.createChooser(intent, MSG_TO_USER))
-        } catch (ex: ActivityNotFoundException) {
-            Toast.makeText(
-                this,
-                "There are no email clients installed.",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-
+        composeEmail(EMAIL_ADDRESS, subjectText.text.toString(), contentText.text.toString())
         clearViews()
+    }
+
+    /**
+     * Compose an email message, aimed for 'addresses', with 'subject' and 'body'.
+     */
+    private fun composeEmail(addresses: Array<String>, subject: String, body: String) {
+        val intent = Intent(Intent.ACTION_SENDTO).apply {
+//            type = "message/rfc822"  // Use this to allow message based apps
+            data = Uri.parse("mailto:") // Only email apps should handle this
+            putExtra(Intent.EXTRA_EMAIL, addresses)
+            putExtra(Intent.EXTRA_SUBJECT, subject)
+            putExtra(Intent.EXTRA_TEXT, body)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        if (intent.resolveActivity(packageManager) != null) {
+            startActivity(intent)
+        }
     }
 
     /**
