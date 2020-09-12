@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/contact_us_wrapper"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/contact_us"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+        <TextView
+            android:id="@+id/intro_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/contact_us"
+            app:layout_constraintStart_toStartOf="@id/contact_us"
+            android:text="We are here to help."
+            android:fontFamily="@font/paytone_one"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18dp"
+            android:padding="@dimen/space16"
+            />
+
+        <!-- Subject -->
+        <LinearLayout
+            android:id="@+id/subject_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/intro_title"
+            app:layout_constraintStart_toStartOf="@id/intro_title"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/space24"
+            android:paddingEnd="@dimen/space24">
+
+            <TextView
+                android:id="@+id/subject_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="What is this about?"
+                android:textAppearance="@style/Regular"
+                android:textColor="@color/colorPrimaryDark"
+                />
+
+            <EditText
+                android:id="@+id/subject_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/Regular"
+                android:textColor="@color/colorPrimaryDark"
+                />
+
+        </LinearLayout>
+
+        <!-- Subject -->
+        <LinearLayout
+            android:id="@+id/content_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/subject_layout"
+            app:layout_constraintStart_toStartOf="@id/intro_title"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/space24"
+            android:paddingStart="@dimen/space24"
+            android:paddingEnd="@dimen/space24">
+
+            <TextView
+                android:id="@+id/content_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mind to elaborate?"
+                android:textAppearance="@style/Regular"
+                android:textColor="@color/colorPrimaryDark"
+                />
+
+    <!--        <EditText-->
+    <!--            android:id="@+id/content_input"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:textAppearance="@style/Regular"-->
+    <!--            android:textColor="@color/colorPrimaryDark"-->
+    <!--            />-->
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:counterEnabled="true"
+                app:endIconMode="clear_text" >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/content_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:background="#00FFFFFF"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/submit_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/content_layout"
+            app:layout_constraintEnd_toEndOf="@id/content_layout"
+            android:layout_marginEnd="@dimen/space24"
+            android:layout_marginTop="@dimen/space24"
+            android:text="SUBMIT"
+            android:textAppearance="@style/Regular"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
