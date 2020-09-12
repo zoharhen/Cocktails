@@ -33,6 +33,7 @@ import com.google.ar.sceneform.ux.ArFragment
 import com.google.ar.sceneform.ux.BaseTransformableNode
 import com.google.ar.sceneform.ux.SelectionVisualizer
 import com.google.ar.sceneform.ux.TransformableNode
+import io.github.douglasjunior.androidSimpleTooltip.SimpleTooltip
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException

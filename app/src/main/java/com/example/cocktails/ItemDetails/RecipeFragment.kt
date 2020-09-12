@@ -1,12 +1,10 @@
 package com.example.cocktails.ItemDetails
 
 import android.Manifest
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.Gravity
@@ -246,7 +244,7 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
         val returnedBitmap = Bitmap.createBitmap(scrollView.getChildAt(0).width*2, scrollView.getChildAt(0).height*2, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(returnedBitmap)
         canvas.scale(2.0f, 2.0f)
-        context?.let { ContextCompat.getColor(it, R.color.recipeTabBg) }?.let { canvas.drawColor(it) }
+        context?.let { ContextCompat.getColor(it, R.color.lightColorBg) }?.let { canvas.drawColor(it) }
         scrollView.getChildAt(0).draw(canvas);
         return returnedBitmap
     }

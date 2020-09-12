@@ -138,7 +138,7 @@ class ScrollingActivity : AppCompatActivity() {
             R.id.action_filter -> openFilterDialog()
             R.id.action_favorites -> openFilteredActivityView("favorites")
             R.id.action_myCocktails -> openFilteredActivityView("custom")
-            R.id.action_help -> true
+            R.id.action_help -> openContactUsActivity()
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -176,6 +176,12 @@ class ScrollingActivity : AppCompatActivity() {
         userItemButton.setOnClickListener {
         val createNewItemIntent = Intent(applicationContext, UserItemLevel1::class.java)
         startActivity(createNewItemIntent) }
+    }
+
+    private fun openContactUsActivity(): Boolean {
+        val intent = Intent(applicationContext, ContactUsActivity::class.java)
+        startActivity(intent)
+        return true
     }
 
 }
