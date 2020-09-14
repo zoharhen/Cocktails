@@ -22,6 +22,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import com.example.cocktails.CustomItem.UserItemLevel1
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.gson.Gson
@@ -40,8 +43,6 @@ data class Cocktail(val name: String, val type: String, val steps: Array<String>
 
 class ScrollingActivity : AppCompatActivity() {
 
-    var filteredActivity : String = ""
-
     private var gridViewAdapter: CocktailItemAdapter? = null
     private lateinit var recyclerView: RecyclerView
 
@@ -50,9 +51,6 @@ class ScrollingActivity : AppCompatActivity() {
         setContentView(R.layout.activity_scrolling)
         setSupportActionBar(toolbar)
 
-        if (intent.extras != null && intent.extras?.getString("FilteredActivity") !=  "") {
-            filteredActivity = intent.extras?.getString("FilteredActivity")!!
-        }
         initAdapter()
         initRecyclerview()
         initUserItemButton()
@@ -72,27 +70,24 @@ class ScrollingActivity : AppCompatActivity() {
 //            }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString("FilteredActivity", filteredActivity)
-        outState.putInt("Orientation", resources.configuration.orientation)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        val filteredActivity = savedInstanceState.getString("FilteredActivity", "")
-        if (filteredActivity != "" && resources.configuration.orientation != savedInstanceState.getInt("Orientation")) {
-            openFilteredActivityView(filteredActivity)
-        }
-    }
-
     private fun initRecyclerview() {
         recyclerView = findViewById(R.id.recyclerView)
+//        val layoutManager = FlexboxLayoutManager(context)
+//        layoutManager.flexDirection = FlexDirection.COLUMN
+//        layoutManager.justifyContent = JustifyContent.FLEX_START
+//        recyclerView.layoutManager = layoutManager//GridLayoutManager(this, getColumnNum())
         recyclerView.layoutManager = GridLayoutManager(this, getColumnNum())
         recyclerView.adapter = gridViewAdapter
         recyclerView.itemAnimator = null
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() { })
     }
+
+
+//    override fun onConfigurationChanged(newConfig: Configuration) {
+//        super.onConfigurationChanged(newConfig)
+//        recyclerView.layoutManager.
+//
+//    }
 
     private fun getColumnNum() : Int {
         //        val columns = resources.getInteger(R.integer.gridColumnNum)
