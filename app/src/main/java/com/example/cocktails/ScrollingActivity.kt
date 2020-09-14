@@ -1,6 +1,7 @@
 package com.example.cocktails
 
 import android.annotation.SuppressLint
+import android.app.ActivityOptions
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
@@ -21,6 +22,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import com.example.cocktails.CustomItem.UserItemLevel1
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.gson.Gson
@@ -29,6 +33,7 @@ import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_scrolling.*
 import kotlinx.android.synthetic.main.content_scrolling.*
 import kotlinx.android.synthetic.main.filter_dialog.view.*
+import kotlinx.serialization.json.Json.Default.context
 
 
 @Parcelize
@@ -67,11 +72,22 @@ class ScrollingActivity : AppCompatActivity() {
 
     private fun initRecyclerview() {
         recyclerView = findViewById(R.id.recyclerView)
+//        val layoutManager = FlexboxLayoutManager(context)
+//        layoutManager.flexDirection = FlexDirection.COLUMN
+//        layoutManager.justifyContent = JustifyContent.FLEX_START
+//        recyclerView.layoutManager = layoutManager//GridLayoutManager(this, getColumnNum())
         recyclerView.layoutManager = GridLayoutManager(this, getColumnNum())
         recyclerView.adapter = gridViewAdapter
         recyclerView.itemAnimator = null
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() { })
     }
+
+
+//    override fun onConfigurationChanged(newConfig: Configuration) {
+//        super.onConfigurationChanged(newConfig)
+//        recyclerView.layoutManager.
+//
+//    }
 
     private fun getColumnNum() : Int {
         //        val columns = resources.getInteger(R.integer.gridColumnNum)
@@ -139,17 +155,28 @@ class ScrollingActivity : AppCompatActivity() {
             R.id.action_favorites -> openFilteredActivityView("favorites")
             R.id.action_myCocktails -> openFilteredActivityView("custom")
             R.id.action_help -> openContactUsActivity()
+            android.R.id.home -> {
+                val options: ActivityOptions = ActivityOptions.makeCustomAnimation(this, 0,0)
+                finish()
+                this.startActivity(intent, options.toBundle())
+                return true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
     private fun openFilteredActivityView(filter: String) : Boolean {
-        val favoritesActivity = Intent(this, ScrollingActivity::class.java)
-        favoritesActivity.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+        val filteredActivity = Intent(this, ScrollingActivity::class.java)
+        filteredActivity.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+        filteredActivity.putExtra("FilteredActivity", filter)
+
         gridViewAdapter?.filter?.filter(filter)
-        startActivity(favoritesActivity)
+        startActivity(filteredActivity)
+
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.setHomeButtonEnabled(true)
+
         return true
     }
 

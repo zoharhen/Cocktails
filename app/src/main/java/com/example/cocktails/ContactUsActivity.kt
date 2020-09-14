@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
@@ -28,8 +29,19 @@ class ContactUsActivity: AppCompatActivity() {
         setContentView(R.layout.contact_us_layout)
 
         supportActionBar?.title = ACTIVITY_TITLE
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         initViews()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     /**
