@@ -1,6 +1,7 @@
 package com.example.cocktails
 
 import android.annotation.SuppressLint
+import android.app.ActivityOptions
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
@@ -29,6 +30,7 @@ import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_scrolling.*
 import kotlinx.android.synthetic.main.content_scrolling.*
 import kotlinx.android.synthetic.main.filter_dialog.view.*
+import kotlinx.serialization.json.Json.Default.context
 
 
 @Parcelize
@@ -38,6 +40,8 @@ data class Cocktail(val name: String, val type: String, val steps: Array<String>
 
 class ScrollingActivity : AppCompatActivity() {
 
+    var filteredActivity : String = ""
+
     private var gridViewAdapter: CocktailItemAdapter? = null
     private lateinit var recyclerView: RecyclerView
 
@@ -46,6 +50,9 @@ class ScrollingActivity : AppCompatActivity() {
         setContentView(R.layout.activity_scrolling)
         setSupportActionBar(toolbar)
 
+        if (intent.extras != null && intent.extras?.getString("FilteredActivity") !=  "") {
+            filteredActivity = intent.extras?.getString("FilteredActivity")!!
+        }
         initAdapter()
         initRecyclerview()
         initUserItemButton()
@@ -63,6 +70,20 @@ class ScrollingActivity : AppCompatActivity() {
 //                    Toast.makeText(applicationContext, "Error loading data", Toast.LENGTH_SHORT).show()
 //                }
 //            }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("FilteredActivity", filteredActivity)
+        outState.putInt("Orientation", resources.configuration.orientation)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        val filteredActivity = savedInstanceState.getString("FilteredActivity", "")
+        if (filteredActivity != "" && resources.configuration.orientation != savedInstanceState.getInt("Orientation")) {
+            openFilteredActivityView(filteredActivity)
+        }
     }
 
     private fun initRecyclerview() {
@@ -139,17 +160,28 @@ class ScrollingActivity : AppCompatActivity() {
             R.id.action_favorites -> openFilteredActivityView("favorites")
             R.id.action_myCocktails -> openFilteredActivityView("custom")
             R.id.action_help -> openContactUsActivity()
+            android.R.id.home -> {
+                val options: ActivityOptions = ActivityOptions.makeCustomAnimation(this, 0,0)
+                finish()
+                this.startActivity(intent, options.toBundle())
+                return true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
     private fun openFilteredActivityView(filter: String) : Boolean {
-        val favoritesActivity = Intent(this, ScrollingActivity::class.java)
-        favoritesActivity.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+        val filteredActivity = Intent(this, ScrollingActivity::class.java)
+        filteredActivity.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+        filteredActivity.putExtra("FilteredActivity", filter)
+
         gridViewAdapter?.filter?.filter(filter)
-        startActivity(favoritesActivity)
+        startActivity(filteredActivity)
+
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.setHomeButtonEnabled(true)
+
         return true
     }
 
