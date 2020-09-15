@@ -1,7 +1,6 @@
 package com.example.cocktails.CustomItem
 
 import android.annotation.SuppressLint
-import android.app.ActionBar
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
@@ -14,6 +13,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.cocktails.Cocktail
@@ -47,22 +47,35 @@ class UserItemLevel1 : AppCompatActivity() {
     val UPLOAD_IMG_KEY = "upload_img"
     val EMPTY_FIELD_ERROR_MSG: String = "Field can not be empty"
     val MAX_LENGTH_COCKTAIL_NAME: Int = 12
-    val ACTIVITY_TITLE: String = "Create new cocktail"
     val COCKTAIL_ERROR_MSG_NAME = "Cocktail name already exist ,choose different name"
     val COCKTAIL_ERROR_MSG_LENGTH: String =
         "Cocktail name too long ,\n must me under $MAX_LENGTH_COCKTAIL_NAME characters"
+    val BACK_PRESS_MSG="Are you sure you want to exit? \nyour details will be deleted. "
 
     @SuppressLint("InflateParams")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_item_level1)
 
-        setSupportActionBar(findViewById(R.id.toolbar_user1))
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = ""
-
+        initToolBar()
         initView()
     }
+
+    private fun initToolBar(){
+        val toolbar: Toolbar = findViewById<View>(R.id.toolbar_user1) as Toolbar
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = ""
+        toolbar.setNavigationOnClickListener {
+            showDialogOnBackPress()
+        }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        showDialogOnBackPress()
+    }
+
 
     private fun initView() {
         mCocktailName = findViewById(R.id.cocktailNameInput)
@@ -88,6 +101,36 @@ class UserItemLevel1 : AppCompatActivity() {
 
         initCategory()
         initButtonsListener()
+    }
+    private fun showDialogOnBackPress(){
+        // Late initialize an alert dialog object
+        lateinit var dialog:AlertDialog
+        // Initialize a new instance of alert dialog builder object
+        val builder = AlertDialog.Builder(this)
+
+        // Set a message for alert dialog
+        builder.setMessage(BACK_PRESS_MSG)
+
+        // On click listener for dialog buttons
+        val dialogClickListener = DialogInterface.OnClickListener{ _, which ->
+            when(which){
+                DialogInterface.BUTTON_POSITIVE -> {
+                    finish()
+                }
+                //DialogInterface.BUTTON_NEGATIVE ->{}
+                //DialogInterface.BUTTON_NEUTRAL->{}
+            }
+        }
+        builder.setPositiveButton("YES", dialogClickListener)
+
+        // Set the alert dialog negative/no button
+        builder.setNegativeButton("NO", dialogClickListener)
+
+        // Set the alert dialog neutral/cancel button
+        builder.setNeutralButton("CANCEL", dialogClickListener)
+
+        dialog = builder.create()
+        dialog.show()
     }
 
     private fun getCocktailName(): String {
@@ -157,7 +200,7 @@ class UserItemLevel1 : AppCompatActivity() {
 
 
         // On click listener for dialog buttons
-        val dialogClickListener = DialogInterface.OnClickListener{_,which ->
+        val dialogClickListener = DialogInterface.OnClickListener{ _, which ->
             when(which){
                 DialogInterface.BUTTON_POSITIVE -> {
                     mUserImg.setImageDrawable(null)
@@ -167,13 +210,13 @@ class UserItemLevel1 : AppCompatActivity() {
                 //DialogInterface.BUTTON_NEUTRAL->{}
             }
         }
-        builder.setPositiveButton("YES",dialogClickListener)
+        builder.setPositiveButton("YES", dialogClickListener)
 
         // Set the alert dialog negative/no button
-        builder.setNegativeButton("NO",dialogClickListener)
+        builder.setNegativeButton("NO", dialogClickListener)
 
         // Set the alert dialog neutral/cancel button
-        builder.setNeutralButton("CANCEL",dialogClickListener)
+        builder.setNeutralButton("CANCEL", dialogClickListener)
 
         dialog = builder.create()
         dialog.show()
