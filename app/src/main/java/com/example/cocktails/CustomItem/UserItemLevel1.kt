@@ -7,11 +7,13 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.bumptech.glide.Glide
@@ -45,18 +47,24 @@ class UserItemLevel1 : AppCompatActivity() {
     val CATEGORY_KEY = "category"
     val ICON_KEY = "icon"
     val UPLOAD_IMG_KEY = "upload_img"
+    val YES= "yes"
+    val NO ="no"
+    val CANCEL="cancel"
+    val DIALOG_UPLOAD_MSG="If you go back now , your upload image will be removed."
     val EMPTY_FIELD_ERROR_MSG: String = "Field can not be empty"
     val MAX_LENGTH_COCKTAIL_NAME: Int = 12
     val COCKTAIL_ERROR_MSG_NAME = "Cocktail name already exist ,choose different name"
     val COCKTAIL_ERROR_MSG_LENGTH: String =
         "Cocktail name too long ,\n must me under $MAX_LENGTH_COCKTAIL_NAME characters"
     val BACK_PRESS_MSG="Are you sure you want to exit? \nyour details will be deleted. "
+    val REQUEST_CODE_ICONS=2
+    val REQUEST_CODE_UPLOAD_IMG=1
 
+    @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("InflateParams")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_item_level1)
-
         initToolBar()
         initView()
     }
@@ -77,6 +85,7 @@ class UserItemLevel1 : AppCompatActivity() {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun initView() {
         mCocktailName = findViewById(R.id.cocktailNameInput)
         cocktailNameInput.counterMaxLength = MAX_LENGTH_COCKTAIL_NAME
@@ -121,13 +130,13 @@ class UserItemLevel1 : AppCompatActivity() {
                 //DialogInterface.BUTTON_NEUTRAL->{}
             }
         }
-        builder.setPositiveButton("YES", dialogClickListener)
+        builder.setPositiveButton(YES, dialogClickListener)
 
         // Set the alert dialog negative/no button
-        builder.setNegativeButton("NO", dialogClickListener)
+        builder.setNegativeButton(NO, dialogClickListener)
 
         // Set the alert dialog neutral/cancel button
-        builder.setNeutralButton("CANCEL", dialogClickListener)
+        builder.setNeutralButton(CANCEL, dialogClickListener)
 
         dialog = builder.create()
         dialog.show()
@@ -139,14 +148,17 @@ class UserItemLevel1 : AppCompatActivity() {
         return mCocktailName.editText?.text.toString().trim()
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("InflateParams")
     private fun initCategory() {
         resources.getStringArray(R.array.cocktailTypes_array)
             .forEach { addChip(it, findViewById(R.id.selectCategoryChipGroup)) }
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun addChip(item: String, chipGroup: ChipGroup) {
         val chip = Chip(chipGroup.context)
+        chip.chipBackgroundColor=getColorStateList(R.color.chipColor)
         chip.text = item
         chip.isCheckable = true
         chipGroup.addView(chip)
@@ -157,7 +169,7 @@ class UserItemLevel1 : AppCompatActivity() {
             val intent = Intent()
             intent.type = "image/*"
             intent.action = Intent.ACTION_GET_CONTENT
-            startActivityForResult(intent, 1)
+            startActivityForResult(intent, REQUEST_CODE_UPLOAD_IMG)
         }
 
         mRotateUploadView.setOnClickListener{
@@ -167,7 +179,7 @@ class UserItemLevel1 : AppCompatActivity() {
             showDialog()
         }
         mIconButton.setOnClickListener {
-            openImagesActivity()
+            openIconsActivity()
         }
 
         mNextButton.setOnClickListener {
@@ -196,7 +208,7 @@ class UserItemLevel1 : AppCompatActivity() {
         val builder = AlertDialog.Builder(this)
 
         // Set a message for alert dialog
-        builder.setMessage("If you go back now , your upload image will be removed.")
+        builder.setMessage(DIALOG_UPLOAD_MSG)
 
 
         // On click listener for dialog buttons
@@ -210,13 +222,13 @@ class UserItemLevel1 : AppCompatActivity() {
                 //DialogInterface.BUTTON_NEUTRAL->{}
             }
         }
-        builder.setPositiveButton("YES", dialogClickListener)
+        builder.setPositiveButton(YES, dialogClickListener)
 
         // Set the alert dialog negative/no button
-        builder.setNegativeButton("NO", dialogClickListener)
+        builder.setNegativeButton(NO, dialogClickListener)
 
         // Set the alert dialog neutral/cancel button
-        builder.setNeutralButton("CANCEL", dialogClickListener)
+        builder.setNeutralButton(CANCEL, dialogClickListener)
 
         dialog = builder.create()
         dialog.show()
@@ -315,8 +327,8 @@ class UserItemLevel1 : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if ((requestCode == 1 || requestCode == 2) && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
-            if (requestCode == 1) {
+        if ((requestCode == REQUEST_CODE_UPLOAD_IMG || requestCode == REQUEST_CODE_ICONS) && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
+            if (requestCode == REQUEST_CODE_UPLOAD_IMG) {
                 mUploadImgUri = data.data!!
                 Picasso.with(this).load(mUploadImgUri).into(mUserImg)
                 buttonStateOnUploadImg()
@@ -335,20 +347,20 @@ class UserItemLevel1 : AppCompatActivity() {
             }
 
         }
-        else if(requestCode == 1 || requestCode == 2) {
-            if(requestCode == 1) {
+        else {
+            if(requestCode == REQUEST_CODE_UPLOAD_IMG) {
                 buttonStateOffUploadImg()
             }
-            else{
+            else if(requestCode == REQUEST_CODE_ICONS){
                 mIconView.visibility=View.GONE
             }
         }
     }
 
-    private fun openImagesActivity() {
+    private fun openIconsActivity() {
         val intent = Intent(this, CocktailIconLevel1::class.java)
         intent.action = Intent.ACTION_GET_CONTENT
-        startActivityForResult(intent, 2)
+        startActivityForResult(intent, REQUEST_CODE_ICONS)
     }
 }
 
