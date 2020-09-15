@@ -50,12 +50,12 @@ class UserItemLevel1 : AppCompatActivity() {
     val YES= "yes"
     val NO ="no"
     val CANCEL="cancel"
-    val DIALOG_UPLOAD_MSG="If you go back now , your upload image will be removed."
+    val DIALOG_UPLOAD_MSG="If you go back now, your upload image will be removed."
     val EMPTY_FIELD_ERROR_MSG: String = "Field can not be empty"
     val MAX_LENGTH_COCKTAIL_NAME: Int = 12
     val COCKTAIL_ERROR_MSG_NAME = "Cocktail name already exist ,choose different name"
     val COCKTAIL_ERROR_MSG_LENGTH: String =
-        "Cocktail name too long ,\n must me under $MAX_LENGTH_COCKTAIL_NAME characters"
+        "Cocktail name too long ,\n must be under $MAX_LENGTH_COCKTAIL_NAME characters"
     val BACK_PRESS_MSG="Are you sure you want to exit? \nyour details will be deleted. "
     val REQUEST_CODE_ICONS=2
     val REQUEST_CODE_UPLOAD_IMG=1

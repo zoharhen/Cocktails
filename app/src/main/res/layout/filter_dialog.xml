@@ -52,7 +52,6 @@
             android:layout_height="wrap_content"
             app:chipMinTouchTargetSize="0dp"
             app:chipSpacingHorizontal="10dp">
-Z
         </com.google.android.material.chip.ChipGroup>
 
         <LinearLayout
