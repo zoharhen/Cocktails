@@ -14,21 +14,20 @@
         android:required="true" />
 
     <application
-        android:requestLegacyExternalStorage="true"
         android:name=".Cocktails"
         android:allowBackup="true"
         android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
         android:theme="@style/AppTheme"
         tools:replace="android:supportsRtl"
         tools:targetApi="q">
         <activity android:name=".CustomItem.UserItemLevel2"></activity>
-        <activity android:name=".CustomItem.CocktailIconLevel1" />
-        <activity android:name=".CustomItem.UserItemLevel1" />
+        <activity android:name=".CustomItem.CocktailIconLevel1"></activity>
         <activity
             android:name=".ScrollingActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -37,6 +36,11 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".CustomItem.UserItemLevel1"
+            android:parentActivityName=".ScrollingActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name=".ItemDetailsActivity"

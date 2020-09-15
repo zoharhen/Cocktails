@@ -1,6 +1,7 @@
 package com.example.cocktails.CustomItem
 
 import android.annotation.SuppressLint
+import android.app.ActionBar
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
@@ -46,7 +47,7 @@ class UserItemLevel1 : AppCompatActivity() {
     val UPLOAD_IMG_KEY = "upload_img"
     val EMPTY_FIELD_ERROR_MSG: String = "Field can not be empty"
     val MAX_LENGTH_COCKTAIL_NAME: Int = 12
-    val ACTIVITY_TITLE: String = "CREATE NEW COCKTAIL"
+    val ACTIVITY_TITLE: String = "Create new cocktail"
     val COCKTAIL_ERROR_MSG_NAME = "Cocktail name already exist ,choose different name"
     val COCKTAIL_ERROR_MSG_LENGTH: String =
         "Cocktail name too long ,\n must me under $MAX_LENGTH_COCKTAIL_NAME characters"
@@ -56,11 +57,11 @@ class UserItemLevel1 : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_item_level1)
 
-        //activity title
-        supportActionBar?.title = ACTIVITY_TITLE
+        setSupportActionBar(findViewById(R.id.toolbar_user1))
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = ""
 
         initView()
-
     }
 
     private fun initView() {
