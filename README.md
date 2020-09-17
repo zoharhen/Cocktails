@@ -10,11 +10,11 @@ todo: replace link!!!
 ## Features
 
 -   Written Recipe
--   AR layout, help you measuring all the ingerdients amount over a presented cup
+-   AR layout, help you measuring all the ingredients amount over a presented cup
 -   Text-to-speech tool, reading the chosen recipe out load
 -   Custom Cocktails! Add your own cocktail to the app
 -   Favorites functionality
--   Filter cocktails menu by ingerdients / spirit
+-   Filter cocktails menu by ingredients / spirit
 -   Share recipe screenshot to your friends
 
 fix images links after app is done
