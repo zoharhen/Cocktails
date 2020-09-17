@@ -14,6 +14,7 @@ todo: replace link!!!
 -   Text-to-speech tool, reading the chosen recipe out load
 -   Custom Cocktails! Add your own cocktail to the app
 -   Favorites functionality
+-   Filter cocktails menu by ingerdients / spirit
 -   Share recipe screenshot to your friends
 
 fix images links after app is done
