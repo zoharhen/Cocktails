@@ -39,8 +39,8 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
     private var mAdapterPreparation: PreparationAdapter? = null
     private lateinit var rootView: View
     lateinit var cocktail: Cocktail
-    lateinit var longPressTooltipBuilder: SimpleTooltip.Builder
-    lateinit var longPressTooltip: SimpleTooltip
+    private lateinit var longPressTooltipBuilder: SimpleTooltip.Builder
+    private lateinit var longPressTooltip: SimpleTooltip
     private var isTtsOn: Boolean = false
 
     companion object {
