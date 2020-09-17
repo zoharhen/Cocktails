@@ -27,7 +27,11 @@ import com.example.cocktails.Cocktails
 import com.example.cocktails.R
 import github.nisrulz.screenshott.ScreenShott
 import io.github.douglasjunior.androidSimpleTooltip.SimpleTooltip
+import net.gotev.speech.Speech
+import net.gotev.speech.TextToSpeechCallback
 import java.io.File
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
@@ -37,6 +41,7 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
     lateinit var cocktail: Cocktail
     lateinit var longPressTooltipBuilder: SimpleTooltip.Builder
     lateinit var longPressTooltip: SimpleTooltip
+    private var isTtsOn: Boolean = false
 
     companion object {
         fun newInstance(cocktail: Cocktail): RecipeFragment? {
@@ -55,6 +60,8 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
         super.onCreate(savedInstanceState)
         cocktail = arguments?.getParcelable("cocktail")!!
         retainInstance = true
+
+        Speech.init(context, context?.packageName);
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -95,6 +102,12 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
         // this.storeData()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        // prevent memory leaks when activity is destroyed
+        Speech.getInstance().shutdown()
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     fun initViews(withTooltip: Boolean = true) {
         (activity?.applicationContext as Cocktails).mStorageRef.child("images/" + cocktail.image + ".jpg")
@@ -115,7 +128,38 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
         if (withTooltip) {
             this.initTooltipIfNeeded()
         }
+        this.initTtsButton()
         this.initShareButtons()
+    }
+
+    private fun initTtsButton() {
+        val ttsButton = rootView.findViewById<ImageButton>(R.id.tts)
+        ttsButton.setOnClickListener {
+            if (!isTtsOn) {
+                Speech.getInstance().setLocale(Locale.US)
+                Speech.getInstance().setTextToSpeechRate(0.65F)
+                Speech.getInstance().say(getString(R.string.ingredients) + "\n\n\n\n" +
+                        cocktail.ingredients.joinToString(separator = "\n\n") +
+                        "\n\n\n" + getString(R.string.preparation) + "\n\n\n\n" +
+                        "\n\n\n" + cocktail.steps.joinToString(separator = "\n\n"),
+                    object : TextToSpeechCallback {
+                        override fun onError() { }
+
+                        override fun onStart() {
+                            isTtsOn = true
+                            ttsButton.setImageResource(R.drawable.ic_pause_circle_outline_black_24dp)
+                        }
+                        override fun onCompleted() {
+                            isTtsOn = false
+                            ttsButton.setImageResource(R.drawable.ic_play_circle_outline_black_24dp)
+                        }
+                    })
+            } else {
+                Speech.getInstance().stopTextToSpeech()
+                isTtsOn = false
+                ttsButton.setImageResource(R.drawable.ic_play_circle_outline_black_24dp)
+            }
+        }
     }
 
     private fun initCustomCocktailButtons() {
