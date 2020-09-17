@@ -14,7 +14,7 @@ import com.google.android.material.textfield.TextInputLayout
 
 class ContactUsActivity: AppCompatActivity() {
 
-    private val ACTIVITY_TITLE: String = "CONTACT US"
+    private val ACTIVITY_TITLE: String = "Contact us"
     private val EMAIL_ADDRESS: Array<String> = arrayOf("cocktails.ppc@gmail.com")
     private val MAX_CHARACTERS: Int = 150
 

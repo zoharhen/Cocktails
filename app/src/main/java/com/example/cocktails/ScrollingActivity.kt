@@ -167,6 +167,8 @@ class ScrollingActivity : AppCompatActivity() {
         gridViewAdapter?.filter?.filter(filter)
         startActivity(filteredActivity)
 
+        toolbar.menu.setGroupVisible(R.id.menuGroup, false)
+        toolbar_layout.title = if (filter == "favorites") resources.getString(R.string.favorites) else resources.getString(R.string.my_cocktails)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)

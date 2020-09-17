@@ -1,31 +1,35 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/optionMenu"
     tools:context="com.example.cocktails.ScrollingActivity">
-    <item
-        android:id="@+id/action_search"
-        android:icon="@drawable/ic_search"
-        android:title="@string/search"
-        app:actionViewClass="androidx.appcompat.widget.SearchView"
-        app:showAsAction="ifRoom|withText" />
-    <item
-        android:id="@+id/action_filter"
-        android:icon="@drawable/ic_filter_list"
-        android:title="Filter"
-        app:showAsAction="always" />
-    <item
-        android:id="@+id/action_favorites"
-        android:orderInCategory="100"
-        android:title="@string/favorites"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action_myCocktails"
-        android:orderInCategory="100"
-        android:title="@string/my_cocktails"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action_help"
-        android:orderInCategory="100"
-        android:title="@string/contact_us"
-        app:showAsAction="never" />
+    <group android:id="@+id/menuGroup">
+        <item
+            android:id="@+id/action_search"
+            android:icon="@drawable/ic_search"
+            android:title="@string/search"
+            app:actionViewClass="androidx.appcompat.widget.SearchView"
+            app:showAsAction="ifRoom|withText" />
+        <item
+            android:id="@+id/action_filter"
+            android:icon="@drawable/ic_filter_list"
+            android:title="Filter"
+            app:showAsAction="always" />
+        <item
+            android:id="@+id/action_favorites"
+            android:orderInCategory="100"
+            android:title="@string/favorites"
+            app:showAsAction="never" />
+        <item
+            android:id="@+id/action_myCocktails"
+            android:orderInCategory="100"
+            android:title="@string/my_cocktails"
+            app:showAsAction="never" />
+        <item
+            android:id="@+id/action_help"
+            android:orderInCategory="100"
+            android:title="@string/contact_us"
+            app:showAsAction="never" />
+    </group>
+
 </menu>
