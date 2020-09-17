@@ -56,7 +56,7 @@ dependencies {
     // firebase
     implementation 'com.google.firebase:firebase-storage:19.2.0'
     implementation "com.google.firebase:firebase-core:17.5.0"
-    implementation 'com.google.firebase:firebase-auth:19.3.2'
+    implementation 'com.google.firebase:firebase-auth:19.4.0'
     implementation 'com.firebaseui:firebase-ui-storage:6.2.0'
     implementation 'com.google.firebase:firebase-database:19.4.0'
     // git
@@ -66,6 +66,7 @@ dependencies {
     implementation 'com.github.robertsimoes:Shareable:0.1.0'
     implementation 'com.github.nisrulz:screenshott:2.0.0' // take screenshot
     implementation 'com.blankj:utilcode:1.29.0'
+    implementation 'net.gotev:speech:1.4.0' // tts
     // log
     implementation 'com.jakewharton.timber:timber:4.7.1' // logger
     implementation 'com.squareup.okhttp3:logging-interceptor:4.2.2'
