@@ -5,6 +5,7 @@ import android.app.ActivityOptions
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Parcelable
@@ -22,9 +23,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import com.example.cocktails.CustomItem.UserItemLevel1
-import com.google.android.flexbox.FlexDirection
-import com.google.android.flexbox.FlexboxLayoutManager
-import com.google.android.flexbox.JustifyContent
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.gson.Gson
@@ -33,7 +31,6 @@ import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_scrolling.*
 import kotlinx.android.synthetic.main.content_scrolling.*
 import kotlinx.android.synthetic.main.filter_dialog.view.*
-import kotlinx.serialization.json.Json.Default.context
 
 
 @Parcelize
@@ -72,22 +69,19 @@ class ScrollingActivity : AppCompatActivity() {
 
     private fun initRecyclerview() {
         recyclerView = findViewById(R.id.recyclerView)
-//        val layoutManager = FlexboxLayoutManager(context)
-//        layoutManager.flexDirection = FlexDirection.COLUMN
-//        layoutManager.justifyContent = JustifyContent.FLEX_START
-//        recyclerView.layoutManager = layoutManager//GridLayoutManager(this, getColumnNum())
         recyclerView.layoutManager = GridLayoutManager(this, getColumnNum())
+        recyclerView.setHasFixedSize(true)
         recyclerView.adapter = gridViewAdapter
         recyclerView.itemAnimator = null
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() { })
     }
 
 
-//    override fun onConfigurationChanged(newConfig: Configuration) {
-//        super.onConfigurationChanged(newConfig)
-//        recyclerView.layoutManager.
-//
-//    }
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        recyclerView.layoutManager = GridLayoutManager(this, getColumnNum())
+
+    }
 
     private fun getColumnNum() : Int {
         //        val columns = resources.getInteger(R.integer.gridColumnNum)
