@@ -29,6 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/tv_number"
+        android:fontFamily="@font/raleway_light"
         android:layout_marginStart="@dimen/space16"
         android:layout_marginTop="@dimen/space8"
         style="@style/Text14Reg"/>

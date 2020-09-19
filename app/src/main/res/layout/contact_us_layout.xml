@@ -47,6 +47,7 @@
                 android:id="@+id/subject_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/raleway_light"
                 android:text="@string/contact_subject_title"
                 android:textAppearance="@style/Regular"
                 android:textColor="@color/colorPrimaryDark"
@@ -56,6 +57,7 @@
                 android:id="@+id/subject_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/raleway_light"
                 android:textAppearance="@style/Regular"
                 android:textColor="@color/colorPrimaryDark"
                 />
@@ -67,6 +69,7 @@
             android:id="@+id/content_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/raleway_light"
             app:layout_constraintTop_toBottomOf="@id/subject_layout"
             app:layout_constraintStart_toStartOf="@id/intro_title"
             android:orientation="vertical"
@@ -79,6 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/contact_body_title"
+                android:fontFamily="@font/raleway_light"
                 android:textAppearance="@style/Regular"
                 android:textColor="@color/colorPrimaryDark"
                 />
@@ -93,6 +97,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/content_input"
                     android:layout_width="match_parent"
+                    android:fontFamily="@font/raleway_light"
                     android:layout_height="150dp"
                     android:background="#00FFFFFF"
                     />
@@ -108,6 +113,7 @@
             app:layout_constraintEnd_toEndOf="@id/content_layout"
             android:layout_marginEnd="@dimen/space24"
             android:layout_marginTop="@dimen/space24"
+            android:fontFamily="@font/raleway_light"
             android:text="SUBMIT"
             android:textAppearance="@style/Regular"
             android:enabled="false"
