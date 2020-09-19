@@ -168,6 +168,12 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
             rootView.findViewById<ImageButton>(R.id.deleteAction).visibility = ImageButton.VISIBLE
             rootView.findViewById<View>(R.id.editActionSeparator).visibility = View.VISIBLE
             rootView.findViewById<View>(R.id.deleteActionSeparator).visibility = View.VISIBLE
+
+            rootView.findViewById<ImageButton>(R.id.favoriteAction).setPadding(22,0,22,0)
+            rootView.findViewById<ImageButton>(R.id.editAction).setPadding(22,0,22,0)
+            rootView.findViewById<ImageButton>(R.id.deleteAction).setPadding(22,0,22,0)
+            rootView.findViewById<ImageButton>(R.id.tts).setPadding(22,0,22,0)
+            rootView.findViewById<ImageButton>(R.id.share).setPadding(22,0,22,0)
         }
 
         //todo: Einav: add edit + delete 'onClick' methods
@@ -176,13 +182,13 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
     private fun initFavoriteButton() {
         val isFavorite = (activity?.applicationContext as Cocktails).mFavorites.getBoolean(cocktail.name, false)
         val favorite = rootView.findViewById<ImageButton>(R.id.favoriteAction)
-        favorite.setImageResource(if (isFavorite) R.drawable.ic_favorite_black_24dp else R.drawable.ic_favorite_border_black_24dp)
+        favorite.setImageResource(if (isFavorite) R.drawable.ic_favorite_full_black else R.drawable.ic_favorite_empty_black)
 
         favorite.setOnClickListener {
             val oldVal = (activity?.applicationContext as Cocktails).mFavorites.getBoolean(cocktail.name, false)
             (activity?.applicationContext as Cocktails).mFavorites.edit()
                 .putBoolean(cocktail.name, !oldVal).apply()
-            favorite.setImageResource(if (!oldVal) R.drawable.ic_favorite_black_24dp else R.drawable.ic_favorite_border_black_24dp)
+            favorite.setImageResource(if (!oldVal) R.drawable.ic_favorite_full_black else R.drawable.ic_favorite_empty_black)
         }
     }
 

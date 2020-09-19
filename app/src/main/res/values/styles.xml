@@ -26,7 +26,9 @@
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" >
+        <item name="android:fontFamily">@font/raleway_light</item>
+    </style>
 
     <!-- App action bar title: before collapsing -->
     <style name="TextAppearance.Design.CollapsingToolbar.Expanded" parent="android:TextAppearance">

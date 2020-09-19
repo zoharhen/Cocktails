@@ -152,6 +152,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/space16"
+            android:fontFamily="@font/raleway_semibold"
             android:text="@string/ingredients"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="@dimen/h2" />
@@ -160,6 +161,7 @@
             android:id="@+id/ingredientContent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/raleway_light"
             android:gravity="center"
             style="@style/Text14Reg"
             android:textColor="@color/colorPrimaryDark"
@@ -176,6 +178,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/space16"
             android:text="@string/preparation"
+            android:fontFamily="@font/raleway_semibold"
             android:id="@+id/preparationSection"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="@dimen/h2" />
@@ -211,6 +214,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/raleway_light"
                     android:text="WELL DONE"
                     android:textSize="@dimen/h2" />
 
@@ -223,6 +227,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/raleway_light"
                         android:layout_marginTop="@dimen/space8"
                         android:text="You did it! Share app with your friends!" />
 
