@@ -245,6 +245,10 @@ class UserItemLevel1 : AppCompatActivity() {
             startLevel2(cocktailName, categoryChipIdSelected)
             //TODO()
         }
+
+        //TODO(only for debug !!!!!!!!!! remove this( 2 rows) )
+        val intentLevel2 = Intent(this, UserItemLevel2::class.java)
+        startActivity(intentLevel2)
     }
 
     private fun startLevel2(cocktailName: String, categoryChipIdSelected: Int) {
