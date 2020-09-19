@@ -18,6 +18,8 @@
     <string name="contact_subject_title">What\'s wrong?</string>
     <string name="contact_body_title">Please elaborate:</string>
     <string name="title_user_item">Create a New Cocktail</string>
+    <string name="ingredients_user">Ingredients</string>
+    <string name="preparation_user">Preparation</string>
     <string-array name="cocktailTypes_array">
         <item>Bourbon</item>
         <item>Brandy</item>
@@ -78,5 +80,15 @@
         <item>Vodka</item>
         <item>Whiskey</item>
         <item>Worcestershire sauce</item>
+    </string-array>
+    <string-array name="quantityTypes_array">
+        <item>cup</item>
+        <item>oz</item>
+        <item>tbsp</item>
+        <item>dash</item>
+        <item>teaspoon</item>
+        <item>leave</item>
+        <item>slice</item>
+        <item>pinch</item>
     </string-array>
 </resources>
