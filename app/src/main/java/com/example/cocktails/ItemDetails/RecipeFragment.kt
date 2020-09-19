@@ -80,10 +80,6 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
         super.onResume()
         view?.visibility = View.VISIBLE
         this.initTooltipIfNeeded()
-
-        // TODO: Need to implement this function.
-        //  Should only run (once) if storeData() ran before.
-        // this.restoreData()
     }
 
     override fun onPause() {
@@ -94,12 +90,6 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
             longPressTooltip.dismiss()
             (activity?.applicationContext as Cocktails).mFirstTimeModeSP.edit().putBoolean("recipeTab", oldVal).apply()
         }
-
-        // TODO: Need to implemennt this function.
-        //  Should only run once, on the third time that onPause is executed.
-        //  This is because on creating this class onPause is being called twice as part of system init.
-        //  The third is an actual pause by the user.
-        // this.storeData()
     }
 
     override fun onDestroy() {

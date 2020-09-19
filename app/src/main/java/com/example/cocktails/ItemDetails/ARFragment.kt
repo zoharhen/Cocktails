@@ -187,7 +187,7 @@ class ARFragment(val parent: SectionsPagerAdapter) : Fragment() {
 
         val permButton: Button = rootView.findViewById(R.id.perm_button)
         permButton.setOnClickListener {
-
+            // shahaf todo
         }
     }
 
