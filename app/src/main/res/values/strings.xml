@@ -20,6 +20,20 @@
     <string name="title_user_item">Create a New Cocktail</string>
     <string name="ingredients_user">Ingredients</string>
     <string name="preparation_user">Preparation</string>
+    <string name="quantity_title">Quantity</string>
+    <string name="unit_title">Unit</string>
+    <string name="exist_ingredient">Exist ingredient</string>
+    <string name="new_ingredient">New ingredient</string>
+    <string name="done">Done</string>
+    <string name="cancel">Cancel</string>
+    <string name="cocktail_name">Cocktail Name</string>
+    <string name="category">Category</string>
+    <string name="icon">Icon</string>
+    <string name="select">select</string>
+    <string name="cocktail_image">Cocktail Image</string>
+    <string name="upload">UPLOAD</string>
+    <string name="rotate_view">ROTATE VIEW</string>
+    <string name="delete">DELETE</string>
     <string-array name="cocktailTypes_array">
         <item>Bourbon</item>
         <item>Brandy</item>

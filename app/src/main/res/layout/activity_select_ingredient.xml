@@ -26,12 +26,16 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Quantity">
+                android:fontFamily="@font/paytone_one"
+                android:hint="@string/quantity_title">
 
                 <AutoCompleteTextView
                     android:id="@+id/quantity_dropdown"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chipColor"
+                    android:fontFamily="@font/paytone_one"
+                    android:textSize="@dimen/h2"
                     android:inputType="none"
                     tools:ignore="LabelFor" />
 
@@ -41,7 +45,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-                android:hint="Unit"
+                android:hint="@string/unit_title"
                 android:paddingTop="50dp"
                 android:maxLines="1"
                 app:endIconMode="clear_text"
@@ -54,24 +58,85 @@
                 <AutoCompleteTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chipColor"
+                    android:fontFamily="@font/paytone_one"
+                    android:textSize="@dimen/h2"
                     android:inputType="numberDecimal"
                     tools:ignore="LabelFor" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:id="@+id/radio_group_ingredient"
+                android:paddingTop="50dp">
+
+                <RadioButton android:id="@+id/radio_exist_ingredient"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/exist_ingredient"
+                    android:onClick="onRadioButtonClicked"
+                    android:fontFamily="@font/paytone_one"
+                    tools:ignore="OnClick" />
+
+                <View
+                    android:layout_width="5dp"
+                    android:layout_height="60dp"
+                    android:layout_margin="5dp" />
+
+                <RadioButton android:id="@+id/radio_new_ingredient"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/new_ingredient"
+                    android:fontFamily="@font/paytone_one"
+                    android:onClick="onRadioButtonClicked"
+                    tools:ignore="OnClick" />
+            </RadioGroup>
+
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ingredient_TextInput"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Ingredient"
-                android:paddingTop="50dp"
-                android:paddingBottom="50dp">
+                android:hint="@string/ingredients_user"
+                app:helperText="Select ingredient from collection"
+                app:helperTextEnabled="true">
 
                 <AutoCompleteTextView
                     android:id="@+id/ingredient_dropdown"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chipColor"
+                    android:fontFamily="@font/paytone_one"
+                    android:textSize="@dimen/h2"
                     android:inputType="none"
+                    tools:ignore="LabelFor" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                android:hint="@string/new_ingredient"
+                android:maxLines="1"
+                app:endIconMode="clear_text"
+                android:id="@+id/textFieldNewIngredient"
+                app:helperTextEnabled="true"
+                app:helperText="Enter new ingredient"
+                app:counterEnabled="true"
+                app:counterMaxLength="20">
+
+                <AutoCompleteTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text|textAutoCorrect"
+                    android:backgroundTint="@color/chipColor"
+                    android:fontFamily="@font/paytone_one"
+                    android:textSize="@dimen/h2"
                     tools:ignore="LabelFor" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -90,7 +155,8 @@
             android:id="@+id/cancel_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cancel" />
+
+            android:text="@string/cancel" />
 
             <View
                 android:layout_width="60dp"
@@ -100,8 +166,10 @@
                 android:id="@+id/done_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Done" />
+                android:text="@string/done" />
 
         </LinearLayout>
     </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

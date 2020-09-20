@@ -21,4 +21,6 @@
     <dimen name="space16">16dp</dimen>
     <dimen name="space24">24dp</dimen>
 
+    <dimen name="title_user">18sp</dimen>
+
 </resources>
