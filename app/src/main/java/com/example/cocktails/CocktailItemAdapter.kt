@@ -23,6 +23,7 @@ class CocktailItemAdapter internal constructor(context: Context, data: List<Cock
     var onItemClick: ((Cocktail) -> Unit)? = null
     private val items: List<Cocktail> = data
     private var filteredItems: List<Cocktail> = items
+    private var presentedItems: List<Cocktail> = items
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private val cnt: Context = context
 
@@ -35,27 +36,27 @@ class CocktailItemAdapter internal constructor(context: Context, data: List<Cock
 
         val imageView: ImageView = holder.itemView.findViewById(R.id.item_clipart)
         imageView.setImageDrawable(null)
-        val item: Cocktail = filteredItems[position]
+        val item: Cocktail = presentedItems[position]
         holder.bind(item, position)
     }
 
     override fun getItemCount(): Int {
-        return filteredItems.size
+        return presentedItems.size
     }
 
     override fun getFilter(): Filter {
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 val charSearch = constraint.toString()
-                filteredItems = if (charSearch.isEmpty()) filteredItems else manageFiltering(charSearch)
+                presentedItems = if (charSearch.isEmpty()) filteredItems else manageFiltering(charSearch)
                 val filterResults = FilterResults()
-                filterResults.values = filteredItems
+                filterResults.values = presentedItems
                 return filterResults
             }
 
             @Suppress("UNCHECKED_CAST")
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                filteredItems = results?.values as ArrayList<Cocktail>
+                presentedItems = results?.values as ArrayList<Cocktail>
                 notifyDataSetChanged()
             }
         }
@@ -79,15 +80,20 @@ class CocktailItemAdapter internal constructor(context: Context, data: List<Cock
     private fun applyFilterDialogChoice() : List<Cocktail> {
         val typeFiltersSP = (cnt.applicationContext as Cocktails).mActiveTypeFilters
         val ingredientsFiltersSP = (cnt.applicationContext as Cocktails).mActiveIngredientsFilters
-        return items.filter {
+        filteredItems = items.filter {
             typeFiltersSP.all.keys.isEmpty() || it.type in typeFiltersSP.all.keys
         }.filter {
             val cocktailIngredientsAsText = it.ingredients.joinToString("\n")
-            val selectedIngredients = ingredientsFiltersSP.all.keys
             var isIngredientsValid = true
-            selectedIngredients.forEach { s -> if (!cocktailIngredientsAsText.contains(s)) isIngredientsValid = false }
+            for (s in ingredientsFiltersSP.all.keys) {
+                if (!cocktailIngredientsAsText.contains(s)) {
+                    isIngredientsValid = false
+                    break
+                }
+            }
             isIngredientsValid
         }
+        return filteredItems
     }
 
     inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -98,13 +104,13 @@ class CocktailItemAdapter internal constructor(context: Context, data: List<Cock
 
         init {
             itemView.setOnClickListener {
-                onItemClick?.invoke(filteredItems[adapterPosition])
+                onItemClick?.invoke(presentedItems[adapterPosition])
                 return@setOnClickListener
             }
 
             favorite.setOnFavoriteChangeListener{ _: MaterialFavoriteButton, value: Boolean ->
                 (cnt.applicationContext as Cocktails).mFavorites.edit()
-                    .putBoolean(filteredItems[adapterPosition].name, value).apply()
+                    .putBoolean(presentedItems[adapterPosition].name, value).apply()
             }
         }
 
