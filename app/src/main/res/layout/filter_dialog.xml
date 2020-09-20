@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/filter_dialog"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/lightColorBg">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,7 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:text="Category"
+            android:fontFamily="@font/raleway_semibold"
+            android:text="@string/categoty"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             android:textSize="18dp" />
@@ -27,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:chipMinTouchTargetSize="0dp"
-            app:chipSpacingHorizontal="10dp">
+            app:chipSpacingHorizontal="5dp">
 
         </com.google.android.material.chip.ChipGroup>
 
@@ -41,7 +43,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:text="Ingredient"
+            android:fontFamily="@font/raleway_semibold"
+            android:text="@string/ingredients"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             android:textSize="18dp" />
@@ -51,34 +54,40 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:chipMinTouchTargetSize="0dp"
-            app:chipSpacingHorizontal="10dp">
+            app:chipSpacingHorizontal="5dp">
+
         </com.google.android.material.chip.ChipGroup>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="6dp"
+            android:background="@color/colorRipple" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center">
+            android:gravity="end">
 
-            <Button
+            <ImageButton
                 android:id="@+id/clear_btn"
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
-                android:background="@color/colorPrimary"
-                android:text="Clear"
-                android:layout_marginEnd="20dp"
-                android:textColor="@color/colorText" />
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_gravity="center_vertical"
+                android:scaleType="fitXY"
+                android:background="@null"
+                android:src="@drawable/ic_delete_black_24dp"
+                android:contentDescription="TODO" />
 
             <Button
                 android:id="@+id/apply_btn"
-                android:layout_width="120dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
-                android:background="@color/colorPrimary"
-                android:text="Apply"
-                android:layout_marginStart="20dp"
-                android:textColor="@color/colorText" />
+                android:background="@android:color/transparent"
+                android:textColor="@color/colorPrimaryDark"
+                android:fontFamily="@font/raleway_semibold"
+                android:textSize="18sp"
+                android:text="@string/apply" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

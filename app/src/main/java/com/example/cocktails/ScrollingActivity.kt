@@ -5,24 +5,29 @@ import android.app.ActivityOptions
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.AutoCompleteTextView
-import android.widget.EditText
-import android.widget.ScrollView
+import android.view.WindowManager
+import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
+import androidx.core.view.forEach
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import com.example.cocktails.CustomItem.UserItemLevel1
+import com.example.cocktails.R.*
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.gson.Gson
@@ -31,6 +36,7 @@ import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_scrolling.*
 import kotlinx.android.synthetic.main.content_scrolling.*
 import kotlinx.android.synthetic.main.filter_dialog.view.*
+import kotlinx.android.synthetic.main.recipe_item.view.*
 
 
 @Parcelize
@@ -42,10 +48,11 @@ class ScrollingActivity : AppCompatActivity() {
 
     private var gridViewAdapter: CocktailItemAdapter? = null
     private lateinit var recyclerView: RecyclerView
+    private var filterDialog : AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_scrolling)
+        setContentView(layout.activity_scrolling)
         setSupportActionBar(toolbar)
 
         initAdapter()
@@ -68,7 +75,7 @@ class ScrollingActivity : AppCompatActivity() {
     }
 
     private fun initRecyclerview() {
-        recyclerView = findViewById(R.id.recyclerView)
+        recyclerView = findViewById(id.recyclerView)
         recyclerView.layoutManager = GridLayoutManager(this, getColumnNum())
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = gridViewAdapter
@@ -80,7 +87,9 @@ class ScrollingActivity : AppCompatActivity() {
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         recyclerView.layoutManager = GridLayoutManager(this, getColumnNum())
-
+        if (filterDialog != null) {
+            setFilterDialogLayoutSize()
+        }
     }
 
     private fun getColumnNum() : Int {
@@ -110,6 +119,7 @@ class ScrollingActivity : AppCompatActivity() {
         })
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_scrolling, menu)
@@ -117,12 +127,14 @@ class ScrollingActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun initSearchView(menu: Menu) {
-        val searchView: SearchView = menu.findItem(R.id.action_search).actionView as SearchView
-        searchView.findViewById<AutoCompleteTextView>(R.id.search_src_text).threshold = 1
+        val searchView: SearchView = menu.findItem(id.action_search).actionView as SearchView
+        searchView.findViewById<AutoCompleteTextView>(id.search_src_text).threshold = 1
         val searchPlate = searchView.findViewById(androidx.appcompat.R.id.search_src_text) as EditText
         searchPlate.hint = "Search"
-        searchPlate.background = resources.getDrawable(R.drawable.rounded_corner, theme)
+        searchPlate.setTextAppearance(style.chipText)
+        searchPlate.background = resources.getDrawable(drawable.rounded_corner, theme)
         searchPlate.setHintTextColor(Color.parseColor("#D5D3D3"))
         searchPlate.setTextColor(Color.parseColor("#D5D3D3"))
         val searchPlateView: View = searchView.findViewById(androidx.appcompat.R.id.search_plate)
@@ -140,15 +152,16 @@ class ScrollingActivity : AppCompatActivity() {
         searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_filter -> openFilterDialog()
-            R.id.action_favorites -> openFilteredActivityView("favorites")
-            R.id.action_myCocktails -> openFilteredActivityView("custom")
-            R.id.action_help -> openContactUsActivity()
+            id.action_filter -> openFilterDialog()
+            id.action_favorites -> openFilteredActivityView("favorites")
+            id.action_myCocktails -> openFilteredActivityView("custom")
+            id.action_help -> openContactUsActivity()
             android.R.id.home -> {
                 val options: ActivityOptions = ActivityOptions.makeCustomAnimation(this, 0,0)
                 finish()
@@ -167,8 +180,9 @@ class ScrollingActivity : AppCompatActivity() {
         gridViewAdapter?.filter?.filter(filter)
         startActivity(filteredActivity)
 
-        toolbar.menu.setGroupVisible(R.id.menuGroup, false)
-        toolbar_layout.title = if (filter == "favorites") resources.getString(R.string.favorites) else resources.getString(R.string.my_cocktails)
+        toolbar.menu.setGroupVisible(id.menuGroup, false)
+        toolbar_layout.title = if (filter == "favorites") resources.getString(string.favorites) else resources.getString(
+            string.my_cocktails)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
@@ -176,26 +190,76 @@ class ScrollingActivity : AppCompatActivity() {
         return true
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("InflateParams")
     private fun openFilterDialog(): Boolean {
-        val layout = layoutInflater.inflate(R.layout.filter_dialog, null) as ScrollView
-        resources.getStringArray(R.array.cocktailTypes_array).forEach { addChip(it, layout.CategoryChipGroup) }
-        resources.getStringArray(R.array.ingredients).forEach { addChip(it, layout.IngredientChipGroup) }
+        val typeFiltersSP = (applicationContext as Cocktails).mActiveTypeFilters
+        val ingredientsFiltersSP = (applicationContext as Cocktails).mActiveIngredientsFilters
 
-        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
-        builder.setView(layout).create().show()
+        val layout = layoutInflater.inflate(layout.filter_dialog, null) as ScrollView
+        resources.getStringArray(array.cocktailTypes_array).forEach { addChip(it, layout.CategoryChipGroup, typeFiltersSP) }
+        resources.getStringArray(array.ingredients).forEach { addChip(it, layout.IngredientChipGroup, ingredientsFiltersSP) }
+
+        layout.findViewById<Button>(R.id.apply_btn).setOnClickListener {
+            val typeFiltersSpEditor = typeFiltersSP.edit()
+            typeFiltersSpEditor.clear()
+            layout.CategoryChipGroup.checkedChipIds.forEach {
+                val selectedChip = layout.CategoryChipGroup.findViewById<Chip>(it)
+                typeFiltersSpEditor.putBoolean(selectedChip.text as String?, true)
+            }
+            typeFiltersSpEditor.apply()
+
+            val ingredientsFiltersSpEditor = ingredientsFiltersSP.edit()
+            ingredientsFiltersSpEditor.clear()
+            layout.IngredientChipGroup.checkedChipIds.forEach {
+                val selectedChip = layout.IngredientChipGroup.findViewById<Chip>(it)
+                ingredientsFiltersSpEditor.putBoolean(selectedChip.text as String?, true)
+            }
+            ingredientsFiltersSpEditor.apply()
+            gridViewAdapter?.filter?.filter("filterDialog")
+            filterDialog?.dismiss()
+        }
+
+        layout.findViewById<ImageButton>(id.clear_btn).setOnClickListener {
+            val cnt = (applicationContext as Cocktails)
+            cnt.mActiveTypeFilters.edit().clear().apply()
+            cnt.mActiveIngredientsFilters.edit().clear().apply()
+            gridViewAdapter?.filter?.filter("filterDialog")
+            filterDialog?.dismiss()
+        }
+
+        filterDialog = AlertDialog.Builder(this).setView(layout).create()
+        setFilterDialogLayoutSize()
+        filterDialog!!.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        filterDialog!!.setOnDismissListener { filterDialog = null }
+
         return true
     }
 
-    private fun addChip(item: String, chipGroup: ChipGroup) {
+    private fun setFilterDialogLayoutSize() {
+        if (filterDialog != null) {
+            val lp = WindowManager.LayoutParams()
+            lp.copyFrom(filterDialog!!.window?.attributes)
+            lp.width = (resources.displayMetrics.widthPixels * 0.9).toInt()
+            lp.height = (resources.displayMetrics.heightPixels * 0.7).toInt()
+            filterDialog!!.show()
+            filterDialog!!.window?.attributes = lp
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun addChip(item: String, chipGroup: ChipGroup, sp: SharedPreferences) {
         val chip = Chip(chipGroup.context)
         chip.text = item
+        chip.setTextAppearance(style.chipText)
         chip.isCheckable = true
+        chip.isChecked = sp.getBoolean(item, false)
+        chip.chipBackgroundColor = getColorStateList(color.chipColor)
         chipGroup.addView(chip)
     }
 
     private fun initUserItemButton(){
-        val userItemButton:View= findViewById(R.id.userItemFab)
+        val userItemButton:View= findViewById(id.userItemFab)
         userItemButton.setOnClickListener {
         val createNewItemIntent = Intent(applicationContext, UserItemLevel1::class.java)
         startActivity(createNewItemIntent) }

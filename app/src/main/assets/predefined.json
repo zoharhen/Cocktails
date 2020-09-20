@@ -9,7 +9,7 @@
             "1 oz Blue curaçao",
             "4 oz Lemonade",
             "Garnish: Orange wheel",
-            "Garnish: Maraschino cherry"
+            "Garnish: Maraschino Cherry"
         ],
         "steps": [
             "Add all ingredients into a shaker with ice and shake.",
@@ -26,11 +26,11 @@
         "ingredients": [
             "2 oz Tequila",
             "4 oz Tomato juice",
-            "1/2 oz Fresh lemon juice",
+            "1/2 oz Fresh Lemon juice",
             "4 dashes Worcestershire sauce",
             "2 dashes Tabasco sauce",
             "2 dashes Tapatio hot sauce",
-            "1/2 tbsp Prepared horseradish",
+            "1/2 tbsp Prepared Horseradish",
             "1 pinch Celery salt",
             "1 pinch Ground black pepper",
             "Garnish: Lime wedge",
@@ -54,8 +54,8 @@
         "name": "Waldorf",
         "ingredients": [
             "Absinthe, to rinse",
-            "2 oz Rye whiskey",
-            "3/4 oz Sweet vermouth",
+            "2 oz Rye Whiskey",
+            "3/4 oz Sweet Vermouth",
             "3 dashes Angostura bitters"
         ],
         "steps": [
@@ -90,12 +90,12 @@
         "ingredients": [
             "Ice",
             "3/4 oz Vodka",
-            "3/4 oz White rum",
-            "3/4 oz Silver tequila",
+            "3/4 oz White Rum",
+            "3/4 oz Silver Tequila",
             "3/4 oz Gin",
             "3/4 oz Triple sec",
             "3/4 oz Simple syrup",
-            "3/4 oz Fresh lemon juice",
+            "3/4 oz Fresh Lemon juice",
             "Cola, to top",
             "Garnish: Lemon wedge"
         ],
@@ -114,7 +114,7 @@
         "name": "Dry Martini",
         "ingredients": [
             "2 1/2 oz Gin",
-            "1/2 oz Dry vermouth",
+            "1/2 oz Dry Vermouth",
             "1 dash Orange bitters",
             "Garnish: Lemon twist"
         ],
@@ -131,11 +131,11 @@
         "image": "bebbo",
         "name": "Bebbo",
         "ingredients": [
-            "1 1/2 oz London dry gin",
-            "1 oz honey syrup (equal parts honey and water)",
-            "3/4 oz fresh lemon juice",
-            "1/4 oz fresh blood orange juice",
-            "Garnish: lemon twist"
+            "1 1/2 oz London Dry Gin",
+            "1 oz Honey syrup (equal parts honey and water)",
+            "3/4 oz Fresh Lemon juice",
+            "1/4 oz fresh blood Orange juice",
+            "Garnish: Lemon twist"
         ],
         "steps": [
             "Pour ingredients into a shaker with ice and shake for 30 seconds.",
@@ -150,12 +150,12 @@
         "image": "mojito",
         "name": "Mojito",
         "ingredients": [
-            "8 leaves of mint",
+            "8 leaves of Mint",
             "Ice",
-            "2 oz White rum",
-            "3/4 oz Fresh lime juice",
+            "2 oz White Rum",
+            "3/4 oz Fresh Lime juice",
             "1/2 oz Simple syrup",
-            "Club soda, to top",
+            "Club Soda, to top",
             "Garnish: Mint sprig",
             "Garnish: Lime wheel"
         ],
@@ -174,12 +174,12 @@
         "image": "lions-tail",
         "name": "Lion's Tail",
         "ingredients": [
-            "2 oz bourbon",
+            "2 oz Bourbon",
             "4 dashes Angostura bitters",
-            "1/2 oz fresh lime juice",
-            "1/2 oz simple syrup",
-            "1/2 oz allspice dram",
-            "Garnish: orange peel"
+            "1/2 oz Fresh Lime juice",
+            "1/2 oz Simple syrup",
+            "1/2 oz Allspice dram",
+            "Garnish: Orange peel"
         ],
         "steps": [
             "Add all ingredients into a shaker with ice and shake for 10 to 15 seconds.",
@@ -198,8 +198,8 @@
             "3 dashes Angostura bitters",
             "1 tsp water",
             "Ice",
-            "2 oz bourbon",
-            "Garnish: orange peel"
+            "2 oz Bourbon",
+            "Garnish: Orange peel"
         ],
         "steps": [
             "Add the sugar, bitters and water into a rocks glass, and stir until sugar is nearly dissolved.",
@@ -214,8 +214,8 @@
         "image": "daiquiri",
         "name": "Daiquiri",
         "ingredients": [
-            "2 oz Light rum",
-            "1 oz Fresh lime juice",
+            "2 oz Light Rum",
+            "1 oz Fresh Lime juice",
             "3/4 oz Demerara sugar syrup",
             "Garnish: Lime twist"
         ],
@@ -232,8 +232,8 @@
         "image": "hot-buttered-rum",
         "name": "Buttered Rum",
         "ingredients": [
-            "1 1/2 oz Gold rum",
-            "1 tbsp Hot buttered rum batter",
+            "1 1/2 oz Gold Rum",
+            "1 tbsp Hot Buttered Rum batter",
             "3/4 cup Boiling water",
             "Garnish: Cinnamon stick",
             "Garnish: Freshly grated nutmeg"
@@ -252,9 +252,9 @@
         "name": "Blood & Sand",
         "ingredients": [
             "3/4 oz Scotch",
-            "3/4 oz Sweet vermouth",
-            "3/4 oz Heering cherry liqueur",
-            "3/4 oz Fresh orange juice",
+            "3/4 oz Sweet Vermouth",
+            "3/4 oz Heering Cherry liqueur",
+            "3/4 oz Fresh Orange juice",
             "Garnish: Orange peel"
         ],
         "steps": [
@@ -274,7 +274,7 @@
             "1 Sugar cube",
             "3 dashes Peychaud's bitters",
             "2 dashes Angostura bitters",
-            "2 oz Russell's Reserve rye whiskey",
+            "2 oz Russell's Reserve Rye Whiskey",
             "Ice",
             "Garnish: Lemon peel"
         ],
@@ -315,7 +315,7 @@
         "name": "Brown Derby",
         "ingredients": [
             "1 1/2 oz Bourbon",
-            "1 oz Fresh grapefruit juice",
+            "1 oz Fresh Grapefruit juice",
             "1/2 oz Honey syrup*",
             "Garnish: Grapefruit twist"
         ],
@@ -333,8 +333,8 @@
         "image": "tequila-sunrise",
         "name": "Tequila Sunrise",
         "ingredients": [
-            "2 oz Blanco tequila",
-            "4 oz Fresh orange juice",
+            "2 oz Blanco Tequila",
+            "4 oz Fresh Orange juice",
             "1/4 oz Grenadine",
             "Garnish: Orange slice",
             "Garnish: Cherry"
@@ -354,7 +354,7 @@
         "ingredients": [
             "Ice",
             "2 oz Pisco",
-            "1 oz Fresh lime juice",
+            "1 oz Fresh Lime juice",
             "1/2 oz Simple syrup",
             "1 Egg white",
             "Garnish: Angostura bitters"
@@ -373,9 +373,9 @@
         "name": "Margarita",
         "ingredients": [
             "Ice",
-            "3/4 oz Fresh squeezed lime juice",
-            "1 oz Cointreau, triple sec or another orange liqueur",
-            "1 1/2 oz Blanco tequila",
+            "3/4 oz Fresh squeezed Lime juice",
+            "1 oz Cointreau, triple sec or another Orange liqueur",
+            "1 1/2 oz Blanco Tequila",
             "Kosher salt (optional)",
             "Garnish: Lime wheel"
         ],
@@ -395,7 +395,7 @@
         "ingredients": [
             "1 1/2 oz Cognac",
             "3/4 oz Cointreau",
-            "3/4 oz Fresh lemon juice",
+            "3/4 oz Fresh Lemon juice",
             "Garnish: Orange twist",
             "Garnish: Sugar rim"
         ],
@@ -413,16 +413,16 @@
         "image": "bloody-ceasar",
         "name": "Bloody Caesar",
         "ingredients": [
-            "celery salt",
+            "Celery salt",
             "Ice",
-            "1 1/2 oz vodka",
+            "1 1/2 oz Vodka",
             "4 oz Clamato juice",
             "2 dashes Worcestershire sauce",
             "2 dashes Tabasco sauce",
-            "prepared horseradish, to taste (optional)",
-            "Garnish: cucumber spear",
-            "Garnish: lime wedge",
-            "Garnish: parsley sprig"
+            "prepared Horseradish, to taste (optional)",
+            "Garnish: Cucumber spear",
+            "Garnish: Lime wedge",
+            "Garnish: Parsley sprig"
         ],
         "steps": [
             "Coat the rim of a tall glass with celery salt, fill with ice and set aside.",
@@ -440,9 +440,9 @@
         "name": "Rob Roy",
         "ingredients": [
             "2 oz Scotch",
-            "3/4 oz Sweet vermouth",
+            "3/4 oz Sweet Vermouth",
             "3 dashes Angostura bitters",
-            "Garnish: Brandied cherry"
+            "Garnish: Brandied Cherry"
         ],
         "steps": [
             "Add all the ingredients into a mixing glass over ice and stir.",
@@ -477,7 +477,7 @@
         "name": "Whiskey Sour",
         "ingredients": [
             "2 oz Bourbon",
-            "3/4 oz Fresh lemon juice",
+            "3/4 oz Fresh Lemon juice",
             "1/2 oz Simple syrup",
             "1/2 oz Egg white (optional)",
             "Garnish: Angostura bitters"
@@ -495,11 +495,11 @@
         "image": "blue-hawaiian",
         "name": "Blue Hawaiian",
         "ingredients": [
-            "1 1/2 oz Light rum",
+            "1 1/2 oz Light Rum",
             "3/4 oz Blue curaçao",
             "2 oz Pineapple juice",
-            "3/4 oz Creme de coconut",
-            "1/2 oz Fresh lemon juice",
+            "3/4 oz Creme de Coconut",
+            "1/2 oz Fresh Lemon juice",
             "Garnish: Pineapple wedge",
             "Garnish: Cherry",
             "Garnish: Cocktail umbrella"
@@ -517,8 +517,8 @@
         "image": "old-pal",
         "name": "Old Pal",
         "ingredients": [
-            "1 oz Rye whiskey",
-            "1 oz Dry vermouth",
+            "1 oz Rye Whiskey",
+            "1 oz Dry Vermouth",
             "1 oz Campari",
             "Ice",
             "Garnish: Lemon twist"
@@ -539,11 +539,11 @@
             "Crushed ice",
             "1 1/2 oz Tequila Ocho plata",
             "3/4 oz Midori",
-            "3/4 oz fresh lime juice",
+            "3/4 oz Fresh Lime juice",
             "1/2 oz agave nectar",
             "2 slices jalapeño pepper",
-            "7 slices cilantro",
-            "Garnish: cilantro"
+            "7 slices Cilantro",
+            "Garnish: Cilantro"
         ],
         "steps": [
             "Add all ingredients into a shaker with ice and hard-shake until well-chilled.",
@@ -561,8 +561,8 @@
             "Ice",
             "1 1/4 oz Midori",
             "1/2 oz Ancho Reyes chile liqueur",
-            "1/2 oz Fresh lemon juice",
-            "Fever-Tree aromatic tonic, to top",
+            "1/2 oz Fresh Lemon juice",
+            "Fever-Tree aromatic Tonic, to top",
             "Garnish: Thyme sprig"
         ],
         "steps": [
@@ -578,13 +578,13 @@
         "name": "Beet Rose",
         "ingredients": [
             "Ice",
-            "2 oz Ketel One vodka",
-            "1 oz fresh beet juice",
-            "3/4 oz fresh lemon juice",
-            "6 mint leaves",
-            "prosecco, chilled, to top",
-            "Garnish: mint sprig",
-            "Garnish: lemon twist"
+            "2 oz Ketel One Vodka",
+            "1 oz Fresh Beet juice",
+            "3/4 oz Fresh Lemon juice",
+            "6 Mint leaves",
+            "Prosecco, chilled, to top",
+            "Garnish: Mint sprig",
+            "Garnish: Lemon twist"
         ],
         "steps": [
             "Add all ingredients except prosecco into a shaker with ice and shake until well-chilled.",
@@ -602,7 +602,7 @@
         "ingredients": [
             "Ice",
             "2 oz Pimm's No. 1 Cup",
-            "3 oz Sprite, 7Up or ginger ale",
+            "3 oz Sprite, 7Up or Ginger ale",
             "1 slice Cucumber",
             "Garnish: Mint sprig",
             "Garnish: Strawberry",
@@ -623,11 +623,11 @@
         "name": "Manhattan",
         "ingredients": [
             "Ice",
-            "2 oz bourbon or rye",
-            "1 oz sweet vermouth",
+            "2 oz Bourbon or Rye",
+            "1 oz sweet Vermouth",
             "2 dashes Angostura bitters",
-            "1 dash orange bitters",
-            "Garnish: brandied cherry"
+            "1 dash Orange bitters",
+            "Garnish: brandied Cherry"
         ],
         "steps": [
             "Add all the ingredients into a mixing glass with ice, and stir until well-chilled.",
@@ -643,10 +643,10 @@
         "name": "Negroni",
         "ingredients": [
             "Ice",
-            "1 oz gin",
+            "1 oz Gin",
             "1 oz Campari",
-            "1 oz sweet vermouth",
-            "Garnish: orange peel"
+            "1 oz sweet Vermouth",
+            "Garnish: Orange peel"
         ],
         "steps": [
             "Add all the ingredients into a mixing glass with ice, and stir until well-chilled.",
@@ -662,8 +662,8 @@
         "name": "Scotch & Soda",
         "ingredients": [
             "Ice",
-            "2 oz scotch whisky",
-            "1/4 cup club soda, to top"
+            "2 oz Scotch Whisky",
+            "1/4 cup Club Soda, to top"
         ],
         "steps": [
             "Add the scotch to a highball glass filled with ice.",
@@ -679,8 +679,8 @@
         "ingredients": [
             "Ice",
             "1 1/2 oz Campari",
-            "1 1/2 oz Sweet vermouth",
-            "1 splash Club soda",
+            "1 1/2 oz Sweet Vermouth",
+            "1 splash Club Soda",
             "Garnish: Orange twist"
         ],
         "steps": [
