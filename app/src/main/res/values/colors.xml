@@ -17,4 +17,5 @@
     <color name="arBackTextColor">#4D858585</color>
     <color name="rowColor">#DAE8FC</color>
     <color name="doneIcon">#4CAF50</color>
+    <color name="badgeColor">#F44336</color>
 </resources>

@@ -67,6 +67,7 @@ dependencies {
     implementation 'com.github.nisrulz:screenshott:2.0.0' // take screenshot
     implementation 'com.blankj:utilcode:1.29.0'
     implementation 'net.gotev:speech:1.4.0' // tts
+    implementation 'com.github.nikartm:image-support:1.0.5'
     // log
     implementation 'com.jakewharton.timber:timber:4.7.1' // logger
     implementation 'com.squareup.okhttp3:logging-interceptor:4.2.2'

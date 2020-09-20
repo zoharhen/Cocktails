@@ -22,7 +22,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
-import androidx.core.view.forEach
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
@@ -36,7 +35,7 @@ import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_scrolling.*
 import kotlinx.android.synthetic.main.content_scrolling.*
 import kotlinx.android.synthetic.main.filter_dialog.view.*
-import kotlinx.android.synthetic.main.recipe_item.view.*
+import ru.nikartm.support.ImageBadgeView
 
 
 @Parcelize
@@ -49,6 +48,7 @@ class ScrollingActivity : AppCompatActivity() {
     private var gridViewAdapter: CocktailItemAdapter? = null
     private lateinit var recyclerView: RecyclerView
     private var filterDialog : AlertDialog? = null
+    private var filterIcon: View? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +58,9 @@ class ScrollingActivity : AppCompatActivity() {
         initAdapter()
         initRecyclerview()
         initUserItemButton()
+
+        gridViewAdapter?.filter?.filter("filterDialog") // update view by current selected filters
+
     }
 
     public override fun onStart() {
@@ -123,8 +126,20 @@ class ScrollingActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_scrolling, menu)
+
+        filterIcon = menu.findItem(id.action_filter).actionView
+        menu.findItem(id.action_filter).actionView.setOnClickListener { openFilterDialog() }
+        refreshFilterBadge()
         initSearchView(menu)
         return super.onCreateOptionsMenu(menu)
+    }
+
+    private fun refreshFilterBadge() {
+        if (filterIcon != null) {
+            val cnt = (applicationContext as Cocktails)
+            val isFilterOff = cnt.mActiveTypeFilters.all.keys.isEmpty() && cnt.mActiveIngredientsFilters.all.keys.isEmpty()
+            filterIcon?.findViewById<ImageBadgeView>(id.filter_icon)?.badgeValue = if(isFilterOff) 0 else 1
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -217,6 +232,7 @@ class ScrollingActivity : AppCompatActivity() {
             }
             ingredientsFiltersSpEditor.apply()
             gridViewAdapter?.filter?.filter("filterDialog")
+            refreshFilterBadge()
             filterDialog?.dismiss()
         }
 
@@ -225,6 +241,7 @@ class ScrollingActivity : AppCompatActivity() {
             cnt.mActiveTypeFilters.edit().clear().apply()
             cnt.mActiveIngredientsFilters.edit().clear().apply()
             gridViewAdapter?.filter?.filter("filterDialog")
+            refreshFilterBadge()
             filterDialog?.dismiss()
         }
 
