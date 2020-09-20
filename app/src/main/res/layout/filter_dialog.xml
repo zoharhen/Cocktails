@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:fontFamily="@font/raleway_semibold"
-            android:text="@string/ingredient"
+            android:text="@string/ingredients"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             android:textSize="18dp" />
