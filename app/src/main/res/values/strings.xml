@@ -18,6 +18,9 @@
     <string name="contact_subject_title">What\'s wrong?</string>
     <string name="contact_body_title">Please elaborate:</string>
     <string name="title_user_item">Create a New Cocktail</string>
+    <string name="categoty">CATEGOTY</string>
+    <string name="ingredient">INGREDIENT</string>
+    <string name="apply">Apply</string>
     <string-array name="cocktailTypes_array">
         <item>Bourbon</item>
         <item>Brandy</item>

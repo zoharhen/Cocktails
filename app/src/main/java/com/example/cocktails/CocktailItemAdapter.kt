@@ -15,7 +15,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.github.ivbaranov.mfb.MaterialFavoriteButton
 import android.app.Activity
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class CocktailItemAdapter internal constructor(context: Context, data: List<Cocktail>) :
@@ -48,7 +47,7 @@ class CocktailItemAdapter internal constructor(context: Context, data: List<Cock
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 val charSearch = constraint.toString()
-                filteredItems = if (charSearch.isEmpty()) items else manageFiltering(charSearch)
+                filteredItems = if (charSearch.isEmpty()) filteredItems else manageFiltering(charSearch)
                 val filterResults = FilterResults()
                 filterResults.values = filteredItems
                 return filterResults
@@ -63,14 +62,32 @@ class CocktailItemAdapter internal constructor(context: Context, data: List<Cock
     }
 
     private fun manageFiltering(toSearch: String): ArrayList<Cocktail> {
-        val resultList = ArrayList<Cocktail>()
+        var resultList = ArrayList<Cocktail>()
         val favoriteList = (cnt.applicationContext as Cocktails).mFavorites
         when (toSearch) {
             "favorites" -> items.filter { favoriteList.getBoolean(it.name, false)}.forEach { resultList.add(it) }
             "custom" -> items.filter { it.isCustom }.forEach { resultList.add(it) }
-            else -> items.filter { it.name.toLowerCase(Locale.ROOT).contains(toSearch.toLowerCase(Locale.ROOT))}.forEach { resultList.add(it) }
+            "filterDialog" -> applyFilterDialogChoice().forEach { resultList.add(it) }
+            else -> {
+                resultList = filteredItems.filter {
+                    it.name.toLowerCase(Locale.ROOT).contains(toSearch.toLowerCase(Locale.ROOT)) } as ArrayList<Cocktail>
+            }
         }
         return resultList
+    }
+
+    private fun applyFilterDialogChoice() : List<Cocktail> {
+        val typeFiltersSP = (cnt.applicationContext as Cocktails).mActiveTypeFilters
+        val ingredientsFiltersSP = (cnt.applicationContext as Cocktails).mActiveIngredientsFilters
+        return items.filter {
+            typeFiltersSP.all.keys.isEmpty() || it.type in typeFiltersSP.all.keys
+        }.filter {
+            val cocktailIngredientsAsText = it.ingredients.joinToString("\n")
+            val selectedIngredients = ingredientsFiltersSP.all.keys
+            var isIngredientsValid = true
+            selectedIngredients.forEach { s -> if (!cocktailIngredientsAsText.contains(s)) isIngredientsValid = false }
+            isIngredientsValid
+        }
     }
 
     inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
