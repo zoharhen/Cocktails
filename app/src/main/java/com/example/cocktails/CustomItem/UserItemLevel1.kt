@@ -29,7 +29,7 @@ import com.google.gson.reflect.TypeToken
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_user_item_level1.*
 
-
+val EMPTY_FIELD_ERROR_MSG: String = "Field can not be empty"
 class UserItemLevel1 : AppCompatActivity() {
     private lateinit var mUploadImgButton: Button
     private lateinit var mIconButton: Button
@@ -51,7 +51,6 @@ class UserItemLevel1 : AppCompatActivity() {
     val NO ="no"
     val CANCEL="cancel"
     val DIALOG_UPLOAD_MSG="If you go back now, your upload image will be removed."
-    val EMPTY_FIELD_ERROR_MSG: String = "Field can not be empty"
     val MAX_LENGTH_COCKTAIL_NAME: Int = 12
     val COCKTAIL_ERROR_MSG_NAME = "Cocktail name already exist ,choose different name"
     val COCKTAIL_ERROR_MSG_LENGTH: String =
