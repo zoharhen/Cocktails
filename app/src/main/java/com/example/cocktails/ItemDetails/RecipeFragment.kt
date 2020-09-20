@@ -291,7 +291,7 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
 
     private fun getScreenShot(): Bitmap {
         val scrollView = rootView.findViewById<ScrollView>(R.id.recipe_item)
-        val returnedBitmap = Bitmap.createBitmap(scrollView.getChildAt(0).width*2, scrollView.getChildAt(0).height*2, Bitmap.Config.ARGB_8888)
+        val returnedBitmap = Bitmap.createBitmap(scrollView.getChildAt(0).width*2, scrollView.getChildAt(0).height*2, Bitmap.Config.RGB_565)
         val canvas = Canvas(returnedBitmap)
         canvas.scale(2.0f, 2.0f)
         context?.let { ContextCompat.getColor(it, R.color.lightColorBg) }?.let { canvas.drawColor(it) }
