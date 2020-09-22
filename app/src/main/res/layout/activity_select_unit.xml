@@ -23,7 +23,8 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/space16"
         android:id="@+id/unit_radio_group">
-
     </RadioGroup>
+
   </LinearLayout>
+
   </ScrollView>

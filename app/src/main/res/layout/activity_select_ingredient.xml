@@ -5,197 +5,60 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/lightColorBg"
-    tools:context="com.example.cocktails.CustomItem.SelectIngredient">
+    tools:context="com.example.cocktails.CustomItem.insertIngredients.SelectIngredient">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
+        android:background="@android:color/transparent"
         android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints">
 
-        <LinearLayout
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/ingredient_toolbar"
             android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+            <TextView
+                android:id="@+id/ingredient_title_toolbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="INGREDIENT"
+                android:textSize="19dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title" />
+
+            <Button
+                android:id="@+id/add_ingredient_button_toolbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ADD"
+                android:layout_gravity="right"
+                tools:ignore="RtlHardcoded" />
+        </androidx.appcompat.widget.Toolbar>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
             android:orientation="vertical"
-            android:id="@+id/linear_layout">
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-                android:hint="@string/quantity_title"
-                android:maxLines="1"
-                app:endIconMode="clear_text"
-                android:id="@+id/textFieldQuantity"
-                app:helperTextEnabled="true"
-                app:helperText="Enter integer or float"
-                app:counterEnabled="true"
-                app:errorTextColor="@android:color/holo_red_light"
-                app:counterMaxLength="10">
-
-                <AutoCompleteTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#00FFFFFF"
-                    android:textSize="@dimen/h2"
-                    android:inputType="numberDecimal"
-                    tools:ignore="LabelFor" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_margin="15dp"
-                android:background="@color/colorRipple" />
-            <LinearLayout
-                android:id="@+id/unit_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:clickable="true"
-                android:focusable="true">
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Unit"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold"
-                    android:textSize="22sp"/>
-
-                <TextView
-                    android:id="@+id/unit_textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/defaultUnit"
-                    android:textColor="@android:color/holo_blue_dark"
-                    android:textSize="18sp"/>
-            </LinearLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/unit_title"
-                android:paddingTop="50dp">
-
-                <AutoCompleteTextView
-                    android:id="@+id/unit_dropdown"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/chipColor"
-                    android:textSize="@dimen/h2"
-                    android:inputType="none"
-                    tools:ignore="LabelFor" />
-
-            </com.google.android.material.textfield.TextInputLayout>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="MissingConstraints">
 
             <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:id="@+id/radio_group_ingredient"
-                android:paddingTop="50dp">
-
-                <RadioButton android:id="@+id/radio_exist_ingredient"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/exist_ingredient"
-                    android:onClick="onRadioButtonClicked"
-                    android:fontFamily="@font/paytone_one"
-                    tools:ignore="OnClick" />
-
-                <View
-                    android:layout_width="5dp"
-                    android:layout_height="60dp"
-                    android:layout_margin="5dp" />
-
-                <RadioButton android:id="@+id/radio_new_ingredient"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/new_ingredient"
-                    android:fontFamily="@font/paytone_one"
-                    android:onClick="onRadioButtonClicked"
-                    tools:ignore="OnClick" />
+                android:padding="@dimen/space16"
+                android:id="@+id/ingredient_radio_group">
             </RadioGroup>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/ingredient_TextInput"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/ingredients_user"
-                app:helperText="Select ingredient from collection"
-                app:helperTextEnabled="true">
-
-                <AutoCompleteTextView
-                    android:id="@+id/ingredient_dropdown"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/chipColor"
-                    android:fontFamily="@font/paytone_one"
-                    android:textSize="@dimen/h2"
-                    android:inputType="none"
-                    tools:ignore="LabelFor" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-                android:hint="@string/new_ingredient"
-                android:maxLines="1"
-                app:endIconMode="clear_text"
-                android:id="@+id/textFieldNewIngredient"
-                app:helperTextEnabled="true"
-                app:helperText="Enter new ingredient"
-                app:counterEnabled="true"
-                app:counterMaxLength="20">
-
-                <AutoCompleteTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text|textAutoCorrect"
-                    android:backgroundTint="@color/chipColor"
-                    android:fontFamily="@font/paytone_one"
-                    android:textSize="@dimen/h2"
-                    tools:ignore="LabelFor" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:orientation="horizontal"
-            android:gravity="center"
-            tools:ignore="MissingConstraints">
-
-            <Button
-            android:id="@+id/cancel_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/cancel" />
-
-            <View
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_margin="5dp" />
-            <Button
-                android:id="@+id/done_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/done" />
 
         </LinearLayout>
     </LinearLayout>
-
-
 </ScrollView>
