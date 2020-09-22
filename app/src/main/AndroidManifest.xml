@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.cocktails" >
+    package="com.example.cocktails">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -25,16 +25,22 @@
         android:supportsRtl="false"
         android:theme="@style/AppTheme"
         tools:replace="android:supportsRtl"
-        tools:targetApi="q" >
-        <activity android:name=".CustomItem.insertIngredients.SelectUnit"
-            android:parentActivityName=".CustomItem.SelectIngredient"/>
-        <activity android:name=".CustomItem.SelectIngredient" />
+        tools:targetApi="q">
+        <activity android:name=".CustomItem.insertIngredients.SelectIngredient"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".CustomItem.AddIngredientItem"/>
+        <activity
+            android:name=".CustomItem.insertIngredients.SelectUnit"
+            android:parentActivityName=".CustomItem.AddIngredientItem" />
+        <activity
+            android:name=".CustomItem.AddIngredientItem"
+            android:parentActivityName=".CustomItem.UserItemLevel2" />
         <activity android:name=".CustomItem.UserItemLevel2" />
         <activity android:name=".CustomItem.CocktailIconLevel1" />
         <activity
             android:name=".ScrollingActivity"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

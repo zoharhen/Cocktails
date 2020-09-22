@@ -70,7 +70,7 @@ class UserItemLevel2 : AppCompatActivity() {
     }
 
     private fun startSelectIngredient() {
-        val intent = Intent(this, SelectIngredient::class.java)
+        val intent = Intent(this, AddIngredientItem::class.java)
         startActivityForResult(intent, 1)
     }
 
