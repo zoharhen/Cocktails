@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -106,8 +106,8 @@
             android:id="@+id/ingredient_table"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="40dp"
-            android:paddingRight="40dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
             android:stretchColumns="*">
 
             <TableRow
@@ -121,7 +121,7 @@
                     android:textStyle="bold"
                     android:gravity="center"
                     android:textSize="15sp"
-                    android:text="Number" />
+                    android:text="@string/number" />
                 <TextView
                     android:id="@+id/quantity_col_table"
                     android:layout_width="wrap_content"
@@ -129,7 +129,7 @@
                     android:textStyle="bold"
                     android:gravity="center"
                     android:textSize="15sp"
-                    android:text="Quantity" />
+                    android:text="@string/quantity_title" />
                 <TextView
                     android:id="@+id/unit_col_table"
                     android:layout_width="wrap_content"
@@ -137,7 +137,7 @@
                     android:gravity="center"
                     android:textStyle="bold"
                     android:textSize="15sp"
-                    android:text="Unit" />
+                    android:text="@string/unit_title" />
                 <TextView
                     android:id="@+id/ingredient_col_table"
                     android:layout_width="wrap_content"
@@ -145,7 +145,7 @@
                     android:gravity="center"
                     android:textStyle="bold"
                     android:textSize="15sp"
-                    android:text="Ingredient" />
+                    android:text="@string/ingredient_user" />
             </TableRow>
             <TableRow android:background="#7D858F" android:padding="5dp">
                 <TextView
@@ -190,9 +190,91 @@
             android:clickable="true"
             app:srcCompat="@drawable/ic_add_30"
             app:tint="@color/colorPrimary"
-            app:backgroundTint="@color/colorText"
+            app:backgroundTint="@color/addButtonColor"
             app:fabCustomSize="40dp"
             android:focusable="true" />
-    </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:gravity="center"
+                android:text="@string/preparation_user"
+                android:textColor="#000000"
+                android:textColorHighlight="#451010"
+                android:fontFamily="@font/paytone_one"
+                android:textSize="@dimen/h2"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/preparation_table"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:stretchColumns="1">
+
+            <TableRow
+                android:background="#0079D6"
+                android:id="@+id/table_row_preparation"
+                android:padding="5dp">
+                <TextView
+                    android:id="@+id/number_col_table_preparation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textSize="15sp"
+                    android:text="@string/number" />
+                <TextView
+                    android:id="@+id/preparation_gide_table"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textSize="15sp"
+                    android:text="@string/preparation_user" />
+            </TableRow>
+            <TableRow android:background="#7D858F" android:padding="5dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="15sp"
+                    android:textAlignment="center"
+                    android:text="example " />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="10sp"
+                    android:textSize="15sp"
+                    android:text="Fill a Collins glass with ice and add the gin" />
+            </TableRow>
+        </TableLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_gravity="center"
+            android:id="@+id/adding_new_row_preparation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:scaleType="center"
+            android:clickable="true"
+            app:srcCompat="@drawable/ic_add_30"
+            app:tint="@color/colorPrimary"
+            app:backgroundTint="@color/addButtonColor"
+            app:fabCustomSize="40dp"
+            android:focusable="true" />
+
+
+    </LinearLayout>
+</ScrollView>

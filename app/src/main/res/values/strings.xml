@@ -36,6 +36,9 @@
     <string name="upload">UPLOAD</string>
     <string name="rotate_view">ROTATE VIEW</string>
     <string name="delete">DELETE</string>
+    <string name="number">Number</string>
+    <string name="ingredient_user">Ingredient</string>
+    <string name="defaultUnit">oz</string>
     <string-array name="cocktailTypes_array">
         <item>Bourbon</item>
         <item>Brandy</item>
@@ -97,7 +100,7 @@
         <item>Whiskey</item>
         <item>Worcestershire sauce</item>
     </string-array>
-    <string-array name="quantityTypes_array">
+    <string-array name="unitTypes_array">
         <item>cup</item>
         <item>oz</item>
         <item>tbsp</item>
