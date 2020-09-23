@@ -20,30 +20,43 @@
             android:orientation="vertical"
             android:id="@+id/linear_layout">
 
+            <LinearLayout
+                android:id="@+id/quantity_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/quantity_title"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    android:textSize="22sp"/>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-                android:hint="@string/quantity_title"
                 android:maxLines="1"
                 app:endIconMode="clear_text"
                 android:id="@+id/textFieldQuantity"
                 app:helperTextEnabled="true"
                 app:helperText="Enter integer or float"
                 app:counterEnabled="true"
-                app:errorTextColor="@android:color/holo_red_light"
+                app:errorTextColor="@android:color/holo_red_dark"
                 app:counterMaxLength="10">
 
                 <AutoCompleteTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#00FFFFFF"
-                    android:textSize="@dimen/h2"
                     android:inputType="numberDecimal"
+                    android:textColor="@android:color/holo_blue_dark"
                     tools:ignore="LabelFor" />
 
             </com.google.android.material.textfield.TextInputLayout>
-
+            </LinearLayout>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -69,10 +82,11 @@
                 <TextView
                     android:id="@+id/unit_textView"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:layout_height="40dp"
                     android:text="@string/defaultUnit"
                     android:textColor="@android:color/holo_blue_dark"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/unit_error"
@@ -80,7 +94,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="@string/required_field"
-                    android:textColor="#D60E0E"/>
+                    android:textColor="@android:color/holo_red_dark"/>
             </LinearLayout>
 
             <View
@@ -107,8 +121,9 @@
                 <TextView
                     android:id="@+id/ingredient_textView"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/defaultUnit"
+                    android:paddingTop="10dp"
+                    android:text="None"
+                    android:layout_height="40dp"
                     android:textColor="@android:color/holo_blue_dark"
                     android:textSize="18sp"/>
 
@@ -118,16 +133,21 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="@string/required_field"
-                    android:textColor="#D60E0E"/>
+                    android:textColor="@android:color/holo_red_dark"/>
             </LinearLayout>
 
 
         </LinearLayout>
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="15dp"
+            android:background="@color/colorRipple" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
+            android:layout_gravity="top"
             android:orientation="horizontal"
             android:gravity="center"
             tools:ignore="MissingConstraints">
@@ -146,7 +166,7 @@
                 android:id="@+id/done_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/done" />
+                android:text="save" />
 
         </LinearLayout>
     </LinearLayout>
