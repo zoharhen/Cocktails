@@ -4,21 +4,33 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cocktails.CustomItem.insertIngredients.*
 import com.example.cocktails.R
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_add_ingredient_item.*
 import java.util.*
 import kotlin.collections.ArrayList
 
+val ROW_NUM_KEY="row_num"
 val UNIT_KEY = "quantity"
 val INGREDIENT_KEY = "ingredient"
 val QUANTITY_KEY = "unit"
 val CURRENT_UNIT_KEY="current_unit_key"
 val CURRENT_INGREDIENT_KEY="current_ingredient_key"
+val CURRENT_QUANTITY_KEY="current_quantity_key"
+val CURRENT_ROW_NUM_KEY="current_row_num_key"
+
+data class IngredientItem(val quantity: String, val unit: String, val ingredient: String,
+                    var ingredientNum: Int){
+    fun IngredientStr():String{
+        return "$quantity $unit $ingredient"
+    }
+}
 
 class AddIngredientItem : AppCompatActivity() {
     private lateinit var mUnit: TextView
@@ -26,6 +38,7 @@ class AddIngredientItem : AppCompatActivity() {
     private lateinit var mIngredient: TextView
     private lateinit var mIngredientNew: TextInputLayout
     private lateinit var mIngredientList: ArrayList<String>
+    private var mRowNum =-1
     val ERROR_MSG_EMPTY_INGREDIENT= "error - choose ingredient."
     val ERROR_MSG_EMPTY_UNIT="error - choose quantity."
     val ERROR_MSG_QUANTITY = "error - only a integer or float is allow."
@@ -37,10 +50,16 @@ class AddIngredientItem : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_ingredient_item)
-
         initToolBar()
         initView()
         initButtons()
+
+        if( intent.extras!=null) {
+            findViewById<TextView>(R.id.quantity_TV).text= intent.extras!!.getString(CURRENT_QUANTITY_KEY)
+            mUnit.text = intent.extras!!.getString(CURRENT_UNIT_KEY)
+            mIngredient.text= intent.extras!!.getString(CURRENT_INGREDIENT_KEY)
+            mRowNum= intent.extras!!.getInt(CURRENT_ROW_NUM_KEY)
+        }
     }
 
     private fun initToolBar() {
@@ -103,6 +122,7 @@ class AddIngredientItem : AppCompatActivity() {
         intentBack.putExtra(UNIT_KEY, mUnit.text)
         intentBack.putExtra(QUANTITY_KEY, getQuantity())
         intentBack.putExtra(INGREDIENT_KEY, mIngredient.text)
+        intentBack.putExtra(ROW_NUM_KEY,mRowNum)
         setResult(RESULT_OK, intentBack)
         finish()
     }
