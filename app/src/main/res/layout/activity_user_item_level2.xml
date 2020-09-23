@@ -147,7 +147,8 @@
                     android:textSize="15sp"
                     android:text="@string/ingredient_user" />
             </TableRow>
-            <TableRow android:background="#7D858F" android:padding="5dp">
+            <TableRow android:background="#7D858F" android:padding="5dp"
+                android:id="@+id/example_ingredient_table_row">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
