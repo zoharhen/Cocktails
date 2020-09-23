@@ -16,6 +16,8 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.get
+import com.example.cocktails.CustomItem.CURRENT_INGREDIENT_KEY
 import com.example.cocktails.CustomItem.CURRENT_UNIT_KEY
 import com.example.cocktails.CustomItem.EMPTY_FIELD_ERROR_MSG
 import com.example.cocktails.R
@@ -23,22 +25,21 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 val INGREDIENT_VAL_KEY = "ingredient_val"
+val DEFAULT_INGREDIENT_VAL="None"
 
 class SelectIngredient : AppCompatActivity() {
     private lateinit var mRadioGroup: RadioGroup
     private lateinit var mIngredientsList: ArrayList<String>
-//     mNewIngredientIndex =mIngredientsList.size
-
-    val ERROR_MSG_INGREDIENT="This ingredient exist in the collection."
+    private val ERROR_MSG_INGREDIENT="This ingredient exist in the collection."
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_select_ingredient)
         initToolBar()
-        var curVal:String?=null
+        var curVal=  DEFAULT_INGREDIENT_VAL
         if( intent.extras!=null) {
-            curVal = intent.extras!!.getString(CURRENT_UNIT_KEY).toString()
+            curVal = intent.extras!!.getString(CURRENT_INGREDIENT_KEY).toString()
         }
         createRadioButtons(curVal)
         initAddButton()
@@ -78,22 +79,20 @@ class SelectIngredient : AppCompatActivity() {
             .setNegativeButton("Cancel", null)
             .setTitle("Add a new ingredient")
         //todo for edit
-//        if (index != NEW_VALUE) { //phone num clear or never insert
-//            dialog.setMessage("current step: "+ preparationList[index])
-//        }
         dialog.create()
         dialog.show()
     }
 
+    @SuppressLint("ResourceType")
     private fun addNewRadioButton(newIngredient: String) {
-        //todo check validation
+        if(!validationNewIngredient(newIngredient)) return
         val radioButtonView = RadioButton(this, null, R.attr.radioButtonStyle)
         radioButtonView.text = newIngredient
         radioButtonView.setCircleColor(Color.parseColor("#1974D2"))
+        mIngredientsList.add(newIngredient)
+        radioButtonView.id = mIngredientsList.size -1
         mRadioGroup.clearCheck()
         radioButtonView.isChecked=true
-        mIngredientsList.add(newIngredient)
-        radioButtonView.id = mIngredientsList.size-1
         mRadioGroup.addView(radioButtonView)
     }
 
@@ -131,7 +130,7 @@ class SelectIngredient : AppCompatActivity() {
             mRadioGroup.addView(radioButtonView)
         }
         if (isNewIngredient){
-            if (curVal != null) {
+            if (curVal != null && curVal!=DEFAULT_INGREDIENT_VAL) {
                 addNewRadioButton(curVal)
             }
         }
@@ -167,7 +166,7 @@ class SelectIngredient : AppCompatActivity() {
 
     private fun getItemChecked(): String {
         val checkedItemId = mRadioGroup.checkedRadioButtonId
-        var itemVal = ""
+        var itemVal = DEFAULT_INGREDIENT_VAL
         if (0 <= checkedItemId && checkedItemId < mIngredientsList.size) {
             itemVal = mIngredientsList[checkedItemId]
         }
