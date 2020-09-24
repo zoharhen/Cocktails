@@ -12,13 +12,12 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputType
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
-import androidx.core.view.get
 import com.example.cocktails.CustomItem.CURRENT_INGREDIENT_KEY
-import com.example.cocktails.CustomItem.CURRENT_UNIT_KEY
 import com.example.cocktails.CustomItem.EMPTY_FIELD_ERROR_MSG
 import com.example.cocktails.R
 import java.util.*
@@ -42,13 +41,20 @@ class SelectIngredient : AppCompatActivity() {
             curVal = intent.extras!!.getString(CURRENT_INGREDIENT_KEY).toString()
         }
         createRadioButtons(curVal)
-        initAddButton()
+        initButtons()
+
     }
 
-    private fun initAddButton() {
-        findViewById<Button>(R.id.add_ingredient_button_toolbar).setOnClickListener {
+    private fun initButtons() {
+        //init add button
+        val addIngredientButton: View = findViewById(R.id.add_new_ingredient_button)
+        addIngredientButton.setOnClickListener {
             showAddNewIngredientDialog(this)
         }
+//        //init done button
+//        findViewById<Button>(R.id.done_button_toolbar).setOnClickListener {
+//            finish()
+//        }
     }
 
     private fun validationNewIngredient(input: String?): Boolean {
@@ -76,9 +82,8 @@ class SelectIngredient : AppCompatActivity() {
                     addNewRadioButton(input)
                 }
             }
-            .setNegativeButton("Cancel", null)
+            .setNeutralButton("Cancel", null)
             .setTitle("Add a new ingredient")
-        //todo for edit
         dialog.create()
         dialog.show()
     }
@@ -97,15 +102,25 @@ class SelectIngredient : AppCompatActivity() {
     }
 
     private fun initToolBar(){
-        val toolbar: Toolbar = findViewById<View>(R.id.ingredient_toolbar) as Toolbar
-        setSupportActionBar(toolbar)
-        supportActionBar?.title = ""
+//        val toolbar: Toolbar = findViewById<View>(R.id.ingredient_toolbar) as Toolbar
+//        setSupportActionBar(toolbar)
+        supportActionBar?.title = getString(R.string.ingredient_user)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu_add_ingredient, menu)
+        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
+                onBackPressed()
+                return true
+            }
+            R.id.done_button_menu -> {
                 onBackPressed()
                 return true
             }

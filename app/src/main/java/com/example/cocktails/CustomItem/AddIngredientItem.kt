@@ -63,7 +63,7 @@ class AddIngredientItem : AppCompatActivity() {
     }
 
     private fun initToolBar() {
-        supportActionBar?.title = TITLE_ACTIVITY
+        supportActionBar?.title = getString(R.string.ingredients_user)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
