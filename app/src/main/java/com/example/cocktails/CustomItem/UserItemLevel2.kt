@@ -10,10 +10,7 @@ import android.os.Bundle
 import android.text.InputType
 import android.view.Gravity
 import android.view.View
-import android.widget.EditText
-import android.widget.TableLayout
-import android.widget.TableRow
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cocktails.R
 
@@ -131,6 +128,10 @@ class UserItemLevel2 : AppCompatActivity() {
             startActivityForResult(ingredientsIntent, 10)
 
         }
+        ingredientTableRow.setOnLongClickListener{
+            showDelIngredientDialog(rowNum)
+            return@setOnLongClickListener true
+        }
 
         if (newIngredientItem) {
             val ingredientItem = IngredientItem(quantityVal, unitVal, ingredientVal, rowNum)
@@ -141,8 +142,9 @@ class UserItemLevel2 : AppCompatActivity() {
 
     }
 
+
     //todo add this option
-    private fun showDelIngredientDialog(index:Int): View.OnLongClickListener? {
+    private fun showDelIngredientDialog(index: Int): View.OnLongClickListener? {
         lateinit var dialog:AlertDialog
         val builder = AlertDialog.Builder(this)
         // Set a message for alert dialog
@@ -153,20 +155,17 @@ class UserItemLevel2 : AppCompatActivity() {
                     delIngredient(index)
                 }
                 //DialogInterface.BUTTON_NEGATIVE ->{}
-                //DialogInterface.BUTTON_NEUTRAL->{}
             }
         }
         builder.setPositiveButton("YES", dialogClickListener)
-//            // Set the alert dialog negative/no button
+        // Set the alert dialog negative/no button
         builder.setNegativeButton("NO", dialogClickListener)
-        // Set the alert dialog neutral/cancel button
-        builder.setNeutralButton("CANCEL", dialogClickListener)
         dialog = builder.create()
         dialog.show()
         return null//todo
     }
 
-    private fun delIngredient(index:Int) {
+    private fun delIngredient(index: Int) {
         ingredientsValList.removeAt(index)
         updateIngredientList()
     }
