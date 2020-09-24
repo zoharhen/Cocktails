@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="match_parent"
     android:id="@+id/level1_scroll_view"
     android:background="@color/lightColorBg"
     tools:context=".CustomItem.UserItemLevel1">
@@ -20,75 +20,63 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_user1"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            android:elevation="4dp"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-
-            <TextView
-                android:id="@+id/title_user1"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:id="@+id/levels"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="start"
-                android:text="@string/title_user_item"
-                android:textSize="19dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title" />
+                android:paddingVertical="20dp"
+                android:layout_gravity="center"
+                tools:ignore="MissingConstraints">
+
+                <TextView
+                    android:id="@+id/tv_level_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_circle_cur_level"
+                    android:fontFamily="@font/paytone_one"
+                    android:gravity="center"
+                    android:text="@string/level1"
+                    android:textColor="#000000" />
+
+                <View
+                    android:id="@+id/tv_row1"
+                    android:layout_width="60dp"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center"
+                    android:background="#020202" />
+
+                <TextView
+                    android:id="@+id/tv_level_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_circle_level"
+                    android:gravity="center"
+                    android:fontFamily="@font/paytone_one"
+                    android:text="@string/level2"
+                    android:textColor="#000000" />
+
+                <View
+                    android:layout_width="60dp"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center"
+                    android:background="#020202" />
+
+                <TextView
+                    android:id="@+id/tv_level_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:background="@drawable/ic_circle_level"
+                    android:text="@string/level3"
+                    android:fontFamily="@font/paytone_one"
+                    android:textColor="#000000" />
+
+            </LinearLayout>
 
         </androidx.appcompat.widget.Toolbar>
 
-        <LinearLayout
-            android:id="@+id/levels"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingVertical="20dp"
-            android:layout_gravity="center"
-            tools:ignore="MissingConstraints">
 
-            <TextView
-                android:id="@+id/tv_level_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/ic_circle_cur_level"
-                android:fontFamily="@font/paytone_one"
-                android:gravity="center"
-                android:text="@string/level1"
-                android:textColor="#000000" />
-
-            <View
-                android:id="@+id/tv_row1"
-                android:layout_width="60dp"
-                android:layout_height="1dp"
-                android:layout_gravity="center"
-                android:background="#020202" />
-
-            <TextView
-                android:id="@+id/tv_level_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/ic_circle_level"
-                android:gravity="center"
-                android:fontFamily="@font/paytone_one"
-                android:text="@string/level2"
-                android:textColor="#000000" />
-
-            <View
-                android:layout_width="60dp"
-                android:layout_height="1dp"
-                android:layout_gravity="center"
-                android:background="#020202" />
-
-            <TextView
-                android:id="@+id/tv_level_3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:background="@drawable/ic_circle_level"
-                android:text="@string/level3"
-                android:fontFamily="@font/paytone_one"
-                android:textColor="#000000" />
-
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -301,6 +289,7 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingRight="10dp"
             android:orientation="vertical">
 
             <Button
@@ -309,7 +298,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:text="next" />
+                android:text="next"/>
         </RelativeLayout>
 
     </LinearLayout>
