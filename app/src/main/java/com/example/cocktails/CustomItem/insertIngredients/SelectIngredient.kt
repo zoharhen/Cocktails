@@ -16,9 +16,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
-import androidx.core.view.get
 import com.example.cocktails.CustomItem.CURRENT_INGREDIENT_KEY
-import com.example.cocktails.CustomItem.CURRENT_UNIT_KEY
 import com.example.cocktails.CustomItem.EMPTY_FIELD_ERROR_MSG
 import com.example.cocktails.R
 import java.util.*
@@ -42,12 +40,19 @@ class SelectIngredient : AppCompatActivity() {
             curVal = intent.extras!!.getString(CURRENT_INGREDIENT_KEY).toString()
         }
         createRadioButtons(curVal)
-        initAddButton()
+        initButtons()
+
     }
 
-    private fun initAddButton() {
-        findViewById<Button>(R.id.add_ingredient_button_toolbar).setOnClickListener {
+    private fun initButtons() {
+        //init add button
+        val addIngredientButton: View = findViewById(R.id.add_new_ingredient_button)
+        addIngredientButton.setOnClickListener {
             showAddNewIngredientDialog(this)
+        }
+        //init done button
+        findViewById<Button>(R.id.done_button_toolbar).setOnClickListener {
+            finish()
         }
     }
 
@@ -76,9 +81,8 @@ class SelectIngredient : AppCompatActivity() {
                     addNewRadioButton(input)
                 }
             }
-            .setNegativeButton("Cancel", null)
+            .setNeutralButton("Cancel", null)
             .setTitle("Add a new ingredient")
-        //todo for edit
         dialog.create()
         dialog.show()
     }

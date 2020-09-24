@@ -35,10 +35,10 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title" />
 
             <Button
-                android:id="@+id/add_ingredient_button_toolbar"
+                android:id="@+id/done_button_toolbar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ADD"
+                android:text="DONE"
                 android:layout_gravity="right"
                 tools:ignore="RtlHardcoded" />
         </androidx.appcompat.widget.Toolbar>
@@ -60,5 +60,17 @@
             </RadioGroup>
 
         </LinearLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_gravity="center"
+            android:id="@+id/add_new_ingredient_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:clickable="true"
+            app:srcCompat="@drawable/ic_add_30"
+            app:tint="@android:color/white"
+            app:backgroundTint="@android:color/black"
+            app:fabCustomSize="40dp"
+            android:focusable="true" />
     </LinearLayout>
 </ScrollView>
