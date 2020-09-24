@@ -8,12 +8,15 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cocktails.CustomItem.CURRENT_UNIT_KEY
 import com.example.cocktails.R
+
 
 val UNIT_VAL_KEY = "unit_val"
 
@@ -21,13 +24,14 @@ val UNIT_VAL_KEY = "unit_val"
 class SelectUnit : AppCompatActivity() {
     private lateinit var mRadioGroup: RadioGroup
     private lateinit var mUnitList: ArrayList<String>
-    private val TITLE_ACTIVITY="UNIT"
+    private val TITLE_ACTIVITY="Unit"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_select_unit)
         supportActionBar?.title = TITLE_ACTIVITY
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         var curVal:String=resources.getString(R.string.defaultUnit)
         if( intent.extras!=null) {
             curVal = intent.extras!!.getString(CURRENT_UNIT_KEY).toString()
@@ -35,19 +39,38 @@ class SelectUnit : AppCompatActivity() {
         createRadioButtons(curVal)
 
     }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
+        return when (item.itemId) {
+            R.id.done_button_menu -> {
+                finish()
+                true
+            }
             android.R.id.home -> {
                 onBackPressed()
                 return true
             }
+            else -> super.onOptionsItemSelected(item)
         }
-        return super.onOptionsItemSelected(item)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu_add_ingredient, menu)
+        return true
+    }
+
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        when (item.itemId) {
+//            android.R.id.home -> {
+//                onBackPressed()
+//                return true
+//            }
+//        }
+//        return super.onOptionsItemSelected(item)
+//    }
+
     @SuppressLint("SetTextI18n")
-    private fun createRadioButtons(curVal:String) {
+    private fun createRadioButtons(curVal: String) {
         mRadioGroup = findViewById(R.id.unit_radio_group)
         mUnitList = ArrayList(listOf(*resources.getStringArray(R.array.unitTypes_array)))
         for (i in 0 until mUnitList.size) {

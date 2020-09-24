@@ -12,6 +12,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputType
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
@@ -50,10 +51,10 @@ class SelectIngredient : AppCompatActivity() {
         addIngredientButton.setOnClickListener {
             showAddNewIngredientDialog(this)
         }
-        //init done button
-        findViewById<Button>(R.id.done_button_toolbar).setOnClickListener {
-            finish()
-        }
+//        //init done button
+//        findViewById<Button>(R.id.done_button_toolbar).setOnClickListener {
+//            finish()
+//        }
     }
 
     private fun validationNewIngredient(input: String?): Boolean {
@@ -101,15 +102,25 @@ class SelectIngredient : AppCompatActivity() {
     }
 
     private fun initToolBar(){
-        val toolbar: Toolbar = findViewById<View>(R.id.ingredient_toolbar) as Toolbar
-        setSupportActionBar(toolbar)
-        supportActionBar?.title = ""
+//        val toolbar: Toolbar = findViewById<View>(R.id.ingredient_toolbar) as Toolbar
+//        setSupportActionBar(toolbar)
+        supportActionBar?.title = getString(R.string.ingredient_user)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu_add_ingredient, menu)
+        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
+                onBackPressed()
+                return true
+            }
+            R.id.done_button_menu -> {
                 onBackPressed()
                 return true
             }

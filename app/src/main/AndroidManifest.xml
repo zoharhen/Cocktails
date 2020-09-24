@@ -27,7 +27,6 @@
         tools:replace="android:supportsRtl"
         tools:targetApi="q">
         <activity android:name=".CustomItem.insertIngredients.SelectIngredient"
-            android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".CustomItem.AddIngredientItem"/>
         <activity
             android:name=".CustomItem.insertIngredients.SelectUnit"
