@@ -71,17 +71,13 @@ class UserItemLevel1 : AppCompatActivity() {
         initView()
     }
 
-    private fun initToolBar(){
-//        val toolbar: Toolbar = findViewById<View>(R.id.toolbar_user1) as Toolbar
-//        setSupportActionBar(toolbar)
+    private fun initToolBar() {
         supportActionBar?.title = getString(R.string.title_user_item)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
+    }
 //        toolbar.setNavigationOnClickListener {
 //            showDialogOnBackPress()
 //        }
-    }
-
 //    override fun onOptionsItemSelected(item: MenuItem): Boolean {
 //        when (item.itemId) {
 //            android.R.id.home -> {
@@ -120,22 +116,15 @@ class UserItemLevel1 : AppCompatActivity() {
         mDelUploadImgButton= findViewById(R.id.del_upload_img_Button)
         buttonStateOffUploadImg()
 
-
         mNextButton = findViewById(R.id.nextButton)
 
         initCategory()
         initButtonsListener()
     }
     private fun showDialogOnBackPress(){
-        // Late initialize an alert dialog object
         lateinit var dialog:AlertDialog
-        // Initialize a new instance of alert dialog builder object
         val builder = AlertDialog.Builder(this)
-
-        // Set a message for alert dialog
         builder.setMessage(BACK_PRESS_MSG)
-
-        // On click listener for dialog buttons
         val dialogClickListener = DialogInterface.OnClickListener{ _, which ->
             when(which){
                 DialogInterface.BUTTON_POSITIVE -> {
@@ -146,13 +135,7 @@ class UserItemLevel1 : AppCompatActivity() {
             }
         }
         builder.setPositiveButton(YES, dialogClickListener)
-
-        // Set the alert dialog negative/no button
         builder.setNegativeButton(NO, dialogClickListener)
-
-        // Set the alert dialog neutral/cancel button
-        builder.setNeutralButton(CANCEL, dialogClickListener)
-
         dialog = builder.create()
         dialog.show()
     }
@@ -196,7 +179,6 @@ class UserItemLevel1 : AppCompatActivity() {
         mIconButton.setOnClickListener {
             openIconsActivity()
         }
-
         mNextButton.setOnClickListener {
             checkedLevel1()
         }
@@ -215,18 +197,9 @@ class UserItemLevel1 : AppCompatActivity() {
     }
 
     private fun showDialog(){
-        // Late initialize an alert dialog object
         lateinit var dialog:AlertDialog
-
-
-        // Initialize a new instance of alert dialog builder object
         val builder = AlertDialog.Builder(this)
-
-        // Set a message for alert dialog
         builder.setMessage(DIALOG_UPLOAD_MSG)
-
-
-        // On click listener for dialog buttons
         val dialogClickListener = DialogInterface.OnClickListener{ _, which ->
             when(which){
                 DialogInterface.BUTTON_POSITIVE -> {
@@ -234,17 +207,10 @@ class UserItemLevel1 : AppCompatActivity() {
                     buttonStateOffUploadImg()
                 }
                 //DialogInterface.BUTTON_NEGATIVE ->{}
-                //DialogInterface.BUTTON_NEUTRAL->{}
             }
         }
         builder.setPositiveButton(YES, dialogClickListener)
-
-        // Set the alert dialog negative/no button
         builder.setNegativeButton(NO, dialogClickListener)
-
-        // Set the alert dialog neutral/cancel button
-        builder.setNeutralButton(CANCEL, dialogClickListener)
-
         dialog = builder.create()
         dialog.show()
     }

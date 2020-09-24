@@ -23,18 +23,15 @@ class UserItemLevel2 : AppCompatActivity() {
     private lateinit var ingredientsValList: ArrayList<IngredientItem>
     private lateinit var ingredientTableRow: TableRow
     private lateinit var ingredientTableLayout: TableLayout
-    private lateinit var ingredientsErrorTV:TextView
+    private lateinit var ingredientsErrorTV: TextView
 
     private lateinit var preparationValList: ArrayList<StepItem>
     private lateinit var preparationTableRow: TableRow
     private lateinit var preparationTableLayout: TableLayout
-    private lateinit var preparationErrorTV:TextView
+    private lateinit var preparationErrorTV: TextView
 
+    private val NUM_OF_DEFUALT_ROWS = 2
     private val REQUEST_CODE_SELECT_INGREDIENTS = 1
-    private var counterPreparationRowTable: Int = 0
-
-    //    private  var preparationList:ArrayList<String> = arrayListOf()
-    private val NEW_VALUE = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,14 +43,14 @@ class UserItemLevel2 : AppCompatActivity() {
     }
 
     private fun initView() {
-        ingredientsErrorTV=findViewById(R.id.ingredients_level2_error)
+        ingredientsErrorTV = findViewById(R.id.ingredients_level2_error)
         ingredientsErrorTV.visibility = View.GONE
 
-        preparationErrorTV=findViewById(R.id.preparation_error)
+        preparationErrorTV = findViewById(R.id.preparation_error)
         preparationErrorTV.visibility = View.GONE
 
         findViewById<Button>(R.id.nextLevel3Button).setOnClickListener {
-            if(checkedValidationLevel2()){
+            if (checkedValidationLevel2()) {
                 openLevel3Activity()
             }
         }
@@ -77,7 +74,7 @@ class UserItemLevel2 : AppCompatActivity() {
             return true
         }
         ingredientsErrorTV.visibility = View.VISIBLE
-        ingredientsErrorTV.error=""
+        ingredientsErrorTV.error = ""
         return false
 
 
@@ -114,10 +111,10 @@ class UserItemLevel2 : AppCompatActivity() {
         ingredientTableLayout = findViewById(R.id.ingredient_table)
         ingredientTableRow = findViewById(R.id.example_ingredient_table_row)
 //        counterIngredientRowTable = -1
-        ingredientTableLayout.setColumnStretchable(0, true)
-        ingredientTableLayout.setColumnStretchable(1, true)
-        ingredientTableLayout.setColumnStretchable(2, true)
-        ingredientTableLayout.setColumnStretchable(3, true)
+//        ingredientTableLayout.setColumnStretchable(0, true)
+//        ingredientTableLayout.setColumnStretchable(1, true)
+//        ingredientTableLayout.setColumnStretchable(2, true)
+//        ingredientTableLayout.setColumnStretchable(3, false)
 
         val addRowButton: View = findViewById(R.id.adding_new_row)
         addRowButton.setOnClickListener {
@@ -130,7 +127,6 @@ class UserItemLevel2 : AppCompatActivity() {
         preparationValList = ArrayList()
         preparationTableLayout = findViewById(R.id.preparation_table)
         preparationTableRow = findViewById(R.id.table_row_preparation)
-//        counterPreparationRowTable = -1
         preparationTableLayout.setColumnStretchable(0, true)
         preparationTableLayout.setColumnStretchable(1, true)
 
@@ -154,7 +150,6 @@ class UserItemLevel2 : AppCompatActivity() {
     ) {
         ingredientTableRow = TableRow(this)
         val scrNumRow = TextView(this)
-//        scrNumRow.id = R.id.id_row_num
         val scrQuantity = TextView(this)
         val scrUnit = TextView(this)
         val scrIngredient = TextView(this)
@@ -179,22 +174,19 @@ class UserItemLevel2 : AppCompatActivity() {
         scrIngredient.gravity = Gravity.CENTER
         scrIngredient.textSize = 15F
 
+        val params = TableRow.LayoutParams(
+            TableRow.LayoutParams.WRAP_CONTENT,
+            TableRow.LayoutParams.WRAP_CONTENT, 1f
+        )
         ingredientTableRow.addView(scrNumRow)
-        ingredientTableRow.addView(scrQuantity)
+        ingredientTableRow.addView(scrQuantity, params)
         ingredientTableRow.addView(scrUnit)
-        ingredientTableRow.addView(scrIngredient)
+        ingredientTableRow.addView(scrIngredient, params)
         ingredientTableRow.setPadding(10, 10, 10, 10)
         ingredientTableRow.setBackgroundColor(resources.getColor(R.color.rowColor))
+
         ingredientTableRow.setOnClickListener {
-            val ingredientsIntent = Intent(this, AddIngredientItem::class.java)
-            ingredientsIntent.putExtra(CURRENT_QUANTITY_KEY, quantityVal)
-            ingredientsIntent.putExtra(CURRENT_UNIT_KEY, unitVal)
-            ingredientsIntent.putExtra(CURRENT_INGREDIENT_KEY, ingredientVal)
-            ingredientsIntent.putExtra(CURRENT_ROW_NUM_KEY, rowNum)
-
-            //todo requestCode
-            startActivityForResult(ingredientsIntent, 10)
-
+            startAddIngredientActivity(quantityVal, unitVal, ingredientVal, rowNum)
         }
         ingredientTableRow.setOnLongClickListener {
             showDelItemDialog(rowNum, false)
@@ -207,11 +199,28 @@ class UserItemLevel2 : AppCompatActivity() {
         }
 
         ingredientTableLayout.addView(ingredientTableRow)
-
+        ingredientTableLayout.setColumnStretchable(0, false)
+        ingredientTableLayout.setColumnStretchable(1, true)
+        ingredientTableLayout.setColumnStretchable(2, true)
+        ingredientTableLayout.setColumnStretchable(3, true)
     }
 
+    private fun startAddIngredientActivity(
+        quantityVal: String,
+        unitVal: String,
+        ingredientVal: String,
+        rowNum: Int
+    ) {
+        val ingredientsIntent = Intent(this, AddIngredientItem::class.java)
+        ingredientsIntent.putExtra(CURRENT_QUANTITY_KEY, quantityVal)
+        ingredientsIntent.putExtra(CURRENT_UNIT_KEY, unitVal)
+        ingredientsIntent.putExtra(CURRENT_INGREDIENT_KEY, ingredientVal)
+        ingredientsIntent.putExtra(CURRENT_ROW_NUM_KEY, rowNum)
 
-    //todo add this option
+        //todo requestCode
+        startActivityForResult(ingredientsIntent, 10)
+    }
+
     private fun showDelItemDialog(
         index: Int,
         isPreparation: Boolean
@@ -262,10 +271,6 @@ class UserItemLevel2 : AppCompatActivity() {
             }
             .setNeutralButton("Cancel", null)
             .setTitle("Add a new step")
-        //todo for edit
-//        if (index != NEW_VALUE) { //phone num clear or never insert
-//            dialog.setMessage("current step: "+ preparationList[index])
-//        }
         dialog.create()
         dialog.show()
     }
@@ -282,10 +287,6 @@ class UserItemLevel2 : AppCompatActivity() {
             }
             .setNeutralButton("Cancel", null)
             .setTitle("Update step")
-        //todo for edit
-//        if (index != NEW_VALUE) { //phone num clear or never insert
-//            dialog.setMessage("current step: "+ preparationList[index])
-//        }
         dialog.create()
         dialog.show()
     }
@@ -302,7 +303,6 @@ class UserItemLevel2 : AppCompatActivity() {
                     preparationTableLayout.childCount - 1
                 )
             )
-
         for (i in 0 until preparationValList.size) {
             preparationValList[i].stemNum = i //todo
             addNewStepRow(preparationValList[i].step, preparationValList[i].stemNum, false)
@@ -358,7 +358,6 @@ class UserItemLevel2 : AppCompatActivity() {
             if (requestCode == REQUEST_CODE_SELECT_INGREDIENTS) {
                 if (!quantityVal.isNullOrEmpty() && !unitVal.isNullOrEmpty() && !ingredientVal.isNullOrEmpty()) {
                     addNewIngredientRow(quantityVal, unitVal, ingredientVal, true, null)
-//                    counterIngredientRowTable += 1
                 }
             } else if (requestCode == 10) {
                 val rowNum = data.getIntExtra(ROW_NUM_KEY, -1)
@@ -375,11 +374,11 @@ class UserItemLevel2 : AppCompatActivity() {
     }
 
     private fun updateIngredientList() {
-        while (ingredientTableLayout.childCount > 2)
+        while (ingredientTableLayout.childCount > NUM_OF_DEFUALT_ROWS)
             ingredientTableLayout.removeView(ingredientTableLayout.getChildAt(ingredientTableLayout.childCount - 1))
 
         for (i in 0 until ingredientsValList.size) {
-            ingredientsValList[i].ingredientNum = i //todo
+            ingredientsValList[i].ingredientNum = i //todo check
             addNewIngredientRow(
                 ingredientsValList[i].quantity,
                 ingredientsValList[i].unit,
@@ -387,7 +386,6 @@ class UserItemLevel2 : AppCompatActivity() {
             )
         }
     }
-
 
 }
 
