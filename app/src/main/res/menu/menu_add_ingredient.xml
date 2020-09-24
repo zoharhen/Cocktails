@@ -5,5 +5,5 @@
         android:id="@+id/done_button_menu"
         android:title="Done"
         android:layout_gravity="right"
-        app:showAsAction="always" />
+        app:showAsAction="always"/>
 </menu>

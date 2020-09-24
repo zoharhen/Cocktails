@@ -9,6 +9,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -69,14 +70,25 @@ class UserItemLevel1 : AppCompatActivity() {
     }
 
     private fun initToolBar(){
-        val toolbar: Toolbar = findViewById<View>(R.id.toolbar_user1) as Toolbar
-        setSupportActionBar(toolbar)
+//        val toolbar: Toolbar = findViewById<View>(R.id.toolbar_user1) as Toolbar
+//        setSupportActionBar(toolbar)
+        supportActionBar?.title = getString(R.string.title_user_item)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = ""
-        toolbar.setNavigationOnClickListener {
-            showDialogOnBackPress()
-        }
+
+//        toolbar.setNavigationOnClickListener {
+//            showDialogOnBackPress()
+//        }
     }
+
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        when (item.itemId) {
+//            android.R.id.home -> {
+//                onBackPressed()
+//                return true
+//            }
+//        }
+//        return super.onOptionsItemSelected(item)
+//    }
 
     override fun onBackPressed() {
         super.onBackPressed()

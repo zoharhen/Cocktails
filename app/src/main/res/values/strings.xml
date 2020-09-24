@@ -19,7 +19,7 @@
     <string name="contact_title">We are here to help.</string>
     <string name="contact_subject_title">What\'s wrong?</string>
     <string name="contact_body_title">Please elaborate:</string>
-    <string name="title_user_item">Create a New Cocktail</string>
+    <string name="title_user_item">New Cocktail</string>
     <string name="ingredients_user">Ingredients</string>
     <string name="preparation_user">Preparation</string>
     <string name="quantity_title">Quantity</string>

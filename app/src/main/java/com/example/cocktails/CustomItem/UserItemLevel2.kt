@@ -9,6 +9,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
 import android.view.Gravity
+import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -36,13 +37,23 @@ class UserItemLevel2 : AppCompatActivity() {
         setContentView(R.layout.activity_user_item_level2)
         initIngredientsTable()
         initPreparationTable()
-        //todo
-        //initToolBar()
+        initToolBar()
     }
 
-    //todo
-//    private fun initToolBar() {
-//    }
+    private fun initToolBar() {
+        supportActionBar?.title = getString(R.string.title_user_item)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
     @SuppressLint("ResourceAsColor")
     private fun initIngredientsTable() {
