@@ -14,6 +14,8 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cocktails.R
+import kotlinx.android.synthetic.main.activity_add_ingredient_item.*
+import kotlinx.android.synthetic.main.activity_user_item_level2.*
 
 data class StepItem(var stemNum: Int, val step: String)
 
@@ -21,10 +23,12 @@ class UserItemLevel2 : AppCompatActivity() {
     private lateinit var ingredientsValList: ArrayList<IngredientItem>
     private lateinit var ingredientTableRow: TableRow
     private lateinit var ingredientTableLayout: TableLayout
+    private lateinit var ingredientsErrorTV:TextView
 
     private lateinit var preparationValList: ArrayList<StepItem>
     private lateinit var preparationTableRow: TableRow
     private lateinit var preparationTableLayout: TableLayout
+    private lateinit var preparationErrorTV:TextView
 
     private val REQUEST_CODE_SELECT_INGREDIENTS = 1
     private var counterPreparationRowTable: Int = 0
@@ -38,6 +42,55 @@ class UserItemLevel2 : AppCompatActivity() {
         initIngredientsTable()
         initPreparationTable()
         initToolBar()
+        initView()
+    }
+
+    private fun initView() {
+        ingredientsErrorTV=findViewById(R.id.ingredients_level2_error)
+        ingredientsErrorTV.visibility = View.GONE
+
+        preparationErrorTV=findViewById(R.id.preparation_error)
+        preparationErrorTV.visibility = View.GONE
+
+        findViewById<Button>(R.id.nextLevel3Button).setOnClickListener {
+            if(checkedValidationLevel2()){
+                openLevel3Activity()
+            }
+        }
+    }
+
+    private fun openLevel3Activity() {
+        val intent = Intent(this, UserItemLevel3::class.java)
+        startActivity(intent)
+    }
+
+
+    private fun checkedValidationLevel2(): Boolean {
+        val ingredientIsValid = ingredientValidation()
+        val preparationIsValid = preparationValidation()
+        return (ingredientIsValid && preparationIsValid)
+    }
+
+    private fun ingredientValidation(): Boolean {
+        if (ingredientsValList.size > 0) {//todo check init size list
+            ingredientsErrorTV.visibility = View.GONE
+            return true
+        }
+        ingredientsErrorTV.visibility = View.VISIBLE
+        ingredientsErrorTV.error=""
+        return false
+
+
+    }
+
+    private fun preparationValidation(): Boolean {
+        if (preparationValList.size > 0) {//todo check init size list
+            preparationErrorTV.visibility = View.GONE
+            return true
+        }
+        preparationErrorTV.visibility = View.VISIBLE
+        preparationErrorTV.error = ""
+        return false
     }
 
     private fun initToolBar() {
@@ -144,7 +197,7 @@ class UserItemLevel2 : AppCompatActivity() {
 
         }
         ingredientTableRow.setOnLongClickListener {
-            showDelItemDialog(rowNum,false)
+            showDelItemDialog(rowNum, false)
             return@setOnLongClickListener true
         }
 
@@ -205,7 +258,7 @@ class UserItemLevel2 : AppCompatActivity() {
             .setView(inputText)
             .setPositiveButton("Add") { _, _ ->
                 val input = inputText.text.toString()
-                addNewStepRow(input, null,true)
+                addNewStepRow(input, null, true)
             }
             .setNeutralButton("Cancel", null)
             .setTitle("Add a new step")
@@ -252,11 +305,11 @@ class UserItemLevel2 : AppCompatActivity() {
 
         for (i in 0 until preparationValList.size) {
             preparationValList[i].stemNum = i //todo
-            addNewStepRow(preparationValList[i].step, preparationValList[i].stemNum,false)
+            addNewStepRow(preparationValList[i].step, preparationValList[i].stemNum, false)
         }
     }
 
-    private fun addNewStepRow(stepInput: String, stepNum: Int?,isNewStepItem: Boolean) {
+    private fun addNewStepRow(stepInput: String, stepNum: Int?, isNewStepItem: Boolean) {
         preparationTableRow = TableRow(this)
         val scrNumRow = TextView(this)
         val scrStep = TextView(this)
@@ -285,7 +338,7 @@ class UserItemLevel2 : AppCompatActivity() {
             showUpdateStepDialog(this, stepInput, rowNum)
         }
         preparationTableRow.setOnLongClickListener {
-            showDelItemDialog(rowNum,true)
+            showDelItemDialog(rowNum, true)
             return@setOnLongClickListener true
         }
         if (isNewStepItem) {

@@ -9,14 +9,13 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.cocktails.Cocktail
@@ -40,6 +39,9 @@ class UserItemLevel1 : AppCompatActivity() {
     private lateinit var mRotateUploadView: Button
     private lateinit var mDelUploadImgButton: Button
     private lateinit var mCocktailName: TextInputLayout
+    private lateinit var mCategoryChipErrorTV:TextView
+    private lateinit var mIconErrorTV:TextView
+
     private var mUploadImgUri: Uri? = null
     private var mIconUri: Uri? = null
     private lateinit var mCategoryChip: ChipGroup
@@ -99,15 +101,17 @@ class UserItemLevel1 : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.M)
     private fun initView() {
         mCocktailName = findViewById(R.id.cocktailNameInput)
-        cocktailNameInput.counterMaxLength = MAX_LENGTH_COCKTAIL_NAME
+        mCocktailName.counterMaxLength = MAX_LENGTH_COCKTAIL_NAME
         mCategoryChip = findViewById(R.id.selectCategoryChipGroup)
-        category_chip_error.visibility = View.GONE
+        mCategoryChipErrorTV=findViewById(R.id.category_chip_error)
+        mCategoryChipErrorTV.visibility = View.GONE
 
         //Icon
         mIconView = findViewById(R.id.selected_icon_IV)
         mIconView.visibility = View.GONE
         mIconButton = findViewById(R.id.select_icon_Button)
-        icon_error.visibility = View.GONE
+        mIconErrorTV=findViewById(R.id.icon_error)
+        mIconErrorTV.visibility = View.GONE
 
         //upload img
         mUploadImgButton = findViewById(R.id.upload_img_Button)
@@ -194,7 +198,7 @@ class UserItemLevel1 : AppCompatActivity() {
         }
 
         mNextButton.setOnClickListener {
-            checkedLevel2()
+            checkedLevel1()
         }
     }
 
@@ -244,7 +248,7 @@ class UserItemLevel1 : AppCompatActivity() {
         dialog = builder.create()
         dialog.show()
     }
-    private fun checkedLevel2() {
+    private fun checkedLevel1() {
         //save info
         val cocktailName = getCocktailName()
         val categoryChipIdSelected: Int = mCategoryChip.checkedChipId
@@ -310,19 +314,19 @@ class UserItemLevel1 : AppCompatActivity() {
     private fun validateCategory(chipId: Int): Boolean {
         //if chipId==ChipGroup.NO_ID -> not chip selected
         if (chipId == ChipGroup.NO_ID) {
-            category_chip_error.visibility = View.VISIBLE
+            mCategoryChipErrorTV.visibility = View.VISIBLE
             return false
         }//else{
-        category_chip_error.visibility = View.INVISIBLE
+        mCategoryChipErrorTV.visibility = View.INVISIBLE
         return true
     }
 
     private fun validateIcon(): Boolean {
         if (mIconView.drawable == null) {
-            icon_error.visibility = View.VISIBLE
+            mIconErrorTV.visibility = View.VISIBLE
             return false
         } //else{
-        icon_error.visibility = View.INVISIBLE
+        mIconErrorTV.visibility = View.INVISIBLE
         return true
 
     }
