@@ -98,7 +98,7 @@
 
             <TableRow
                 android:background="#0079D6"
-                android:id="@+id/table_row"
+                android:id="@+id/ingredients_table_row"
                 android:padding="5dp">
                 <TextView
                     android:id="@+id/number_col_table"
@@ -181,6 +181,14 @@
             app:fabCustomSize="40dp"
             android:focusable="true" />
 
+        <TextView
+            android:id="@+id/ingredients_level2_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Please insert at least one ingredient"
+            android:textColor="@android:color/holo_red_dark" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -261,6 +269,29 @@
             app:fabCustomSize="40dp"
             android:focusable="true" />
 
+        <TextView
+            android:id="@+id/preparation_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
 
+            android:text="Please Insert at least one step"
+            android:textColor="@android:color/holo_red_dark" />
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="10dp"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/nextLevel3Button"
+                android:fontFamily="@font/paytone_one"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:text="next"/>
+        </RelativeLayout>
     </LinearLayout>
 </ScrollView>

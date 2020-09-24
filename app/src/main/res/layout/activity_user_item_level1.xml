@@ -92,7 +92,6 @@
                 android:text="@string/cocktail_name"
                 android:textColor="#000000"
                 android:textColorHighlight="#451010"
-                android:fontFamily="@font/paytone_one"
                 android:textSize="@dimen/h2"
                 android:textStyle="bold" />
 
@@ -135,7 +134,6 @@
                 android:text="@string/category"
                 android:textSize="@dimen/h2"
                 android:gravity="center"
-                android:fontFamily="@font/paytone_one"
                 android:textColor="#000000"
                 android:textColorHighlight="#451010"
                 android:textStyle="bold"/>
@@ -154,9 +152,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:fontFamily="@font/paytone_one"
                 android:text="@string/required_field"
-                android:textColor="#D60E0E"/>
+                android:textStyle="bold"
+                android:textColor="@color/errorColor" />
 
         </LinearLayout>
 
@@ -179,7 +177,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:fontFamily="@font/paytone_one"
                 android:gravity="center"
                 android:text="@string/icon"
                 android:textColor="#000000"
@@ -191,7 +188,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#303F9F"
-                android:fontFamily="@font/paytone_one"
                 android:text="@string/select" />
 
             <View
@@ -211,7 +207,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:fontFamily="@font/paytone_one"
+                android:textStyle="bold"
                 android:text="@string/required_field"
                 android:textColor="#D60E0E" />
 
@@ -238,7 +234,6 @@
                 android:layout_marginBottom="8dp"
                 android:gravity="center"
                 android:text="@string/cocktail_image"
-                android:fontFamily="@font/paytone_one"
                 android:textColor="#000000"
                 android:textColorHighlight="#451010"
                 android:textSize="@dimen/h2"
@@ -249,7 +244,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#303F9F"
-                android:fontFamily="@font/paytone_one"
                 android:text="@string/upload" />
 
             <ImageView
@@ -268,7 +262,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:backgroundTint="#50A2CF"
-                    android:fontFamily="@font/paytone_one"
                     android:text="@string/rotate_view" />
 
                 <View
@@ -280,7 +273,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:backgroundTint="#50A2CF"
-                    android:fontFamily="@font/paytone_one"
                     android:text="@string/delete" />
             </LinearLayout>
 
