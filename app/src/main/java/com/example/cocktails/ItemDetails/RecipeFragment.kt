@@ -40,7 +40,7 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
     private lateinit var rootView: View
     lateinit var cocktail: Cocktail
     private lateinit var longPressTooltipBuilder: SimpleTooltip.Builder
-    private lateinit var longPressTooltip: SimpleTooltip
+    lateinit var longPressTooltip: SimpleTooltip
     private var isTtsOn: Boolean = false
 
     companion object {
@@ -84,7 +84,11 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
 
     override fun onPause() {
         super.onPause()
+        dismissTooltip()
+//        view?.visibility = View.GONE
+    }
 
+    fun dismissTooltip() {
         if (this::longPressTooltip.isInitialized) {
             val oldVal = (activity?.applicationContext as Cocktails).mFirstTimeModeSP.getBoolean("recipeTab", true)
             longPressTooltip.dismiss()
