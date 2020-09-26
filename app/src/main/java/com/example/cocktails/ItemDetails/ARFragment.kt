@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.app.ActivityManager
 import android.content.Context.ACTIVITY_SERVICE
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color.parseColor
 import android.net.Uri
@@ -19,7 +20,11 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.res.ResourcesCompat.getFont
 import androidx.fragment.app.Fragment
 import com.example.cocktails.Cocktail
+import com.example.cocktails.ContactUsActivity
 import com.example.cocktails.R
+import com.github.johnpersano.supertoasts.library.Style
+import com.github.johnpersano.supertoasts.library.SuperActivityToast
+import com.github.johnpersano.supertoasts.library.utils.PaletteUtils
 import com.google.ar.core.Anchor
 import com.google.ar.core.HitResult
 import com.google.ar.core.Plane
@@ -126,6 +131,8 @@ class ARFragment(val parent: SectionsPagerAdapter) : Fragment() {
 
 //        (parent.recipeFragmentInstance as RecipeFragment).view?.visibility = View.GONE
 //        this.view?.visibility = View.VISIBLE
+
+        renderError(requireActivity())
 
         if (!inflated  && !permissionDenied) {
             getPermissions()
@@ -575,10 +582,20 @@ class ARFragment(val parent: SectionsPagerAdapter) : Fragment() {
      * Handle rendering errors
      */
     private fun renderError(activity: Activity) {
-        val toast: Toast =
-            Toast.makeText(activity, "Sorry, Something went wrong!", Toast.LENGTH_LONG)
-        toast.setGravity(Gravity.CENTER, 0, 0)
-        toast.show()  // Unable to load renderer
+        SuperActivityToast.create(activity, Style(), Style.TYPE_BUTTON)
+            .setButtonText("Contact Us")
+            .setOnButtonClickListener("ar_error_tag", null
+            ) { _, _ ->
+                val intent = Intent(requireContext(), ContactUsActivity::class.java)
+                startActivity(intent)
+            }
+            .setProgressBarColor(android.graphics.Color.WHITE)
+            .setText("Sorry, Something went wrong!")
+            .setDuration(Style.DURATION_LONG)
+            .setFrame(Style.FRAME_KITKAT)
+            .setColor(PaletteUtils.getSolidColor(PaletteUtils.MATERIAL_BLUE_GREY))
+            .setAnimations(Style.ANIMATIONS_FADE)
+            .show()
     }
 
     /**
