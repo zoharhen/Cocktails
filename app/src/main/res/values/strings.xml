@@ -39,6 +39,7 @@
     <string name="number">Number</string>
     <string name="ingredient_user">Ingredient</string>
     <string name="defaultUnit">oz</string>
+    <string name="create">Create</string>
     <string-array name="cocktailTypes_array">
         <item>Bourbon</item>
         <item>Brandy</item>
