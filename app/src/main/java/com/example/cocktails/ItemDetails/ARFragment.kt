@@ -603,7 +603,7 @@ class ARFragment(val parent: SectionsPagerAdapter) : Fragment() {
      * Parse the ingredients for the cocktail
      */
     private fun getIngredients() {
-        val curIngredients: Array<String> = cocktail.ingredients
+        val curIngredients: ArrayList<String> = cocktail.ingredients
         for (i in curIngredients) {
             // For example, i = "1 1/2 oz Vodka"
             val regex: Regex = Regex("[0-9/]*\\s([0-9/]*\\s)?\\w*\\s")
