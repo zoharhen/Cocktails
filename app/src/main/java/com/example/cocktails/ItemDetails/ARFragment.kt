@@ -132,8 +132,6 @@ class ARFragment(val parent: SectionsPagerAdapter) : Fragment() {
 //        (parent.recipeFragmentInstance as RecipeFragment).view?.visibility = View.GONE
 //        this.view?.visibility = View.VISIBLE
 
-        renderError(requireActivity())
-
         if (!inflated  && !permissionDenied) {
             getPermissions()
         }
