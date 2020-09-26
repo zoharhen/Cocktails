@@ -27,9 +27,13 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_user_item_level1.*
 
 val EMPTY_FIELD_ERROR_MSG: String = "Field can not be empty"
+val COCKATIL_NAME_KEY = "cocktailName"
+val CATEGORY_KEY = "category"
+val ICON_KEY = "icon"
+val UPLOAD_IMG_KEY = "upload_img"
+val ROTATE_UPLOAD_IMG_KEY = "rotate_upload_img"
 
 class UserItemLevel1 : AppCompatActivity() {
     private lateinit var mUploadImgButton: Button
@@ -47,10 +51,7 @@ class UserItemLevel1 : AppCompatActivity() {
     private var mIconUri: Uri? = null
     private lateinit var mCategoryChip: ChipGroup
 
-    val COCKATIL_NAME_KEY = "cocktailName"
-    val CATEGORY_KEY = "category"
-    val ICON_KEY = "icon"
-    val UPLOAD_IMG_KEY = "upload_img"
+
     val YES = "yes"
     val NO = "no"
     val DIALOG_UPLOAD_MSG = "If you go back now, your upload image will be removed."
@@ -138,6 +139,7 @@ class UserItemLevel1 : AppCompatActivity() {
         chipGroup.addView(chip)
     }
 
+
     private fun initButtonsListener() {
         mUploadImgButton.setOnClickListener {
             val intent = Intent()
@@ -146,6 +148,9 @@ class UserItemLevel1 : AppCompatActivity() {
             startActivityForResult(intent, REQUEST_CODE_UPLOAD_IMG)
         }
         mRotateUploadView.setOnClickListener {
+            if(mUserImg.rotation==360F){
+                mUserImg.rotation=0F
+            }
             mUserImg.rotation = mUserImg.rotation + 90F
         }
         mDelUploadImgButton.setOnClickListener {
@@ -204,8 +209,8 @@ class UserItemLevel1 : AppCompatActivity() {
         }
 
         //TODO(only for debug !!!!!!!!!! remove this( 2 rows) )
-        val intentLevel2 = Intent(this, UserItemLevel2::class.java)
-        startActivity(intentLevel2)
+//        val intentLevel2 = Intent(this, UserItemLevel2::class.java)
+//        startActivity(intentLevel2)
     }
 
     private fun startLevel2(cocktailName: String, categoryChipIdSelected: Int) {
@@ -215,8 +220,9 @@ class UserItemLevel1 : AppCompatActivity() {
             CATEGORY_KEY,
             (mCategoryChip.getChildAt(categoryChipIdSelected - 1) as Chip).text
         )
-        intentLevel2.putExtra(ICON_KEY, mIconUri)
-        intentLevel2.putExtra(UPLOAD_IMG_KEY, mUploadImgUri)
+        intentLevel2.putExtra(ICON_KEY, mIconUri.toString())
+        intentLevel2.putExtra(UPLOAD_IMG_KEY, mUploadImgUri.toString())
+        intentLevel2.putExtra(ROTATE_UPLOAD_IMG_KEY, mUserImg.rotation)//TODO CHECK INVALID WHEN UPLOAD NOT MUST
         startActivity(intentLevel2)
     }
 
@@ -257,6 +263,7 @@ class UserItemLevel1 : AppCompatActivity() {
         //if chipId==ChipGroup.NO_ID -> not chip selected
         if (chipId == ChipGroup.NO_ID) {
             mCategoryChipErrorTV.visibility = View.VISIBLE
+            mCategoryChipErrorTV.error=""
             return false
         }//else{
         mCategoryChipErrorTV.visibility = View.INVISIBLE
@@ -266,6 +273,7 @@ class UserItemLevel1 : AppCompatActivity() {
     private fun validateIcon(): Boolean {
         if (mIconView.drawable == null) {
             mIconErrorTV.visibility = View.VISIBLE
+            mIconErrorTV.error=""
             return false
         } //else{
         mIconErrorTV.visibility = View.INVISIBLE

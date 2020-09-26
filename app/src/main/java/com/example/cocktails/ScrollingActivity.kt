@@ -41,7 +41,7 @@ import ru.nikartm.support.ImageBadgeView
 @Parcelize
 data class Cocktail(val name: String, val type: String, val steps: ArrayList<String>,
                     val ingredients: ArrayList<String>, val clipart: String, val image: String,
-                    val isCustom: Boolean = false, val glass: String?): Parcelable
+                    val isCustom: Boolean = false, val glass: String?, val isReview:Boolean=false,val rotation:Float=0F): Parcelable
 
 class ScrollingActivity : AppCompatActivity() {
 

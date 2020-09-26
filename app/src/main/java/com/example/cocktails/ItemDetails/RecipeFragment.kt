@@ -5,8 +5,11 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Matrix
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +28,7 @@ import com.example.cocktails.BuildConfig
 import com.example.cocktails.Cocktail
 import com.example.cocktails.Cocktails
 import com.example.cocktails.R
+import developer.shivam.crescento.CrescentoImageView
 import github.nisrulz.screenshott.ScreenShott
 import io.github.douglasjunior.androidSimpleTooltip.SimpleTooltip
 import net.gotev.speech.Speech
@@ -104,15 +108,21 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun initViews(withTooltip: Boolean = true) {
-        (activity?.applicationContext as Cocktails).mStorageRef.child("images/" + cocktail.image + ".jpg")
-            .downloadUrl.addOnSuccessListener { img ->
-                context?.let { it ->
-                    Glide.with(it)
-                        .load(img)
-                        .into(rootView.findViewById(R.id.iv_cocktail))
+        if(cocktail.isReview){
+            val uploadImgUri= Uri.parse(cocktail.image)
+            val bitmapUploadImg=getUploadUriToBitmap(cocktail.rotation,uploadImgUri)
+            rootView.findViewById<CrescentoImageView>(R.id.iv_cocktail).setImageBitmap(bitmapUploadImg)
+        }
+        else {
+            (activity?.applicationContext as Cocktails).mStorageRef.child("images/" + cocktail.image + ".jpg")
+                .downloadUrl.addOnSuccessListener { img ->
+                    context?.let { it ->
+                        Glide.with(it)
+                            .load(img)
+                            .into(rootView.findViewById(R.id.iv_cocktail))
+                    }
                 }
-            }
-
+        }
         rootView.findViewById<TextView>(R.id.tv_cocktailTitle).text = cocktail.name
         rootView.findViewById<TextView>(R.id.ingredientContent).text = cocktail.ingredients.joinToString(separator = "\n")
 
@@ -301,5 +311,14 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
         context?.let { ContextCompat.getColor(it, R.color.lightColorBg) }?.let { canvas.drawColor(it) }
         scrollView.getChildAt(0).draw(canvas);
         return returnedBitmap
+    }
+
+    private fun getUploadUriToBitmap(rotation:Float,uploadImgUri: Uri):Bitmap{
+        val bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, uploadImgUri)
+        val matrix= Matrix()
+        matrix.setRotate(rotation)
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+
+//        findViewById<ImageView>(R.id.new_upload_user_img_TV).setImageBitmap(bitmapNew)
     }
 }
