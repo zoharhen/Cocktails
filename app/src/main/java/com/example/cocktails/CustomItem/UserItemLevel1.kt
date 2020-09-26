@@ -221,11 +221,7 @@ class UserItemLevel1 : AppCompatActivity() {
             (mCategoryChip.getChildAt(categoryChipIdSelected - 1) as Chip).text
         )
         intentLevel2.putExtra(ICON_KEY, mIconUri.toString())
-        var uploadImgStr:String?=null
-        if(mUploadImgUri!=null){
-            uploadImgStr=mUploadImgUri.toString()
-        }
-        intentLevel2.putExtra(UPLOAD_IMG_KEY, uploadImgStr)
+        intentLevel2.putExtra(UPLOAD_IMG_KEY, mUploadImgUri.toString())
         intentLevel2.putExtra(ROTATE_UPLOAD_IMG_KEY, mUserImg.rotation)//TODO CHECK INVALID WHEN UPLOAD NOT MUST
         startActivity(intentLevel2)
     }
