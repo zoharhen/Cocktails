@@ -14,8 +14,6 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cocktails.R
-import kotlinx.android.synthetic.main.activity_add_ingredient_item.*
-import kotlinx.android.synthetic.main.activity_user_item_level2.*
 
 data class StepItem(var stemNum: Int, val step: String)
 
@@ -23,18 +21,16 @@ class UserItemLevel2 : AppCompatActivity() {
     private lateinit var ingredientsValList: ArrayList<IngredientItem>
     private lateinit var ingredientTableRow: TableRow
     private lateinit var ingredientTableLayout: TableLayout
-    private lateinit var ingredientsErrorTV:TextView
+    private lateinit var ingredientsErrorTV: TextView
 
     private lateinit var preparationValList: ArrayList<StepItem>
     private lateinit var preparationTableRow: TableRow
     private lateinit var preparationTableLayout: TableLayout
-    private lateinit var preparationErrorTV:TextView
+    private lateinit var preparationErrorTV: TextView
 
-    private val REQUEST_CODE_SELECT_INGREDIENTS = 1
-    private var counterPreparationRowTable: Int = 0
-
-    //    private  var preparationList:ArrayList<String> = arrayListOf()
-    private val NEW_VALUE = -1
+    private val NUM_OF_DEFUALT_ROWS = 2
+    private val REQUEST_CODE_ADD_INGREDIENT = 1
+    private val REQUEST_CODE_EDIT_INGREDIENT = 2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,52 +42,20 @@ class UserItemLevel2 : AppCompatActivity() {
     }
 
     private fun initView() {
-        ingredientsErrorTV=findViewById(R.id.ingredients_level2_error)
+        ingredientsErrorTV = findViewById(R.id.ingredients_level2_error)
         ingredientsErrorTV.visibility = View.GONE
 
-        preparationErrorTV=findViewById(R.id.preparation_error)
+        preparationErrorTV = findViewById(R.id.preparation_error)
         preparationErrorTV.visibility = View.GONE
 
         findViewById<Button>(R.id.nextLevel3Button).setOnClickListener {
-            if(checkedValidationLevel2()){
+            if (checkedValidationLevel2()) {
                 openLevel3Activity()
             }
         }
     }
 
-    private fun openLevel3Activity() {
-        val intent = Intent(this, UserItemLevel3::class.java)
-        startActivity(intent)
-    }
 
-
-    private fun checkedValidationLevel2(): Boolean {
-        val ingredientIsValid = ingredientValidation()
-        val preparationIsValid = preparationValidation()
-        return (ingredientIsValid && preparationIsValid)
-    }
-
-    private fun ingredientValidation(): Boolean {
-        if (ingredientsValList.size > 0) {//todo check init size list
-            ingredientsErrorTV.visibility = View.GONE
-            return true
-        }
-        ingredientsErrorTV.visibility = View.VISIBLE
-        ingredientsErrorTV.error=""
-        return false
-
-
-    }
-
-    private fun preparationValidation(): Boolean {
-        if (preparationValList.size > 0) {//todo check init size list
-            preparationErrorTV.visibility = View.GONE
-            return true
-        }
-        preparationErrorTV.visibility = View.VISIBLE
-        preparationErrorTV.error = ""
-        return false
-    }
 
     private fun initToolBar() {
         supportActionBar?.title = getString(R.string.title_user_item)
@@ -108,12 +72,13 @@ class UserItemLevel2 : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    //####### Ingredients #######
     @SuppressLint("ResourceAsColor")
     private fun initIngredientsTable() {
         ingredientsValList = ArrayList()
         ingredientTableLayout = findViewById(R.id.ingredient_table)
         ingredientTableRow = findViewById(R.id.example_ingredient_table_row)
-//        counterIngredientRowTable = -1
+        //todo check for correct Stretch
         ingredientTableLayout.setColumnStretchable(0, true)
         ingredientTableLayout.setColumnStretchable(1, true)
         ingredientTableLayout.setColumnStretchable(2, true)
@@ -130,7 +95,6 @@ class UserItemLevel2 : AppCompatActivity() {
         preparationValList = ArrayList()
         preparationTableLayout = findViewById(R.id.preparation_table)
         preparationTableRow = findViewById(R.id.table_row_preparation)
-//        counterPreparationRowTable = -1
         preparationTableLayout.setColumnStretchable(0, true)
         preparationTableLayout.setColumnStretchable(1, true)
 
@@ -142,7 +106,7 @@ class UserItemLevel2 : AppCompatActivity() {
 
     private fun startSelectIngredient() {
         val intent = Intent(this, AddIngredientItem::class.java)
-        startActivityForResult(intent, 1)
+        startActivityForResult(intent, REQUEST_CODE_ADD_INGREDIENT)
     }
 
     private fun addNewIngredientRow(
@@ -154,7 +118,6 @@ class UserItemLevel2 : AppCompatActivity() {
     ) {
         ingredientTableRow = TableRow(this)
         val scrNumRow = TextView(this)
-//        scrNumRow.id = R.id.id_row_num
         val scrQuantity = TextView(this)
         val scrUnit = TextView(this)
         val scrIngredient = TextView(this)
@@ -179,22 +142,19 @@ class UserItemLevel2 : AppCompatActivity() {
         scrIngredient.gravity = Gravity.CENTER
         scrIngredient.textSize = 15F
 
+        val params = TableRow.LayoutParams(
+            TableRow.LayoutParams.WRAP_CONTENT,
+            TableRow.LayoutParams.WRAP_CONTENT, 1f
+        )
         ingredientTableRow.addView(scrNumRow)
-        ingredientTableRow.addView(scrQuantity)
+        ingredientTableRow.addView(scrQuantity, params)
         ingredientTableRow.addView(scrUnit)
-        ingredientTableRow.addView(scrIngredient)
+        ingredientTableRow.addView(scrIngredient, params)
         ingredientTableRow.setPadding(10, 10, 10, 10)
         ingredientTableRow.setBackgroundColor(resources.getColor(R.color.rowColor))
+
         ingredientTableRow.setOnClickListener {
-            val ingredientsIntent = Intent(this, AddIngredientItem::class.java)
-            ingredientsIntent.putExtra(CURRENT_QUANTITY_KEY, quantityVal)
-            ingredientsIntent.putExtra(CURRENT_UNIT_KEY, unitVal)
-            ingredientsIntent.putExtra(CURRENT_INGREDIENT_KEY, ingredientVal)
-            ingredientsIntent.putExtra(CURRENT_ROW_NUM_KEY, rowNum)
-
-            //todo requestCode
-            startActivityForResult(ingredientsIntent, 10)
-
+            editIngredient(quantityVal, unitVal, ingredientVal, rowNum)
         }
         ingredientTableRow.setOnLongClickListener {
             showDelItemDialog(rowNum, false)
@@ -207,42 +167,36 @@ class UserItemLevel2 : AppCompatActivity() {
         }
 
         ingredientTableLayout.addView(ingredientTableRow)
-
     }
 
+    private fun updateIngredientList() {
+        while (ingredientTableLayout.childCount > NUM_OF_DEFUALT_ROWS)
+            ingredientTableLayout.removeView(ingredientTableLayout.getChildAt(ingredientTableLayout.childCount - 1))
 
-    //todo add this option
-    private fun showDelItemDialog(
-        index: Int,
-        isPreparation: Boolean
-    ): View.OnLongClickListener? {
-        lateinit var dialog: AlertDialog
-        val builder = AlertDialog.Builder(this)
-        // Set a message for alert dialog
-        builder.setMessage("Are you sure you want to delete?")
-        val dialogClickListener = DialogInterface.OnClickListener { _, which ->
-            when (which) {
-                DialogInterface.BUTTON_POSITIVE -> {
-                    if (isPreparation) {
-                        delPreparation(index)
-                    } else {
-                        delIngredient(index)
-                    }
-                }
-                //DialogInterface.BUTTON_NEGATIVE ->{}
-            }
+        for (i in 0 until ingredientsValList.size) {
+            ingredientsValList[i].ingredientNum = i //todo check
+            addNewIngredientRow(
+                ingredientsValList[i].quantity,
+                ingredientsValList[i].unit,
+                ingredientsValList[i].ingredient, false, ingredientsValList[i].ingredientNum
+            )
         }
-        builder.setPositiveButton("YES", dialogClickListener)
-        // Set the alert dialog negative/no button
-        builder.setNegativeButton("NO", dialogClickListener)
-        dialog = builder.create()
-        dialog.show()
-        return null//todo
     }
 
-    private fun delPreparation(index: Int) {
-        preparationValList.removeAt(index)
-        updatePreparationList()
+    private fun editIngredient(
+        quantityVal: String,
+        unitVal: String,
+        ingredientVal: String,
+        rowNum: Int
+    ) {
+        val ingredientsIntent = Intent(this, AddIngredientItem::class.java)
+        ingredientsIntent.putExtra(CURRENT_QUANTITY_KEY, quantityVal)
+        ingredientsIntent.putExtra(CURRENT_UNIT_KEY, unitVal)
+        ingredientsIntent.putExtra(CURRENT_INGREDIENT_KEY, ingredientVal)
+        ingredientsIntent.putExtra(CURRENT_ROW_NUM_KEY, rowNum)
+
+        //todo requestCode
+        startActivityForResult(ingredientsIntent, REQUEST_CODE_EDIT_INGREDIENT)
     }
 
     private fun delIngredient(index: Int) {
@@ -250,65 +204,17 @@ class UserItemLevel2 : AppCompatActivity() {
         updateIngredientList()
     }
 
-
-    private fun showAddStepDialog(c: Context) {
-        val inputText = EditText(c)
-        inputText.setRawInputType(InputType.TYPE_CLASS_TEXT)
-        val dialog = AlertDialog.Builder(c)
-            .setView(inputText)
-            .setPositiveButton("Add") { _, _ ->
-                val input = inputText.text.toString()
-                addNewStepRow(input, null, true)
-            }
-            .setNeutralButton("Cancel", null)
-            .setTitle("Add a new step")
-        //todo for edit
-//        if (index != NEW_VALUE) { //phone num clear or never insert
-//            dialog.setMessage("current step: "+ preparationList[index])
-//        }
-        dialog.create()
-        dialog.show()
-    }
-
-    private fun showUpdateStepDialog(c: Context, step: String, stepNum: Int) {
-        val inputText = EditText(c)
-        inputText.setRawInputType(InputType.TYPE_CLASS_TEXT)
-        inputText.setText(step)
-        val dialog = AlertDialog.Builder(c)
-            .setView(inputText)
-            .setPositiveButton("Update") { _, _ ->
-                val input = inputText.text.toString()
-                updateStep(input, stepNum)
-            }
-            .setNeutralButton("Cancel", null)
-            .setTitle("Update step")
-        //todo for edit
-//        if (index != NEW_VALUE) { //phone num clear or never insert
-//            dialog.setMessage("current step: "+ preparationList[index])
-//        }
-        dialog.create()
-        dialog.show()
-    }
-
-    private fun updateStep(input: String, stepNum: Int) {
-        preparationValList[stepNum] = StepItem(stepNum, input)
-        updatePreparationList()
-    }
-
-    private fun updatePreparationList() {
-        while (preparationTableLayout.childCount > 2)
-            preparationTableLayout.removeView(
-                preparationTableLayout.getChildAt(
-                    preparationTableLayout.childCount - 1
-                )
-            )
-
-        for (i in 0 until preparationValList.size) {
-            preparationValList[i].stemNum = i //todo
-            addNewStepRow(preparationValList[i].step, preparationValList[i].stemNum, false)
+    private fun ingredientValidation(): Boolean {
+        if (ingredientsValList.size > 0) {//todo check init size list
+            ingredientsErrorTV.visibility = View.GONE
+            return true
         }
+        ingredientsErrorTV.visibility = View.VISIBLE
+        ingredientsErrorTV.error = ""
+        return false
     }
 
+    //####### Preparation #######
     private fun addNewStepRow(stepInput: String, stepNum: Int?, isNewStepItem: Boolean) {
         preparationTableRow = TableRow(this)
         val scrNumRow = TextView(this)
@@ -348,6 +254,77 @@ class UserItemLevel2 : AppCompatActivity() {
         preparationTableLayout.addView(preparationTableRow)
     }
 
+    private fun delPreparation(index: Int) {
+        preparationValList.removeAt(index)
+        updatePreparationList()
+    }
+
+    private fun showAddStepDialog(c: Context) {
+        val inputText = EditText(c)
+        inputText.setRawInputType(InputType.TYPE_CLASS_TEXT)
+        val dialog = AlertDialog.Builder(c)
+            .setView(inputText)
+            .setPositiveButton("Add") { _, _ ->
+                val input = inputText.text.toString()
+                addNewStepRow(input, null, true)
+            }
+            .setNeutralButton("Cancel", null)
+            .setTitle("Add a new step")
+        dialog.create()
+        dialog.show()
+    }
+
+    private fun showUpdateStepDialog(c: Context, step: String, stepNum: Int) {
+        val inputText = EditText(c)
+        inputText.setRawInputType(InputType.TYPE_CLASS_TEXT)
+        inputText.setText(step)
+        val dialog = AlertDialog.Builder(c)
+            .setView(inputText)
+            .setPositiveButton("Update") { _, _ ->
+                val input = inputText.text.toString()
+                updateStep(input, stepNum)
+            }
+            .setNeutralButton("Cancel", null)
+            .setTitle("Update step")
+        dialog.create()
+        dialog.show()
+    }
+
+    private fun updateStep(input: String, stepNum: Int) {
+        preparationValList[stepNum] = StepItem(stepNum, input)
+        updatePreparationList()
+    }
+
+    private fun updatePreparationList() {
+        while (preparationTableLayout.childCount > 2)
+            preparationTableLayout.removeView(
+                preparationTableLayout.getChildAt(
+                    preparationTableLayout.childCount - 1
+                )
+            )
+        for (i in 0 until preparationValList.size) {
+            preparationValList[i].stemNum = i //todo
+            addNewStepRow(preparationValList[i].step, preparationValList[i].stemNum, false)
+        }
+    }
+
+    private fun preparationValidation(): Boolean {
+        if (preparationValList.size > 0) {//todo check init size list
+            preparationErrorTV.visibility = View.GONE
+            return true
+        }
+        preparationErrorTV.visibility = View.VISIBLE
+        preparationErrorTV.error = ""
+        return false
+    }
+
+    private fun checkedValidationLevel2(): Boolean {
+        val ingredientIsValid = ingredientValidation()
+        val preparationIsValid = preparationValidation()
+        return (ingredientIsValid && preparationIsValid)
+    }
+
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && data != null) {
@@ -355,12 +332,11 @@ class UserItemLevel2 : AppCompatActivity() {
             val unitVal = data.getStringExtra(UNIT_KEY)
             val ingredientVal = data.getStringExtra(INGREDIENT_KEY)
 
-            if (requestCode == REQUEST_CODE_SELECT_INGREDIENTS) {
+            if (requestCode == REQUEST_CODE_ADD_INGREDIENT) {
                 if (!quantityVal.isNullOrEmpty() && !unitVal.isNullOrEmpty() && !ingredientVal.isNullOrEmpty()) {
                     addNewIngredientRow(quantityVal, unitVal, ingredientVal, true, null)
-//                    counterIngredientRowTable += 1
                 }
-            } else if (requestCode == 10) {
+            } else if (requestCode == REQUEST_CODE_EDIT_INGREDIENT) {
                 val rowNum = data.getIntExtra(ROW_NUM_KEY, -1)
                 if (rowNum == -1 || quantityVal == null || unitVal == null || ingredientVal == null) {
                     return
@@ -374,20 +350,36 @@ class UserItemLevel2 : AppCompatActivity() {
 
     }
 
-    private fun updateIngredientList() {
-        while (ingredientTableLayout.childCount > 2)
-            ingredientTableLayout.removeView(ingredientTableLayout.getChildAt(ingredientTableLayout.childCount - 1))
-
-        for (i in 0 until ingredientsValList.size) {
-            ingredientsValList[i].ingredientNum = i //todo
-            addNewIngredientRow(
-                ingredientsValList[i].quantity,
-                ingredientsValList[i].unit,
-                ingredientsValList[i].ingredient, false, ingredientsValList[i].ingredientNum
-            )
+    private fun showDelItemDialog(
+        index: Int,
+        isPreparation: Boolean
+    ): View.OnLongClickListener? {
+        lateinit var dialog: AlertDialog
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage("Are you sure you want to delete?")
+        val dialogClickListener = DialogInterface.OnClickListener { _, which ->
+            when (which) {
+                DialogInterface.BUTTON_POSITIVE -> {
+                    if (isPreparation) {
+                        delPreparation(index)
+                    } else {
+                        delIngredient(index)
+                    }
+                }
+                //DialogInterface.BUTTON_NEGATIVE ->{}
+            }
         }
+        builder.setPositiveButton("YES", dialogClickListener)
+        // Set the alert dialog negative/no button
+        builder.setNegativeButton("NO", dialogClickListener)
+        dialog = builder.create()
+        dialog.show()
+        return null//todo
     }
 
-
+    private fun openLevel3Activity() {
+        val intent = Intent(this, UserItemLevel3::class.java)
+        startActivity(intent)
+    }
 }
 
