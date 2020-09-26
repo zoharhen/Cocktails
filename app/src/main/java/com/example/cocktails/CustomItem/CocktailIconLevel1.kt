@@ -3,9 +3,8 @@ package com.example.cocktails.CustomItem
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.widget.Toast
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cocktails.Cocktails
@@ -22,6 +21,7 @@ class CocktailIconLevel1 : AppCompatActivity(),ImageAdapter.ItemClickListener {
     private lateinit var mAdapter: ImageAdapter
     private lateinit var mIcons:ArrayList<IconItem>
     private lateinit var mDataRef: StorageReference
+    private val TITLE:String = "Icon"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +65,22 @@ class CocktailIconLevel1 : AppCompatActivity(),ImageAdapter.ItemClickListener {
                 // Uh-oh, an error occurred!
             }
 
+        initToolBar()
+    }
+
+    private fun initToolBar() {
+        supportActionBar?.title = TITLE
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onItemClicked(position: Int) {
@@ -79,6 +95,8 @@ class CocktailIconLevel1 : AppCompatActivity(),ImageAdapter.ItemClickListener {
         setResult(RESULT_OK, intentBack)
         finish()
     }
+
+
 
 
 }

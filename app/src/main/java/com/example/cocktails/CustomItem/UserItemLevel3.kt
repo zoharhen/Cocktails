@@ -3,11 +3,14 @@ package com.example.cocktails.CustomItem
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cocktails.Cocktail
 import com.example.cocktails.ItemDetailsActivity
 import com.example.cocktails.R
+import kotlinx.android.synthetic.main.tabbed_item.view.*
 import java.util.*
 
 
@@ -18,8 +21,38 @@ class UserItemLevel3 : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_item_level3)
         initButtons()
+        initToolBar()
     }
 
+    private fun initToolBar() {
+        supportActionBar?.title = getString(R.string.title_user_item)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                return true
+            }
+            R.id.create_button_menu -> {
+                createCocktail()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun createCocktail() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu_level3, menu)
+        return true
+    }
 
     private fun initButtons() {
         findViewById<Button>(R.id.preview_button).setOnClickListener {
@@ -51,8 +84,10 @@ class UserItemLevel3 : AppCompatActivity() {
             intent.putExtra("cocktail", cocktail)
             startActivity(intent)
         }
-        findViewById<Button>(R.id.create_button).setOnClickListener {
-        }
+//        findViewById<Button>(R.id.create_button).setOnClickListener {
+//        }
 
     }
+
+
 }
