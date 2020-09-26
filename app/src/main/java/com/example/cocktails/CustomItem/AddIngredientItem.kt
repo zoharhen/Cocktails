@@ -27,7 +27,7 @@ val CURRENT_ROW_NUM_KEY="current_row_num_key"
 
 data class IngredientItem(val quantity: String, val unit: String, val ingredient: String,
                     var ingredientNum: Int){
-    fun IngredientStr():String{
+    fun getIngredientStrItem():String{
         return "$quantity $unit $ingredient"
     }
 }

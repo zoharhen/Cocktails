@@ -44,7 +44,7 @@ class CocktailIconLevel1 : AppCompatActivity(),ImageAdapter.ItemClickListener {
         val listRef=mDataRef.child("cliparts")
         listRef.listAll()
             .addOnSuccessListener { listResult ->
-                listResult.prefixes.forEach { prefix ->
+                listResult.prefixes.forEach { _ ->
                     // All the prefixes under listRef.
                     // You may call listAll() recursively on them.
 

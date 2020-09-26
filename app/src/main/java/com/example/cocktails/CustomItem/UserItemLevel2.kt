@@ -17,6 +17,9 @@ import com.example.cocktails.R
 
 data class StepItem(var stemNum: Int, val step: String)
 
+val INGREDIENT_LIST_STR_KEY= "ingredients_List_String"
+val PREPARATION_LIST_STR_KEY= "preparation_List_String"
+
 class UserItemLevel2 : AppCompatActivity() {
     private lateinit var ingredientsValList: ArrayList<IngredientItem>
     private lateinit var ingredientTableRow: TableRow
@@ -35,10 +38,12 @@ class UserItemLevel2 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_item_level2)
-        initIngredientsTable()
-        initPreparationTable()
         initToolBar()
         initView()
+        initIngredientsTable()
+        initPreparationTable()
+
+
     }
 
     private fun initView() {
@@ -377,9 +382,42 @@ class UserItemLevel2 : AppCompatActivity() {
         return null//todo
     }
 
+    private  fun getIngredientsListStr():ArrayList<String>{
+        val ingredientsStr=ArrayList<String>()
+        for (i in 0 until ingredientsValList.size){
+            ingredientsStr.add(ingredientsValList[i].getIngredientStrItem())
+        }
+        return ingredientsStr
+    }
+
+    private  fun getPreparationListStr():ArrayList<String>{
+        val preparationStr=ArrayList<String>()
+        for (i in 0 until preparationValList.size){
+            preparationStr.add(preparationValList[i].step)
+        }
+        return preparationStr
+    }
+
     private fun openLevel3Activity() {
-        val intent = Intent(this, UserItemLevel3::class.java)
-        startActivity(intent)
+        val intentLevel3 = Intent(this, UserItemLevel3::class.java)
+        //todo check
+        //args from level 1
+        val cocktailName= intent.getStringExtra(COCKATIL_NAME_KEY)
+        val category = intent.getStringExtra(CATEGORY_KEY)
+        val iconUri = intent.getStringExtra(ICON_KEY)
+        val uploadImgStr = intent.getStringExtra(UPLOAD_IMG_KEY)
+        val rotate:Float=intent.getFloatExtra(ROTATE_UPLOAD_IMG_KEY,0F)
+
+        intentLevel3.putExtra(COCKATIL_NAME_KEY, cocktailName)
+        intentLevel3.putExtra(CATEGORY_KEY, category)
+        intentLevel3.putExtra(ICON_KEY, iconUri)
+        intentLevel3.putExtra(UPLOAD_IMG_KEY, uploadImgStr)
+        intentLevel3.putExtra(ROTATE_UPLOAD_IMG_KEY, rotate)
+
+        intentLevel3.putStringArrayListExtra(INGREDIENT_LIST_STR_KEY, getIngredientsListStr())
+        intentLevel3.putStringArrayListExtra(PREPARATION_LIST_STR_KEY, getPreparationListStr())
+
+        startActivity(intentLevel3)
     }
 }
 
