@@ -89,7 +89,7 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
     }
 
     fun dismissTooltip() {
-        if (this::longPressTooltip.isInitialized) {
+        if (this::longPressTooltip.isInitialized && longPressTooltip.isShowing) {
             val oldVal = (activity?.applicationContext as Cocktails).mFirstTimeModeSP.getBoolean("recipeTab", true)
             longPressTooltip.dismiss()
             (activity?.applicationContext as Cocktails).mFirstTimeModeSP.edit().putBoolean("recipeTab", oldVal).apply()

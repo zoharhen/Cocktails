@@ -57,6 +57,7 @@ class ARFragment(val parent: SectionsPagerAdapter) : Fragment() {
     lateinit var cocktail: Cocktail
 
     private var inflated: Boolean = false
+    private var errorInflated: Boolean = false
     private var permissionDenied: Boolean = false
     var firstRun: Boolean = true
     var firstPause: Boolean = false
@@ -185,11 +186,9 @@ class ARFragment(val parent: SectionsPagerAdapter) : Fragment() {
             // Request denied
             if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)
             ) {
-                initError()
-            } else {
-                requestPermissions(arrayOf(
-                    Manifest.permission.CAMERA),
-                    REQUEST_CODE_PERMISSION_CAMERA)
+                if (!errorInflated) {
+                    initError()
+                }
             }
 
             permissionDenied = true
@@ -198,6 +197,8 @@ class ARFragment(val parent: SectionsPagerAdapter) : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun initError() {
+        errorInflated = true
+
         val inflater = LayoutInflater.from(context)
         // This will also attempt to request permission, but we won't get here without it.
         val inflatedView: View = inflater.inflate(R.layout.ar_error_layout, (rootView as ViewGroup), false)
