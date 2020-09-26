@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.app.ActivityManager
 import android.content.Context.ACTIVITY_SERVICE
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color.parseColor
 import android.net.Uri
@@ -19,13 +20,16 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.res.ResourcesCompat.getFont
 import androidx.fragment.app.Fragment
 import com.example.cocktails.Cocktail
+import com.example.cocktails.ContactUsActivity
 import com.example.cocktails.R
+import com.github.johnpersano.supertoasts.library.Style
+import com.github.johnpersano.supertoasts.library.SuperActivityToast
+import com.github.johnpersano.supertoasts.library.utils.PaletteUtils
 import com.google.ar.core.Anchor
 import com.google.ar.core.HitResult
 import com.google.ar.core.Plane
 import com.google.ar.core.TrackingState
 import com.google.ar.sceneform.AnchorNode
-import com.google.ar.sceneform.FrameTime
 import com.google.ar.sceneform.Node
 import com.google.ar.sceneform.math.Quaternion
 import com.google.ar.sceneform.math.Vector3
@@ -34,7 +38,6 @@ import com.google.ar.sceneform.ux.ArFragment
 import com.google.ar.sceneform.ux.BaseTransformableNode
 import com.google.ar.sceneform.ux.SelectionVisualizer
 import com.google.ar.sceneform.ux.TransformableNode
-import io.github.douglasjunior.androidSimpleTooltip.SimpleTooltip
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
@@ -59,7 +62,8 @@ class ARFragment(val parent: SectionsPagerAdapter) : Fragment() {
     lateinit var cocktail: Cocktail
 
     private var inflated: Boolean = false
-    private var permissionRequested: Boolean = false
+    private var errorInflated: Boolean = false
+    private var permissionDenied: Boolean = false
     var firstRun: Boolean = true
     var firstPause: Boolean = false
 
@@ -122,26 +126,48 @@ class ARFragment(val parent: SectionsPagerAdapter) : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        this.view?.visibility = View.VISIBLE
-        (parent.recipeFragmentInstance as RecipeFragment).view?.visibility = View.GONE
+        // Dismiss the tooltip that appears when accessing the ar tab again.
+//        (parent.recipeFragmentInstance as RecipeFragment).dismissTooltip()
 
-        if (!inflated  && !permissionRequested) {
-            // Check for CAMERA permissions
-            val hasCameraPermission = ActivityCompat
-                .checkSelfPermission(requireContext(), Manifest.permission.CAMERA) ==
-                    PackageManager.PERMISSION_GRANTED
-            if (!hasCameraPermission) {
-                // Request if no permission
-                requestPermissions(arrayOf(
-                    Manifest.permission.CAMERA),
-                    REQUEST_CODE_PERMISSION_CAMERA)
+//        (parent.recipeFragmentInstance as RecipeFragment).view?.visibility = View.GONE
+//        this.view?.visibility = View.VISIBLE
 
-            } else {
-                this.initAr()
-            }
+        if (!inflated  && !permissionDenied) {
+            getPermissions()
         }
 
-        permissionRequested = false
+        permissionDenied = false
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onPause() {
+        super.onPause()
+//        view?.visibility = View.GONE
+//        (parent.recipeFragmentInstance as RecipeFragment).view?.visibility = View.VISIBLE
+
+//        // Dismiss the tooltip that appears when accessing the ar tab again.
+//        (parent.recipeFragmentInstance as RecipeFragment).dismissTooltip()
+
+        if (firstPause) {
+            (parent.recipeFragmentInstance as RecipeFragment).initViews(false)
+            firstPause = false
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun getPermissions() {
+        val hasCameraPermission = ActivityCompat
+            .checkSelfPermission(requireContext(), Manifest.permission.CAMERA) ==
+                PackageManager.PERMISSION_GRANTED
+        if (!hasCameraPermission) {
+            // Request if no permission
+            requestPermissions(arrayOf(
+                Manifest.permission.CAMERA),
+                REQUEST_CODE_PERMISSION_CAMERA)
+
+        } else {
+            this.initAr()
+        }
     }
 
     /**
@@ -156,6 +182,8 @@ class ARFragment(val parent: SectionsPagerAdapter) : Fragment() {
         permissions: Array<String?>,
         grantResults: IntArray
     ) {
+        (parent.recipeFragmentInstance as RecipeFragment).dismissTooltip()
+
         if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             this.initAr()
 
@@ -163,22 +191,18 @@ class ARFragment(val parent: SectionsPagerAdapter) : Fragment() {
             // Request denied
             if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)
             ) {
-                // Explain the necessity of the camera permission
-//                val toast: Toast =
-//                    Toast.makeText(requireActivity(), "This feature requires camera permission.", Toast.LENGTH_LONG)
-//                toast.setGravity(Gravity.BOTTOM, 0, 0)
-//                toast.show()
-
-                initError()
+                if (!errorInflated) {
+                    initError()
+                }
             }
 
-            permissionRequested = true
+            permissionDenied = true
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun initError() {
-//        inflated = true
+        errorInflated = true
 
         val inflater = LayoutInflater.from(context)
         // This will also attempt to request permission, but we won't get here without it.
@@ -187,18 +211,7 @@ class ARFragment(val parent: SectionsPagerAdapter) : Fragment() {
 
         val permButton: Button = rootView.findViewById(R.id.perm_button)
         permButton.setOnClickListener {
-            // shahaf todo
-        }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun onPause() {
-        super.onPause()
-        view?.visibility = View.GONE
-
-        if (firstPause) {
-            (parent.recipeFragmentInstance as RecipeFragment).initViews(false)
-            firstPause = false
+            getPermissions()
         }
     }
 
@@ -220,6 +233,9 @@ class ARFragment(val parent: SectionsPagerAdapter) : Fragment() {
         arFragment.arSceneView.scene.addOnUpdateListener {
             //get the frame from the scene for shorthand
             if (firstRun) {
+                // Dismiss the tooltip that appears when accessing the ar tab again.
+                (parent.recipeFragmentInstance as RecipeFragment).dismissTooltip()
+
                 val frame = arFragment.arSceneView.arFrame
                 if (frame != null) {
                     //get the trackables to ensure planes are detected
@@ -229,7 +245,6 @@ class ARFragment(val parent: SectionsPagerAdapter) : Fragment() {
 
                         //If a plane has been detected & is being tracked by ARCore
                         if (plane.trackingState == TrackingState.TRACKING) {
-//                            (parent.recipeFragmentInstance as RecipeFragment).reInflate(this)
                             firstPause = true
                             firstRun = false
                         }
@@ -251,7 +266,7 @@ class ARFragment(val parent: SectionsPagerAdapter) : Fragment() {
                 // Don't allow more than 1 glass
                 if (!glassPlaced) {
                     // Hide the dots indicating a viable surface
-//                    arFragment.arSceneView.planeRenderer.isVisible = false
+                    arFragment.arSceneView.planeRenderer.isVisible = false
 
                     glassPlaced = true
                     placeObject(
@@ -565,10 +580,20 @@ class ARFragment(val parent: SectionsPagerAdapter) : Fragment() {
      * Handle rendering errors
      */
     private fun renderError(activity: Activity) {
-        val toast: Toast =
-            Toast.makeText(activity, "Sorry, Something went wrong!", Toast.LENGTH_LONG)
-        toast.setGravity(Gravity.CENTER, 0, 0)
-        toast.show()  // Unable to load renderer
+        SuperActivityToast.create(activity, Style(), Style.TYPE_BUTTON)
+            .setButtonText("Contact Us")
+            .setOnButtonClickListener("ar_error_tag", null
+            ) { _, _ ->
+                val intent = Intent(requireContext(), ContactUsActivity::class.java)
+                startActivity(intent)
+            }
+            .setProgressBarColor(android.graphics.Color.WHITE)
+            .setText("Sorry, Something went wrong!")
+            .setDuration(Style.DURATION_LONG)
+            .setFrame(Style.FRAME_KITKAT)
+            .setColor(PaletteUtils.getSolidColor(PaletteUtils.MATERIAL_BLUE_GREY))
+            .setAnimations(Style.ANIMATIONS_FADE)
+            .show()
     }
 
     /**
