@@ -30,6 +30,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_user_item_level1.*
 
 val EMPTY_FIELD_ERROR_MSG: String = "Field can not be empty"
+
 class UserItemLevel1 : AppCompatActivity() {
     private lateinit var mUploadImgButton: Button
     private lateinit var mIconButton: Button
@@ -39,8 +40,8 @@ class UserItemLevel1 : AppCompatActivity() {
     private lateinit var mRotateUploadView: Button
     private lateinit var mDelUploadImgButton: Button
     private lateinit var mCocktailName: TextInputLayout
-    private lateinit var mCategoryChipErrorTV:TextView
-    private lateinit var mIconErrorTV:TextView
+    private lateinit var mCategoryChipErrorTV: TextView
+    private lateinit var mIconErrorTV: TextView
 
     private var mUploadImgUri: Uri? = null
     private var mIconUri: Uri? = null
@@ -50,17 +51,16 @@ class UserItemLevel1 : AppCompatActivity() {
     val CATEGORY_KEY = "category"
     val ICON_KEY = "icon"
     val UPLOAD_IMG_KEY = "upload_img"
-    val YES= "yes"
-    val NO ="no"
-    val CANCEL="cancel"
-    val DIALOG_UPLOAD_MSG="If you go back now, your upload image will be removed."
+    val YES = "yes"
+    val NO = "no"
+    val DIALOG_UPLOAD_MSG = "If you go back now, your upload image will be removed."
     val MAX_LENGTH_COCKTAIL_NAME: Int = 12
     val COCKTAIL_ERROR_MSG_NAME = "Cocktail name already exist ,choose different name"
     val COCKTAIL_ERROR_MSG_LENGTH: String =
         "Cocktail name too long ,\n must be under $MAX_LENGTH_COCKTAIL_NAME characters"
-    val BACK_PRESS_MSG="Are you sure you want to exit? \nyour details will be deleted. "
-    val REQUEST_CODE_ICONS=2
-    val REQUEST_CODE_UPLOAD_IMG=1
+    val BACK_PRESS_MSG = "Are you sure you want to exit? \nyour details will be deleted. "
+    val REQUEST_CODE_ICONS = 2
+    val REQUEST_CODE_UPLOAD_IMG = 1
 
     @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("InflateParams")
@@ -71,17 +71,13 @@ class UserItemLevel1 : AppCompatActivity() {
         initView()
     }
 
-    private fun initToolBar(){
-//        val toolbar: Toolbar = findViewById<View>(R.id.toolbar_user1) as Toolbar
-//        setSupportActionBar(toolbar)
+    private fun initToolBar() {
         supportActionBar?.title = getString(R.string.title_user_item)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
+    }
 //        toolbar.setNavigationOnClickListener {
 //            showDialogOnBackPress()
 //        }
-    }
-
 //    override fun onOptionsItemSelected(item: MenuItem): Boolean {
 //        when (item.itemId) {
 //            android.R.id.home -> {
@@ -103,64 +99,27 @@ class UserItemLevel1 : AppCompatActivity() {
         mCocktailName = findViewById(R.id.cocktailNameInput)
         mCocktailName.counterMaxLength = MAX_LENGTH_COCKTAIL_NAME
         mCategoryChip = findViewById(R.id.selectCategoryChipGroup)
-        mCategoryChipErrorTV=findViewById(R.id.category_chip_error)
+        mCategoryChipErrorTV = findViewById(R.id.category_chip_error)
         mCategoryChipErrorTV.visibility = View.GONE
 
         //Icon
         mIconView = findViewById(R.id.selected_icon_IV)
         mIconView.visibility = View.GONE
         mIconButton = findViewById(R.id.select_icon_Button)
-        mIconErrorTV=findViewById(R.id.icon_error)
+        mIconErrorTV = findViewById(R.id.icon_error)
         mIconErrorTV.visibility = View.GONE
 
         //upload img
         mUploadImgButton = findViewById(R.id.upload_img_Button)
         mUserImg = findViewById(R.id.upload_user_img_TV)
         mRotateUploadView = findViewById(R.id.rotate_upload_view_Button)
-        mDelUploadImgButton= findViewById(R.id.del_upload_img_Button)
+        mDelUploadImgButton = findViewById(R.id.del_upload_img_Button)
         buttonStateOffUploadImg()
-
 
         mNextButton = findViewById(R.id.nextButton)
 
         initCategory()
         initButtonsListener()
-    }
-    private fun showDialogOnBackPress(){
-        // Late initialize an alert dialog object
-        lateinit var dialog:AlertDialog
-        // Initialize a new instance of alert dialog builder object
-        val builder = AlertDialog.Builder(this)
-
-        // Set a message for alert dialog
-        builder.setMessage(BACK_PRESS_MSG)
-
-        // On click listener for dialog buttons
-        val dialogClickListener = DialogInterface.OnClickListener{ _, which ->
-            when(which){
-                DialogInterface.BUTTON_POSITIVE -> {
-                    finish()
-                }
-                //DialogInterface.BUTTON_NEGATIVE ->{}
-                //DialogInterface.BUTTON_NEUTRAL->{}
-            }
-        }
-        builder.setPositiveButton(YES, dialogClickListener)
-
-        // Set the alert dialog negative/no button
-        builder.setNegativeButton(NO, dialogClickListener)
-
-        // Set the alert dialog neutral/cancel button
-        builder.setNeutralButton(CANCEL, dialogClickListener)
-
-        dialog = builder.create()
-        dialog.show()
-    }
-
-    private fun getCocktailName(): String {
-        // Get input text
-        //todo trim
-        return mCocktailName.editText?.text.toString().trim()
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -173,7 +132,7 @@ class UserItemLevel1 : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.M)
     private fun addChip(item: String, chipGroup: ChipGroup) {
         val chip = Chip(chipGroup.context)
-        chip.chipBackgroundColor=getColorStateList(R.color.chipColor)
+        chip.chipBackgroundColor = getColorStateList(R.color.chipColor)
         chip.text = item
         chip.isCheckable = true
         chipGroup.addView(chip)
@@ -186,68 +145,51 @@ class UserItemLevel1 : AppCompatActivity() {
             intent.action = Intent.ACTION_GET_CONTENT
             startActivityForResult(intent, REQUEST_CODE_UPLOAD_IMG)
         }
-
-        mRotateUploadView.setOnClickListener{
+        mRotateUploadView.setOnClickListener {
             mUserImg.rotation = mUserImg.rotation + 90F
         }
-        mDelUploadImgButton.setOnClickListener{
+        mDelUploadImgButton.setOnClickListener {
             showDialog()
         }
         mIconButton.setOnClickListener {
             openIconsActivity()
         }
-
         mNextButton.setOnClickListener {
             checkedLevel1()
         }
     }
 
-    private fun buttonStateOnUploadImg(){
+    private fun buttonStateOnUploadImg() {
         mUserImg.visibility = View.VISIBLE
         mRotateUploadView.visibility = View.VISIBLE
         mDelUploadImgButton.visibility = View.VISIBLE
     }
 
-    private fun buttonStateOffUploadImg(){
+    private fun buttonStateOffUploadImg() {
         mUserImg.visibility = View.GONE
         mRotateUploadView.visibility = View.GONE
         mDelUploadImgButton.visibility = View.GONE
     }
 
-    private fun showDialog(){
-        // Late initialize an alert dialog object
-        lateinit var dialog:AlertDialog
-
-
-        // Initialize a new instance of alert dialog builder object
+    private fun showDialog() {
+        lateinit var dialog: AlertDialog
         val builder = AlertDialog.Builder(this)
-
-        // Set a message for alert dialog
         builder.setMessage(DIALOG_UPLOAD_MSG)
-
-
-        // On click listener for dialog buttons
-        val dialogClickListener = DialogInterface.OnClickListener{ _, which ->
-            when(which){
+        val dialogClickListener = DialogInterface.OnClickListener { _, which ->
+            when (which) {
                 DialogInterface.BUTTON_POSITIVE -> {
                     mUserImg.setImageDrawable(null)
                     buttonStateOffUploadImg()
                 }
                 //DialogInterface.BUTTON_NEGATIVE ->{}
-                //DialogInterface.BUTTON_NEUTRAL->{}
             }
         }
         builder.setPositiveButton(YES, dialogClickListener)
-
-        // Set the alert dialog negative/no button
         builder.setNegativeButton(NO, dialogClickListener)
-
-        // Set the alert dialog neutral/cancel button
-        builder.setNeutralButton(CANCEL, dialogClickListener)
-
         dialog = builder.create()
         dialog.show()
     }
+
     private fun checkedLevel1() {
         //save info
         val cocktailName = getCocktailName()
@@ -346,7 +288,8 @@ class UserItemLevel1 : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if ((requestCode == REQUEST_CODE_UPLOAD_IMG || requestCode == REQUEST_CODE_ICONS) && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
+        if ((requestCode == REQUEST_CODE_UPLOAD_IMG || requestCode == REQUEST_CODE_ICONS) &&
+            resultCode == Activity.RESULT_OK && data != null && data.data != null) {
             if (requestCode == REQUEST_CODE_UPLOAD_IMG) {
                 mUploadImgUri = data.data!!
                 Picasso.with(this).load(mUploadImgUri).into(mUserImg)
@@ -365,13 +308,11 @@ class UserItemLevel1 : AppCompatActivity() {
                 mIconView.visibility = View.VISIBLE
             }
 
-        }
-        else {
-            if(requestCode == REQUEST_CODE_UPLOAD_IMG) {
+        } else {
+            if (requestCode == REQUEST_CODE_UPLOAD_IMG) {
                 buttonStateOffUploadImg()
-            }
-            else if(requestCode == REQUEST_CODE_ICONS){
-                mIconView.visibility=View.GONE
+            } else if (requestCode == REQUEST_CODE_ICONS) {
+                mIconView.visibility = View.GONE
             }
         }
     }
@@ -381,8 +322,32 @@ class UserItemLevel1 : AppCompatActivity() {
         intent.action = Intent.ACTION_GET_CONTENT
         startActivityForResult(intent, REQUEST_CODE_ICONS)
     }
-}
 
+    private fun showDialogOnBackPress() {
+        lateinit var dialog: AlertDialog
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage(BACK_PRESS_MSG)
+        val dialogClickListener = DialogInterface.OnClickListener { _, which ->
+            when (which) {
+                DialogInterface.BUTTON_POSITIVE -> {
+                    finish()
+                }
+                //DialogInterface.BUTTON_NEGATIVE ->{}
+                //DialogInterface.BUTTON_NEUTRAL->{}
+            }
+        }
+        builder.setPositiveButton(YES, dialogClickListener)
+        builder.setNegativeButton(NO, dialogClickListener)
+        dialog = builder.create()
+        dialog.show()
+    }
+
+    private fun getCocktailName(): String {
+        // Get input text
+        //todo trim
+        return mCocktailName.editText?.text.toString().trim()
+    }
+}
 
 // Extension function to show toast message
 fun Context.toast(message: String) {
