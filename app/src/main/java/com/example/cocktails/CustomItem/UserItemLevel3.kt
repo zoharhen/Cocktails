@@ -12,6 +12,8 @@ import java.util.*
 
 
 class UserItemLevel3 : AppCompatActivity() {
+    val DEFAULT_CLIPART = "default"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_item_level3)
@@ -25,7 +27,6 @@ class UserItemLevel3 : AppCompatActivity() {
             val category = intent.getStringExtra(CATEGORY_KEY)
             val iconUri = intent.getStringExtra(ICON_KEY)
             val uploadImgStr = intent.getStringExtra(UPLOAD_IMG_KEY)
-            val uploadImgUri = Uri.parse(uploadImgStr)//todo
             val rotation = intent.getFloatExtra(ROTATE_UPLOAD_IMG_KEY, 0F)
             var ingredients: ArrayList<String>? = null
             if (intent.getStringArrayListExtra(INGREDIENT_LIST_STR_KEY) != null) {
@@ -37,12 +38,12 @@ class UserItemLevel3 : AppCompatActivity() {
             }
             val glass = "cocktail glass.sfb"//todo default need to change
             if (cocktailName.isNullOrEmpty() || category.isNullOrEmpty() || iconUri.isNullOrEmpty()
-                || ingredients.isNullOrEmpty() || steps.isNullOrEmpty() || uploadImgStr.isNullOrEmpty()) {
+                || ingredients.isNullOrEmpty() || steps.isNullOrEmpty() ) {
                 return@setOnClickListener
             }
 
             val cocktail = Cocktail(
-                cocktailName, category, steps, ingredients, iconUri,
+                cocktailName, category, steps, ingredients, DEFAULT_CLIPART,
                 uploadImgStr, true, glass, true, rotation
             )
 

@@ -46,6 +46,7 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
     private lateinit var longPressTooltipBuilder: SimpleTooltip.Builder
     lateinit var longPressTooltip: SimpleTooltip
     private var isTtsOn: Boolean = false
+    val EMPTY_IMG_ICON ="empty_img_icon"
 
     companion object {
         fun newInstance(cocktail: Cocktail): RecipeFragment? {
@@ -109,9 +110,22 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
     @RequiresApi(Build.VERSION_CODES.O)
     fun initViews(withTooltip: Boolean = true) {
         if(cocktail.isReview){
-            val uploadImgUri= Uri.parse(cocktail.image)
-            val bitmapUploadImg=getUploadUriToBitmap(cocktail.rotation,uploadImgUri)
-            rootView.findViewById<CrescentoImageView>(R.id.iv_cocktail).setImageBitmap(bitmapUploadImg)
+            if(cocktail.image.isNullOrEmpty()){
+                (activity?.applicationContext as Cocktails).mStorageRef.child("images/$EMPTY_IMG_ICON.jpg")
+                    .downloadUrl.addOnSuccessListener { img ->
+                        context?.let { it ->
+                            Glide.with(it)
+                                .load(img)
+                                .into(rootView.findViewById(R.id.iv_cocktail))
+                        }
+                    }
+            }
+            else {
+                val uploadImgUri = Uri.parse(cocktail.image)
+                val bitmapUploadImg = getUploadUriToBitmap(cocktail.rotation, uploadImgUri)
+                rootView.findViewById<CrescentoImageView>(R.id.iv_cocktail)
+                    .setImageBitmap(bitmapUploadImg)
+            }
         }
         else {
             (activity?.applicationContext as Cocktails).mStorageRef.child("images/" + cocktail.image + ".jpg")
