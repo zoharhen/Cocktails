@@ -49,6 +49,7 @@ class ScrollingActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private var filterDialog : AlertDialog? = null
     private var filterIcon: View? = null
+    private lateinit var menu: Menu
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,6 +84,7 @@ class ScrollingActivity : AppCompatActivity() {
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = gridViewAdapter
         recyclerView.itemAnimator = null
+        recyclerView.isNestedScrollingEnabled = false
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() { })
     }
 
@@ -127,6 +129,7 @@ class ScrollingActivity : AppCompatActivity() {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_scrolling, menu)
 
+        this.menu = menu
         filterIcon = menu.findItem(id.action_filter).actionView
         menu.findItem(id.action_filter).actionView.setOnClickListener { openFilterDialog() }
         refreshFilterBadge()
@@ -142,6 +145,7 @@ class ScrollingActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     @RequiresApi(Build.VERSION_CODES.M)
     private fun initSearchView(menu: Menu) {
         val searchView: SearchView = menu.findItem(id.action_search).actionView as SearchView
@@ -237,7 +241,7 @@ class ScrollingActivity : AppCompatActivity() {
         resources.getStringArray(array.cocktailTypes_array).forEach { addChip(it, layout.CategoryChipGroup, typeFiltersSP) }
         resources.getStringArray(array.ingredients).forEach { addChip(it, layout.IngredientChipGroup, ingredientsFiltersSP) }
 
-        layout.findViewById<Button>(R.id.apply_btn).setOnClickListener {
+        layout.findViewById<Button>(id.apply_btn).setOnClickListener {
             val typeFiltersSpEditor = typeFiltersSP.edit()
             typeFiltersSpEditor.clear()
             layout.CategoryChipGroup.checkedChipIds.forEach {
@@ -255,6 +259,7 @@ class ScrollingActivity : AppCompatActivity() {
             ingredientsFiltersSpEditor.apply()
             gridViewAdapter?.filter?.filter("filterDialog")
             refreshFilterBadge()
+            (menu.findItem(id.action_search).actionView as SearchView).setQuery("",true)
             filterDialog?.dismiss()
         }
 

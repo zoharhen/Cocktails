@@ -26,7 +26,8 @@
         android:theme="@style/AppTheme"
         tools:replace="android:supportsRtl, android:allowBackup"
         tools:targetApi="q">
-        <activity android:name=".CustomItem.UserItemLevel3"></activity>
+        <activity android:name=".CustomItem.UserItemLevel3">
+        </activity>
         <activity
             android:name=".CustomItem.insertIngredients.SelectIngredient"
             android:parentActivityName=".CustomItem.AddIngredientItem" />
@@ -46,7 +47,6 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

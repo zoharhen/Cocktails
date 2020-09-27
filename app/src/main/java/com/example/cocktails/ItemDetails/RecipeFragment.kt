@@ -1,12 +1,15 @@
 package com.example.cocktails.ItemDetails
 
 import android.Manifest
+import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Matrix
 import android.net.Uri
+import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -28,6 +31,7 @@ import com.example.cocktails.BuildConfig
 import com.example.cocktails.Cocktail
 import com.example.cocktails.Cocktails
 import com.example.cocktails.R
+import com.ldoublem.loadingviewlib.view.LVCircularRing
 import developer.shivam.crescento.CrescentoImageView
 import github.nisrulz.screenshott.ScreenShott
 import io.github.douglasjunior.androidSimpleTooltip.SimpleTooltip
@@ -35,6 +39,7 @@ import net.gotev.speech.Speech
 import net.gotev.speech.TextToSpeechCallback
 import java.io.File
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
 
@@ -226,7 +231,7 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
                 val permissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
                 requestPermissions(permissions, PERMISSION_EXTERNAL_STORAGE, true)
             } else {
-                val bitmap: Bitmap = getScreenShot()
+                val bitmap: Bitmap = GetScreenShotTask(rootView).execute(context).get()
                 val screenshot : File = ScreenShott.getInstance().saveScreenshotToPicturesFolder(context, bitmap, cocktail.name)
                 val sendIntent = Intent()
                 sendIntent.action = Intent.ACTION_SEND
@@ -303,14 +308,36 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
 
     ///////////////// SCREENSHOT /////////////////
 
-    private fun getScreenShot(): Bitmap {
-        val scrollView = rootView.findViewById<ScrollView>(R.id.recipe_item)
-        val returnedBitmap = Bitmap.createBitmap(scrollView.getChildAt(0).width*2, scrollView.getChildAt(0).height*2, Bitmap.Config.RGB_565)
-        val canvas = Canvas(returnedBitmap)
-        canvas.scale(2.0f, 2.0f)
-        context?.let { ContextCompat.getColor(it, R.color.lightColorBg) }?.let { canvas.drawColor(it) }
-        scrollView.getChildAt(0).draw(canvas);
-        return returnedBitmap
+    private class GetScreenShotTask(private val rootView: View) : AsyncTask<Any, Void, Bitmap>() {
+
+        private var lvCircularRing: LVCircularRing? = null
+
+        @SuppressLint("WrongThread")
+        override fun doInBackground(vararg params: Any?): Bitmap {
+            val scrollView = rootView.findViewById<ScrollView>(R.id.recipe_item)
+            val returnedBitmap = Bitmap.createBitmap(scrollView.getChildAt(0).width*2, scrollView.getChildAt(0).height*2, Bitmap.Config.RGB_565)
+            val canvas = Canvas(returnedBitmap)
+            canvas.scale(2.0f, 2.0f)
+            (params[0] as Context?)?.let { ContextCompat.getColor(it, R.color.lightColorBg) }?.let { canvas.drawColor(it) }
+            scrollView.getChildAt(0).draw(canvas)
+            return returnedBitmap
+        }
+
+        override fun onPostExecute(result: Bitmap?) {
+            lvCircularRing = rootView.findViewById(R.id.header_progress)
+            if (lvCircularRing != null) {
+                lvCircularRing!!.visibility = LVCircularRing.GONE
+                lvCircularRing!!.stopAnim()
+            }
+            super.onPostExecute(result)
+        }
+
+        override fun onPreExecute() {
+            lvCircularRing = rootView.findViewById(R.id.header_progress)
+            lvCircularRing!!.visibility = LVCircularRing.VISIBLE
+            lvCircularRing!!.startAnim()
+            super.onPreExecute()
+        }
     }
 
     private fun getUploadUriToBitmap(rotation:Float,uploadImgUri: Uri):Bitmap{
