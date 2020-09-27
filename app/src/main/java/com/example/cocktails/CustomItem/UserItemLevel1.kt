@@ -6,14 +6,15 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Rect
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.view.MenuItem
+import android.view.MotionEvent
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.view.inputmethod.InputMethodManager
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
@@ -70,6 +71,7 @@ class UserItemLevel1 : AppCompatActivity() {
         setContentView(R.layout.activity_user_item_level1)
         initToolBar()
         initView()
+        closeKeyBoard()
     }
 
     private fun initToolBar() {
@@ -79,18 +81,20 @@ class UserItemLevel1 : AppCompatActivity() {
 //        toolbar.setNavigationOnClickListener {
 //            showDialogOnBackPress()
 //        }
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        when (item.itemId) {
-//            android.R.id.home -> {
-//                onBackPressed()
-//                return true
-//            }
-//        }
-//        return super.onOptionsItemSelected(item)
-//    }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                showDialogOnBackPress()
+                return true
+            }
+
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    @Override
     override fun onBackPressed() {
-        super.onBackPressed()
         showDialogOnBackPress()
     }
 
@@ -221,7 +225,11 @@ class UserItemLevel1 : AppCompatActivity() {
             (mCategoryChip.getChildAt(categoryChipIdSelected - 1) as Chip).text
         )
         intentLevel2.putExtra(ICON_KEY, mIconUri.toString())
-        intentLevel2.putExtra(UPLOAD_IMG_KEY, mUploadImgUri.toString())
+        var uploadImgStr:String?=null
+        if(mUploadImgUri!=null){
+            uploadImgStr=mUploadImgUri.toString()
+        }
+        intentLevel2.putExtra(UPLOAD_IMG_KEY, uploadImgStr)
         intentLevel2.putExtra(ROTATE_UPLOAD_IMG_KEY, mUserImg.rotation)//TODO CHECK INVALID WHEN UPLOAD NOT MUST
         startActivity(intentLevel2)
     }
@@ -355,6 +363,30 @@ class UserItemLevel1 : AppCompatActivity() {
         //todo trim
         return mCocktailName.editText?.text.toString().trim()
     }
+
+    private fun closeKeyBoard() {
+        val view = this.currentFocus
+        if (view != null) {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
+    }
+    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        if (event.action == MotionEvent.ACTION_DOWN) {
+            val v = currentFocus
+            if (v is EditText) {
+                val outRect = Rect()
+                v.getGlobalVisibleRect(outRect)
+                if (!outRect.contains(event.rawX.toInt(), event.rawY.toInt())) {
+                    v.clearFocus()
+                    val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0)
+                }
+            }
+        }
+        return super.dispatchTouchEvent(event)
+    }
+
 }
 
 // Extension function to show toast message

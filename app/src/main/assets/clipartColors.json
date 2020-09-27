@@ -14,5 +14,6 @@
     "c_red": "#BD000C",
     "c_rocks_brown": "#DE5510",
     "c_sunrise": "#FC8309",
-    "c_transparent": "#D7A742"
+    "c_transparent": "#D7A742",
+    "default": "#000000"
 }

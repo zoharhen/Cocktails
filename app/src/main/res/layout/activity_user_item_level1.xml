@@ -207,7 +207,7 @@
                 android:layout_gravity="center"
                 android:textStyle="bold"
                 android:text="@string/required_field"
-                android:textColor="#D60E0E" />
+                android:textColor="@color/errorColor" />
 
         </LinearLayout>
 
