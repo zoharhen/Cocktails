@@ -129,8 +129,8 @@ class ARFragment(val parent: SectionsPagerAdapter) : Fragment() {
         // Dismiss the tooltip that appears when accessing the ar tab again.
 //        (parent.recipeFragmentInstance as RecipeFragment).dismissTooltip()
 
-//        (parent.recipeFragmentInstance as RecipeFragment).view?.visibility = View.GONE
-//        this.view?.visibility = View.VISIBLE
+        (parent.recipeFragmentInstance as RecipeFragment).view?.visibility = View.GONE
+        this.view?.visibility = View.VISIBLE
 
         if (!inflated  && !permissionDenied) {
             getPermissions()
@@ -142,8 +142,8 @@ class ARFragment(val parent: SectionsPagerAdapter) : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onPause() {
         super.onPause()
-//        view?.visibility = View.GONE
-//        (parent.recipeFragmentInstance as RecipeFragment).view?.visibility = View.VISIBLE
+        view?.visibility = View.GONE
+        (parent.recipeFragmentInstance as RecipeFragment).view?.visibility = View.VISIBLE
 
 //        // Dismiss the tooltip that appears when accessing the ar tab again.
 //        (parent.recipeFragmentInstance as RecipeFragment).dismissTooltip()
@@ -228,7 +228,8 @@ class ARFragment(val parent: SectionsPagerAdapter) : Fragment() {
         (rootView as ViewGroup).addView(inflatedView)
 
         // Find the AR fragment
-        arFragment = requireActivity().supportFragmentManager.findFragmentById(R.id.ar_fragment) as ArFragment
+        arFragment = (childFragmentManager.findFragmentById(R.id.ar_fragment)
+            ?: requireActivity().supportFragmentManager.findFragmentById(R.id.ar_fragment)) as ArFragment
 
         arFragment.arSceneView.scene.addOnUpdateListener {
             //get the frame from the scene for shorthand
