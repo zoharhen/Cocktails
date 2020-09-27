@@ -109,7 +109,9 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
     override fun onDestroy() {
         super.onDestroy()
         // prevent memory leaks when activity is destroyed
-        Speech.getInstance().shutdown()
+        try {
+            Speech.getInstance().shutdown()
+        } catch (e: Exception) {}
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
