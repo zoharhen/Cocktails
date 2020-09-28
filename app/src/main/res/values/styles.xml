@@ -21,6 +21,7 @@
         <item name="backgroundColor">@color/colorPrimary</item>
         <item name="android:textSize">@dimen/actionBarTitleBeforeCollapsing</item>
         <item name="android:textColor">@color/colorText</item>
+        <item name="titleTextColor">@color/colorText</item>
         <item name="android:fontFamily">@font/paytone_one</item>
     </style>
 
@@ -34,6 +35,7 @@
     <style name="TextAppearance.Design.CollapsingToolbar.Expanded" parent="android:TextAppearance">
         <item name="android:textSize">@dimen/actionBarTitleBeforeCollapsing</item>
         <item name="android:textColor">@color/colorText</item>
+        <item name="titleTextColor">@color/colorText</item>
         <item name="android:fontFamily">@font/paytone_one</item>
     </style>
 
@@ -41,12 +43,14 @@
     <style name="TextAppearance.Widget.AppCompat.Toolbar.Title." parent="android:TextAppearance">
         <item name="android:textSize">@dimen/actionBarTitleAfterCollapsing</item>
         <item name="android:textColor">@color/colorText</item>
+        <item name="titleTextColor">@color/colorText</item>
         <item name="android:fontFamily">@font/paytone_one</item>
     </style>
 
     <style name="TextAppearance.AppCompat.Widget.ActionBar.Title" parent="android:TextAppearance">
         <item name="android:textSize">@dimen/actionBarTitleAfterCollapsing</item>
         <item name="android:textColor">@color/colorText</item>
+        <item name="titleTextColor">@color/colorText</item>
         <item name="android:fontFamily">@font/paytone_one</item>
     </style>
 
@@ -79,6 +83,18 @@
         <item name="android:textColor">@color/colorRipple</item>
         <item name="android:textAppearance">@style/Regular</item>
         <item name="font">@font/raleway_light</item>
+    </style>
+
+    <style name="TableTitleText">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/colorRipple</item>
+        <item name="fontFamily">@font/raleway_light</item>
+    </style>
+
+    <style name="TableContentText">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="fontFamily">@font/raleway_light</item>
     </style>
 
     <style name="simpletooltip_default" parent="@android:style/TextAppearance">

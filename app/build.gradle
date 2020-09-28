@@ -70,6 +70,7 @@ dependencies {
     implementation 'com.github.nikartm:image-support:1.0.5'
     implementation 'com.github.johnpersano:supertoasts:2.0'
     implementation 'com.ldoublem.loadingview:loadingviewlib:1.0'
+    implementation 'com.anton46:stepsview:0.0.2'
     // log
     implementation 'com.jakewharton.timber:timber:4.7.1' // logger
     implementation 'com.squareup.okhttp3:logging-interceptor:4.2.2'

@@ -58,6 +58,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/raleway_light"
+                android:maxLines="1"
                 android:textAppearance="@style/Regular"
                 android:textColor="@color/colorPrimaryDark"
                 />

@@ -6,30 +6,33 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.text.InputType
 import android.view.Gravity
-import android.view.MenuItem
 import android.view.View
-import android.widget.*
+import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.TableRow
+import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.TextViewCompat
 import com.example.cocktails.R
+import kotlinx.android.synthetic.main.activity_user_item_level1.stepsView
+import kotlinx.android.synthetic.main.activity_user_item_level2.*
+
 
 data class StepItem(var stemNum: Int, val step: String)
 
-val INGREDIENT_LIST_STR_KEY= "ingredients_List_String"
-val PREPARATION_LIST_STR_KEY= "preparation_List_String"
+const val INGREDIENT_LIST_STR_KEY= "ingredients_List_String"
+const val PREPARATION_LIST_STR_KEY= "preparation_List_String"
 
 class UserItemLevel2 : AppCompatActivity() {
     private lateinit var ingredientsValList: ArrayList<IngredientItem>
-    private lateinit var ingredientTableRow: TableRow
-    private lateinit var ingredientTableLayout: TableLayout
-    private lateinit var ingredientsErrorTV: TextView
-
     private lateinit var preparationValList: ArrayList<StepItem>
+    private lateinit var ingredientTableRow: TableRow
     private lateinit var preparationTableRow: TableRow
-    private lateinit var preparationTableLayout: TableLayout
-    private lateinit var preparationErrorTV: TextView
 
     private val NUM_OF_DEFUALT_ROWS = 2
     private val REQUEST_CODE_ADD_INGREDIENT = 1
@@ -38,56 +41,49 @@ class UserItemLevel2 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_item_level2)
+
         initToolBar()
         initView()
         initIngredientsTable()
         initPreparationTable()
-
-
     }
 
     private fun initView() {
-        ingredientsErrorTV = findViewById(R.id.ingredients_level2_error)
-        ingredientsErrorTV.visibility = View.GONE
 
-        preparationErrorTV = findViewById(R.id.preparation_error)
-        preparationErrorTV.visibility = View.GONE
+        stepsView.setLabels(arrayOf("", "", ""))
+            .setBarColorIndicator(resources.getColor(R.color.material_blue_grey_800))
+            .setProgressColorIndicator(resources.getColor(R.color.stepBg))
+            .setLabelColorIndicator(resources.getColor(R.color.stepBg))
+            .setCompletedPosition(1)
+            .drawView()
 
-        findViewById<Button>(R.id.nextLevel3Button).setOnClickListener {
+        findViewById<ImageButton>(R.id.nextButton).setOnClickListener {
             if (checkedValidationLevel2()) {
                 openLevel3Activity()
             }
         }
+
+        findViewById<ImageButton>(R.id.prevButton).setOnClickListener {
+            onBackPressed()
+        }
     }
-
-
 
     private fun initToolBar() {
         supportActionBar?.title = getString(R.string.title_user_item)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                onBackPressed()
-                return true
-            }
-        }
-        return super.onOptionsItemSelected(item)
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
 
     //####### Ingredients #######
     @SuppressLint("ResourceAsColor")
     private fun initIngredientsTable() {
         ingredientsValList = ArrayList()
-        ingredientTableLayout = findViewById(R.id.ingredient_table)
         ingredientTableRow = findViewById(R.id.example_ingredient_table_row)
+
         //todo check for correct Stretch
-        ingredientTableLayout.setColumnStretchable(0, true)
-        ingredientTableLayout.setColumnStretchable(1, true)
-        ingredientTableLayout.setColumnStretchable(2, true)
-        ingredientTableLayout.setColumnStretchable(3, true)
+        ingredient_table.setColumnStretchable(0, true)
+        ingredient_table.setColumnStretchable(1, true)
+        ingredient_table.setColumnStretchable(2, true)
+        ingredient_table.setColumnStretchable(3, true)
 
         val addRowButton: View = findViewById(R.id.adding_new_row)
         addRowButton.setOnClickListener {
@@ -98,10 +94,10 @@ class UserItemLevel2 : AppCompatActivity() {
 
     private fun initPreparationTable() {
         preparationValList = ArrayList()
-        preparationTableLayout = findViewById(R.id.preparation_table)
         preparationTableRow = findViewById(R.id.table_row_preparation)
-        preparationTableLayout.setColumnStretchable(0, true)
-        preparationTableLayout.setColumnStretchable(1, true)
+
+        preparation_table.setColumnStretchable(0, true)
+        preparation_table.setColumnStretchable(1, true)
 
         val addPreparationRowButton: View = findViewById(R.id.adding_new_row_preparation)
         addPreparationRowButton.setOnClickListener {
@@ -131,21 +127,21 @@ class UserItemLevel2 : AppCompatActivity() {
         if (ingredientNum != null) {
             rowNum = ingredientNum
         }
-        scrNumRow.text = (rowNum).toString()
+        scrNumRow.text = (rowNum + 1).toString()
         scrNumRow.gravity = Gravity.CENTER
-        scrNumRow.textSize = 15F
+        scrNumRow.setTextAppearance(this, R.style.TableContentText)
 
         scrQuantity.text = quantityVal
         scrQuantity.gravity = Gravity.CENTER
-        scrQuantity.textSize = 15F
+        TextViewCompat.setTextAppearance(scrQuantity, R.style.TableContentText)
 
         scrUnit.text = unitVal
         scrUnit.gravity = Gravity.CENTER
-        scrUnit.textSize = 15F
+//        scrUnit.setTextAppearance(R.style.TableContentText)
 
         scrIngredient.text = ingredientVal
         scrIngredient.gravity = Gravity.CENTER
-        scrIngredient.textSize = 15F
+//        scrIngredient.setTextAppearance(R.style.TableContentText)
 
         val params = TableRow.LayoutParams(
             TableRow.LayoutParams.WRAP_CONTENT,
@@ -156,7 +152,7 @@ class UserItemLevel2 : AppCompatActivity() {
         ingredientTableRow.addView(scrUnit)
         ingredientTableRow.addView(scrIngredient, params)
         ingredientTableRow.setPadding(10, 10, 10, 10)
-        ingredientTableRow.setBackgroundColor(resources.getColor(R.color.rowColor))
+        ingredientTableRow.setBackgroundColor(resources.getColor(R.color.colorAccent))
 
         ingredientTableRow.setOnClickListener {
             editIngredient(quantityVal, unitVal, ingredientVal, rowNum)
@@ -171,12 +167,13 @@ class UserItemLevel2 : AppCompatActivity() {
             ingredientsValList.add(rowNum, ingredientItem)
         }
 
-        ingredientTableLayout.addView(ingredientTableRow)
+        ingredient_table.addView(ingredientTableRow)
+        example_ingredient_table_row.visibility = View.GONE
     }
 
     private fun updateIngredientList() {
-        while (ingredientTableLayout.childCount > NUM_OF_DEFUALT_ROWS)
-            ingredientTableLayout.removeView(ingredientTableLayout.getChildAt(ingredientTableLayout.childCount - 1))
+        while (ingredient_table.childCount > NUM_OF_DEFUALT_ROWS)
+            ingredient_table.removeView(ingredient_table.getChildAt(ingredient_table.childCount - 1))
 
         for (i in 0 until ingredientsValList.size) {
             ingredientsValList[i].ingredientNum = i //todo check
@@ -207,15 +204,15 @@ class UserItemLevel2 : AppCompatActivity() {
     private fun delIngredient(index: Int) {
         ingredientsValList.removeAt(index)
         updateIngredientList()
+
     }
 
     private fun ingredientValidation(): Boolean {
         if (ingredientsValList.size > 0) {//todo check init size list
-            ingredientsErrorTV.visibility = View.GONE
+            ingredients_level2_error.visibility = View.GONE
             return true
         }
-        ingredientsErrorTV.visibility = View.VISIBLE
-        ingredientsErrorTV.error = ""
+        ingredients_level2_error.visibility = View.VISIBLE
         return false
     }
 
@@ -230,12 +227,12 @@ class UserItemLevel2 : AppCompatActivity() {
             rowNum = stepNum
         }
 
-        scrNumRow.text = rowNum.toString()
+        scrNumRow.text = (rowNum + 1).toString()
         scrNumRow.gravity = Gravity.CENTER
-        scrNumRow.textSize = 15F
+//        scrNumRow.setTextAppearance(R.style.TableContentText)
 
         scrStep.text = stepInput
-        scrStep.textSize = 15F
+//        scrStep.setTextAppearance(R.style.TableContentText)
 
         val stepParams = TableRow.LayoutParams(
             TableRow.LayoutParams.WRAP_CONTENT,
@@ -244,7 +241,7 @@ class UserItemLevel2 : AppCompatActivity() {
         preparationTableRow.addView(scrNumRow)
         preparationTableRow.addView(scrStep, stepParams)
         preparationTableRow.setPadding(10, 10, 10, 10)
-        preparationTableRow.setBackgroundColor(resources.getColor(R.color.rowColor))
+        preparationTableRow.setBackgroundColor(resources.getColor(R.color.colorAccent))
         preparationTableRow.setOnClickListener {
             showUpdateStepDialog(this, stepInput, rowNum)
         }
@@ -256,7 +253,8 @@ class UserItemLevel2 : AppCompatActivity() {
             val stepItem = StepItem(rowNum, stepInput)
             preparationValList.add(rowNum, stepItem)
         }
-        preparationTableLayout.addView(preparationTableRow)
+        preparation_table.addView(preparationTableRow)
+        example_step_table_row.visibility = View.GONE
     }
 
     private fun delPreparation(index: Int) {
@@ -301,10 +299,10 @@ class UserItemLevel2 : AppCompatActivity() {
     }
 
     private fun updatePreparationList() {
-        while (preparationTableLayout.childCount > 2)
-            preparationTableLayout.removeView(
-                preparationTableLayout.getChildAt(
-                    preparationTableLayout.childCount - 1
+        while (preparation_table.childCount > 2)
+            preparation_table.removeView(
+                preparation_table.getChildAt(
+                    preparation_table.childCount - 1
                 )
             )
         for (i in 0 until preparationValList.size) {
@@ -315,11 +313,10 @@ class UserItemLevel2 : AppCompatActivity() {
 
     private fun preparationValidation(): Boolean {
         if (preparationValList.size > 0) {//todo check init size list
-            preparationErrorTV.visibility = View.GONE
+            preparation_error.visibility = View.GONE
             return true
         }
-        preparationErrorTV.visibility = View.VISIBLE
-        preparationErrorTV.error = ""
+        preparation_error.visibility = View.VISIBLE
         return false
     }
 
@@ -402,13 +399,13 @@ class UserItemLevel2 : AppCompatActivity() {
         val intentLevel3 = Intent(this, UserItemLevel3::class.java)
         //todo check
         //args from level 1
-        val cocktailName= intent.getStringExtra(COCKATIL_NAME_KEY)
+        val cocktailName= intent.getStringExtra(COCKTAIL_NAME_KEY)
         val category = intent.getStringExtra(CATEGORY_KEY)
         val iconUri = intent.getStringExtra(ICON_KEY)
         val uploadImgStr = intent.getStringExtra(UPLOAD_IMG_KEY)
         val rotate:Float=intent.getFloatExtra(ROTATE_UPLOAD_IMG_KEY,0F)
 
-        intentLevel3.putExtra(COCKATIL_NAME_KEY, cocktailName)
+        intentLevel3.putExtra(COCKTAIL_NAME_KEY, cocktailName)
         intentLevel3.putExtra(CATEGORY_KEY, category)
         intentLevel3.putExtra(ICON_KEY, iconUri)
         intentLevel3.putExtra(UPLOAD_IMG_KEY, uploadImgStr)
