@@ -21,7 +21,6 @@
         <item name="backgroundColor">@color/colorPrimary</item>
         <item name="android:textSize">@dimen/actionBarTitleBeforeCollapsing</item>
         <item name="android:textColor">@color/colorText</item>
-        <item name="titleTextColor">@color/colorText</item>
         <item name="android:fontFamily">@font/paytone_one</item>
     </style>
 
@@ -35,7 +34,6 @@
     <style name="TextAppearance.Design.CollapsingToolbar.Expanded" parent="android:TextAppearance">
         <item name="android:textSize">@dimen/actionBarTitleBeforeCollapsing</item>
         <item name="android:textColor">@color/colorText</item>
-        <item name="titleTextColor">@color/colorText</item>
         <item name="android:fontFamily">@font/paytone_one</item>
     </style>
 
@@ -43,14 +41,12 @@
     <style name="TextAppearance.Widget.AppCompat.Toolbar.Title." parent="android:TextAppearance">
         <item name="android:textSize">@dimen/actionBarTitleAfterCollapsing</item>
         <item name="android:textColor">@color/colorText</item>
-        <item name="titleTextColor">@color/colorText</item>
         <item name="android:fontFamily">@font/paytone_one</item>
     </style>
 
     <style name="TextAppearance.AppCompat.Widget.ActionBar.Title" parent="android:TextAppearance">
         <item name="android:textSize">@dimen/actionBarTitleAfterCollapsing</item>
         <item name="android:textColor">@color/colorText</item>
-        <item name="titleTextColor">@color/colorText</item>
         <item name="android:fontFamily">@font/paytone_one</item>
     </style>
 
