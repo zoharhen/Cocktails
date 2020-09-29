@@ -1,16 +1,16 @@
 package com.example.cocktails.CustomItem
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
+import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cocktails.Cocktail
 import com.example.cocktails.ItemDetailsActivity
 import com.example.cocktails.R
-import kotlinx.android.synthetic.main.tabbed_item.view.*
+import kotlinx.android.synthetic.main.activity_user_item_level1.*
 import java.util.*
 
 
@@ -20,13 +20,23 @@ class UserItemLevel3 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_item_level3)
+        initViews()
         initButtons()
         initToolBar()
     }
 
+    private fun initViews() {
+        stepsView.setLabels(arrayOf("", "", ""))
+            .setBarColorIndicator(resources.getColor(R.color.material_blue_grey_800))
+            .setProgressColorIndicator(resources.getColor(R.color.stepBg))
+            .setLabelColorIndicator(resources.getColor(R.color.stepBg))
+            .setCompletedPosition(2)
+            .drawView()
+    }
+
     private fun initToolBar() {
         supportActionBar?.title = getString(R.string.title_user_item)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
     }
 
@@ -55,8 +65,12 @@ class UserItemLevel3 : AppCompatActivity() {
     }
 
     private fun initButtons() {
+        findViewById<ImageButton>(R.id.prevButton).setOnClickListener {
+            onBackPressed()
+        }
+
         findViewById<Button>(R.id.preview_button).setOnClickListener {
-            val cocktailName = intent.getStringExtra(COCKATIL_NAME_KEY)
+            val cocktailName = intent.getStringExtra(COCKTAIL_NAME_KEY)
             val category = intent.getStringExtra(CATEGORY_KEY)
             val iconUri = intent.getStringExtra(ICON_KEY)
             val uploadImgStr = intent.getStringExtra(UPLOAD_IMG_KEY)

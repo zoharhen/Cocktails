@@ -17,90 +17,32 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar_user1"
+        <com.anton46.stepsview.StepsView
+            android:id="@+id/stepsView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:id="@+id/levels"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingVertical="20dp"
-                android:layout_gravity="center"
-                tools:ignore="MissingConstraints">
-
-                <TextView
-                    android:id="@+id/tv_level_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/ic_circle_cur_level"
-                    android:fontFamily="@font/paytone_one"
-                    android:gravity="center"
-                    android:text="@string/level1"
-                    android:textColor="#000000" />
-
-                <View
-                    android:id="@+id/tv_row1"
-                    android:layout_width="60dp"
-                    android:layout_height="1dp"
-                    android:layout_gravity="center"
-                    android:background="#020202" />
-
-                <TextView
-                    android:id="@+id/tv_level_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/ic_circle_level"
-                    android:gravity="center"
-                    android:fontFamily="@font/paytone_one"
-                    android:text="@string/level2"
-                    android:textColor="#000000" />
-
-                <View
-                    android:layout_width="60dp"
-                    android:layout_height="1dp"
-                    android:layout_gravity="center"
-                    android:background="#020202" />
-
-                <TextView
-                    android:id="@+id/tv_level_3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:background="@drawable/ic_circle_level"
-                    android:text="@string/level3"
-                    android:fontFamily="@font/paytone_one"
-                    android:textColor="#000000" />
-
-            </LinearLayout>
-
-        </androidx.appcompat.widget.Toolbar>
-
-
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:orientation="horizontal"
+            android:padding="10dp">
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:gravity="center"
                 android:text="@string/cocktail_name"
-                android:textColor="#000000"
-                android:textColorHighlight="#451010"
-                android:textSize="@dimen/h2"
-                android:textStyle="bold" />
+                android:fontFamily="@font/raleway_light"
+                android:textAppearance="@style/Regular"
+                android:textColor="@color/colorPrimaryDark"
+                android:textColorHighlight="#451010" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/cocktailNameInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingStart="20dp"
-                android:maxLines="1"
                 android:paddingEnd="20dp"
                 app:counterEnabled="true"
                 app:endIconMode="clear_text">
@@ -108,8 +50,12 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/cocktailNameText"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:fontFamily="@font/raleway_light"
                     android:background="#00FFFFFF" />
+
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
@@ -119,42 +65,43 @@
             android:layout_height="1dp"
             android:layout_margin="15dp"
             android:background="@color/colorRipple" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:orientation="horizontal"
+            android:padding="10dp">
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:text="@string/category"
-                android:textSize="@dimen/h2"
-                android:gravity="center"
-                android:textColor="#000000"
-                android:textColorHighlight="#451010"
-                android:textStyle="bold"/>
-
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/selectCategoryChipGroup"
-                app:singleSelection="true"
-                android:layout_width="wrap_content"
-                android:backgroundTint="@color/colorPrimary"
-                android:layout_height="wrap_content">
-
-            </com.google.android.material.chip.ChipGroup>
+                android:fontFamily="@font/raleway_light"
+                android:textAppearance="@style/Regular"
+                android:textColor="@color/colorPrimaryDark" />
 
             <TextView
                 android:id="@+id/category_chip_error"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/required_field"
-                android:textStyle="bold"
+                android:text="*"
+                android:visibility="gone"
+                android:fontFamily="@font/raleway_semibold"
+                android:textAppearance="@style/Regular"
+                android:textSize="25dp"
                 android:textColor="@color/errorColor" />
 
         </LinearLayout>
+
+        <com.google.android.material.chip.ChipGroup
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:id="@+id/selectCategoryChipGroup"
+            app:singleSelection="true"
+            android:layout_width="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
+            android:layout_height="wrap_content" />
 
         <View
             android:layout_width="match_parent"
@@ -165,51 +112,49 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:paddingStart="20dp"
-            android:paddingTop="5dp"
+            android:orientation="horizontal"
+            android:padding="10dp"
             android:paddingEnd="20dp">
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:gravity="center"
                 android:text="@string/icon"
-                android:textColor="#000000"
-                android:textSize="@dimen/h2"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/select_icon_Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#303F9F"
-                android:text="@string/select" />
-
-            <View
-                android:layout_width="10dp"
-                android:layout_height="2dp" />
-
-            <ImageView
-                android:id="@+id/selected_icon_IV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:minWidth="100dp"
-                android:minHeight="100dp" />
+                android:fontFamily="@font/raleway_light"
+                android:textAppearance="@style/Regular"
+                android:textColor="@color/colorPrimaryDark" />
 
             <TextView
                 android:id="@+id/icon_error"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textStyle="bold"
-                android:text="@string/required_field"
+                android:text="*"
+                android:textSize="25dp"
+                android:visibility="invisible"
+                android:layout_weight="1"
+                android:fontFamily="@font/raleway_semibold"
+                android:textAppearance="@style/Regular"
                 android:textColor="@color/errorColor" />
 
+            <Button
+                android:id="@+id/select_icon_Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:fontFamily="@font/raleway_light"
+                android:text="@string/select" />
+
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/selected_icon_IV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:minWidth="100dp"
+            android:minHeight="100dp" />
 
         <View
             android:layout_width="match_parent"
@@ -220,79 +165,73 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:paddingStart="20dp"
-            android:paddingTop="5dp"
+            android:orientation="horizontal"
+            android:padding="10dp"
             android:paddingEnd="20dp">
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:gravity="center"
                 android:text="@string/cocktail_image"
-                android:textColor="#000000"
-                android:textColorHighlight="#451010"
-                android:textSize="@dimen/h2"
-                android:textStyle="bold" />
+                android:layout_weight="1"
+                android:fontFamily="@font/raleway_light"
+                android:textAppearance="@style/Regular"
+                android:textColor="@color/colorPrimaryDark" />
 
             <Button
                 android:id="@+id/upload_img_Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#303F9F"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:fontFamily="@font/raleway_light"
                 android:text="@string/upload" />
-
-            <ImageView
-                android:id="@+id/upload_user_img_TV"
-                android:layout_width="300dp"
-                android:paddingTop="@dimen/space16"
-                android:layout_height="300dp"
-                android:gravity="center_vertical" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space16"
-                android:orientation="horizontal"
-                android:gravity="center">
-
-                <Button
-                    android:id="@+id/rotate_upload_view_Button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="#50A2CF"
-                    android:text="@string/rotate_view" />
-
-                <View
-                    android:layout_width="10dp"
-                    android:layout_height="2dp" />
-
-                <Button
-                    android:id="@+id/del_upload_img_Button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="#50A2CF"
-                    android:text="@string/delete" />
-            </LinearLayout>
 
         </LinearLayout>
 
-        <RelativeLayout
+        <ImageView
+            android:id="@+id/upload_user_img_TV"
+            android:layout_width="300dp"
+            android:paddingTop="@dimen/space16"
+            android:layout_height="300dp"
+            android:layout_gravity="center" />
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="10dp"
-            android:orientation="vertical">
+            android:layout_marginTop="@dimen/space16"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
 
             <Button
-                android:id="@+id/nextButton"
-                android:fontFamily="@font/paytone_one"
+                android:id="@+id/rotate_upload_view_Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:text="next"/>
-        </RelativeLayout>
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:fontFamily="@font/raleway_light"
+                android:text="@string/rotate_view" />
+
+            <View
+                android:layout_width="10dp"
+                android:layout_height="2dp" />
+
+            <Button
+                android:id="@+id/del_upload_img_Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:fontFamily="@font/raleway_light"
+                android:text="@string/delete" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/nextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:src="@drawable/ic_baseline_arrow_forward_24"
+            android:background="@null"
+            android:contentDescription="TODO" />
 
     </LinearLayout>
 

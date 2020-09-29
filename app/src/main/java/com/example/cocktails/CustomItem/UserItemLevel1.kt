@@ -14,7 +14,8 @@ import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.EditText
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
@@ -24,45 +25,34 @@ import com.example.cocktails.Cocktails
 import com.example.cocktails.R
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
-import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_user_item_level1.*
 
-val EMPTY_FIELD_ERROR_MSG: String = "Field can not be empty"
-val COCKATIL_NAME_KEY = "cocktailName"
-val CATEGORY_KEY = "category"
-val ICON_KEY = "icon"
-val UPLOAD_IMG_KEY = "upload_img"
-val ROTATE_UPLOAD_IMG_KEY = "rotate_upload_img"
+const val EMPTY_FIELD_ERROR_MSG: String = "Field can not be empty"
+const val COCKTAIL_NAME_KEY = "cocktailName"
+const val CATEGORY_KEY = "category"
+const val ICON_KEY = "icon"
+const val UPLOAD_IMG_KEY = "upload_img"
+const val ROTATE_UPLOAD_IMG_KEY = "rotate_upload_img"
 
 class UserItemLevel1 : AppCompatActivity() {
-    private lateinit var mUploadImgButton: Button
-    private lateinit var mIconButton: Button
-    private lateinit var mNextButton: Button
-    private lateinit var mIconView: ImageView
-    private lateinit var mUserImg: ImageView
-    private lateinit var mRotateUploadView: Button
-    private lateinit var mDelUploadImgButton: Button
-    private lateinit var mCocktailName: TextInputLayout
-    private lateinit var mCategoryChipErrorTV: TextView
-    private lateinit var mIconErrorTV: TextView
 
     private var mUploadImgUri: Uri? = null
     private var mIconUri: Uri? = null
     private lateinit var mCategoryChip: ChipGroup
 
-
-    val YES = "yes"
-    val NO = "no"
-    val DIALOG_UPLOAD_MSG = "If you go back now, your upload image will be removed."
-    val MAX_LENGTH_COCKTAIL_NAME: Int = 12
-    val COCKTAIL_ERROR_MSG_NAME = "Cocktail name already exist ,choose different name"
-    val COCKTAIL_ERROR_MSG_LENGTH: String =
-        "Cocktail name too long ,\n must be under $MAX_LENGTH_COCKTAIL_NAME characters"
-    val BACK_PRESS_MSG = "Are you sure you want to exit? \nyour details will be deleted. "
-    val REQUEST_CODE_ICONS = 2
-    val REQUEST_CODE_UPLOAD_IMG = 1
+    private val YES = "Yes"
+    private val NO = "No"
+    private val DIALOG_UPLOAD_MSG = "If you go back now, your upload image will be removed"
+    private val MAX_LENGTH_COCKTAIL_NAME: Int = 12
+    private val COCKTAIL_ERROR_MSG_NAME = "Cocktail name already exist, choose different name"
+    private val COCKTAIL_ERROR_MSG_LENGTH: String =
+        "Cocktail name too long,\n must be under $MAX_LENGTH_COCKTAIL_NAME characters"
+    private val BACK_PRESS_MSG = "Are you sure you want to exit? \nyour details will be deleted"
+    private val REQUEST_CODE_ICONS = 2
+    private val REQUEST_CODE_UPLOAD_IMG = 1
 
     @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("InflateParams")
@@ -88,7 +78,6 @@ class UserItemLevel1 : AppCompatActivity() {
                 showDialogOnBackPress()
                 return true
             }
-
         }
         return super.onOptionsItemSelected(item)
     }
@@ -98,33 +87,21 @@ class UserItemLevel1 : AppCompatActivity() {
         showDialogOnBackPress()
     }
 
-
     @RequiresApi(Build.VERSION_CODES.M)
     private fun initView() {
-        mCocktailName = findViewById(R.id.cocktailNameInput)
-        mCocktailName.counterMaxLength = MAX_LENGTH_COCKTAIL_NAME
+        cocktailNameInput.counterMaxLength = MAX_LENGTH_COCKTAIL_NAME
+
         mCategoryChip = findViewById(R.id.selectCategoryChipGroup)
-        mCategoryChipErrorTV = findViewById(R.id.category_chip_error)
-        mCategoryChipErrorTV.visibility = View.GONE
-
-        //Icon
-        mIconView = findViewById(R.id.selected_icon_IV)
-        mIconView.visibility = View.GONE
-        mIconButton = findViewById(R.id.select_icon_Button)
-        mIconErrorTV = findViewById(R.id.icon_error)
-        mIconErrorTV.visibility = View.GONE
-
-        //upload img
-        mUploadImgButton = findViewById(R.id.upload_img_Button)
-        mUserImg = findViewById(R.id.upload_user_img_TV)
-        mRotateUploadView = findViewById(R.id.rotate_upload_view_Button)
-        mDelUploadImgButton = findViewById(R.id.del_upload_img_Button)
-        buttonStateOffUploadImg()
-
-        mNextButton = findViewById(R.id.nextButton)
-
+        setUploadImgButtonState(View.GONE)
         initCategory()
         initButtonsListener()
+
+        stepsView.setLabels(arrayOf("", "", ""))
+            .setBarColorIndicator(resources.getColor(R.color.material_blue_grey_800))
+            .setProgressColorIndicator(resources.getColor(R.color.stepBg))
+            .setLabelColorIndicator(resources.getColor(R.color.stepBg))
+            .setCompletedPosition(0)
+            .drawView()
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -138,46 +115,40 @@ class UserItemLevel1 : AppCompatActivity() {
     private fun addChip(item: String, chipGroup: ChipGroup) {
         val chip = Chip(chipGroup.context)
         chip.chipBackgroundColor = getColorStateList(R.color.chipColor)
+        chip.setTextAppearance(R.style.chipText)
         chip.text = item
         chip.isCheckable = true
         chipGroup.addView(chip)
     }
 
-
     private fun initButtonsListener() {
-        mUploadImgButton.setOnClickListener {
+        upload_img_Button.setOnClickListener {
             val intent = Intent()
             intent.type = "image/*"
             intent.action = Intent.ACTION_GET_CONTENT
             startActivityForResult(intent, REQUEST_CODE_UPLOAD_IMG)
         }
-        mRotateUploadView.setOnClickListener {
-            if(mUserImg.rotation==360F){
-                mUserImg.rotation=0F
+        rotate_upload_view_Button.setOnClickListener {
+            if (upload_user_img_TV.rotation == 360F) {
+                upload_user_img_TV.rotation = 0F
             }
-            mUserImg.rotation = mUserImg.rotation + 90F
+            upload_user_img_TV.rotation = upload_user_img_TV.rotation + 90F
         }
-        mDelUploadImgButton.setOnClickListener {
+        del_upload_img_Button.setOnClickListener {
             showDialog()
         }
-        mIconButton.setOnClickListener {
+        select_icon_Button.setOnClickListener {
             openIconsActivity()
         }
-        mNextButton.setOnClickListener {
+        nextButton.setOnClickListener {
             checkedLevel1()
         }
     }
 
-    private fun buttonStateOnUploadImg() {
-        mUserImg.visibility = View.VISIBLE
-        mRotateUploadView.visibility = View.VISIBLE
-        mDelUploadImgButton.visibility = View.VISIBLE
-    }
-
-    private fun buttonStateOffUploadImg() {
-        mUserImg.visibility = View.GONE
-        mRotateUploadView.visibility = View.GONE
-        mDelUploadImgButton.visibility = View.GONE
+    private fun setUploadImgButtonState(visible: Int) {
+        upload_user_img_TV.visibility = visible
+        rotate_upload_view_Button.visibility = visible
+        del_upload_img_Button.visibility = visible
     }
 
     private fun showDialog() {
@@ -187,14 +158,15 @@ class UserItemLevel1 : AppCompatActivity() {
         val dialogClickListener = DialogInterface.OnClickListener { _, which ->
             when (which) {
                 DialogInterface.BUTTON_POSITIVE -> {
-                    mUserImg.setImageDrawable(null)
-                    buttonStateOffUploadImg()
+                    upload_user_img_TV.setImageDrawable(null)
+                    setUploadImgButtonState(View.GONE)
                 }
                 //DialogInterface.BUTTON_NEGATIVE ->{}
             }
         }
         builder.setPositiveButton(YES, dialogClickListener)
         builder.setNegativeButton(NO, dialogClickListener)
+
         dialog = builder.create()
         dialog.show()
     }
@@ -204,7 +176,7 @@ class UserItemLevel1 : AppCompatActivity() {
         val cocktailName = getCocktailName()
         val categoryChipIdSelected: Int = mCategoryChip.checkedChipId
 
-        //check all the values filled and correct 
+        //check all the values filled and correct
         if (confirmInput(cocktailName, categoryChipIdSelected)) {
             //start level 2 activity
             //todo for debug Toast.makeText(this, "all the values is valid!! :)", Toast.LENGTH_LONG).show()
@@ -219,18 +191,21 @@ class UserItemLevel1 : AppCompatActivity() {
 
     private fun startLevel2(cocktailName: String, categoryChipIdSelected: Int) {
         val intentLevel2 = Intent(this, UserItemLevel2::class.java)
-        intentLevel2.putExtra(COCKATIL_NAME_KEY, cocktailName)
+        intentLevel2.putExtra(COCKTAIL_NAME_KEY, cocktailName)
         intentLevel2.putExtra(
             CATEGORY_KEY,
             (mCategoryChip.getChildAt(categoryChipIdSelected - 1) as Chip).text
         )
         intentLevel2.putExtra(ICON_KEY, mIconUri.toString())
-        var uploadImgStr:String?=null
-        if(mUploadImgUri!=null){
-            uploadImgStr=mUploadImgUri.toString()
+        var uploadImgStr: String? = null
+        if (mUploadImgUri != null) {
+            uploadImgStr = mUploadImgUri.toString()
         }
         intentLevel2.putExtra(UPLOAD_IMG_KEY, uploadImgStr)
-        intentLevel2.putExtra(ROTATE_UPLOAD_IMG_KEY, mUserImg.rotation)//TODO CHECK INVALID WHEN UPLOAD NOT MUST
+        intentLevel2.putExtra(
+            ROTATE_UPLOAD_IMG_KEY,
+            upload_user_img_TV.rotation
+        )//TODO CHECK INVALID WHEN UPLOAD NOT MUST
         startActivity(intentLevel2)
     }
 
@@ -252,39 +227,37 @@ class UserItemLevel1 : AppCompatActivity() {
 
     private fun validateCocktailName(cocktailName: String?): Boolean {
         if (cocktailName.isNullOrEmpty()) {
-            mCocktailName.error = EMPTY_FIELD_ERROR_MSG
+            cocktailNameInput.error = EMPTY_FIELD_ERROR_MSG
             return false
         } else if (cocktailName.length > MAX_LENGTH_COCKTAIL_NAME) {
-            mCocktailName.error = COCKTAIL_ERROR_MSG_LENGTH
+            cocktailNameInput.error = COCKTAIL_ERROR_MSG_LENGTH
             return false
         }
         //check name not already exist
         if (isCocktailNameExist(cocktailName)) {
-            mCocktailName.error = COCKTAIL_ERROR_MSG_NAME
+            cocktailNameInput.error = COCKTAIL_ERROR_MSG_NAME
             return false
         }
-        mCocktailName.error = null
+        cocktailNameInput.error = null
         return true
     }
 
     private fun validateCategory(chipId: Int): Boolean {
         //if chipId==ChipGroup.NO_ID -> not chip selected
         if (chipId == ChipGroup.NO_ID) {
-            mCategoryChipErrorTV.visibility = View.VISIBLE
-            mCategoryChipErrorTV.error=""
+            category_chip_error.visibility = View.VISIBLE
             return false
         }//else{
-        mCategoryChipErrorTV.visibility = View.INVISIBLE
+        category_chip_error.visibility = View.INVISIBLE
         return true
     }
 
     private fun validateIcon(): Boolean {
-        if (mIconView.drawable == null) {
-            mIconErrorTV.visibility = View.VISIBLE
-            mIconErrorTV.error=""
+        if (selected_icon_IV.drawable == null) {
+            icon_error.visibility = View.VISIBLE
             return false
         } //else{
-        mIconErrorTV.visibility = View.INVISIBLE
+        icon_error.visibility = View.INVISIBLE
         return true
 
     }
@@ -305,11 +278,12 @@ class UserItemLevel1 : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if ((requestCode == REQUEST_CODE_UPLOAD_IMG || requestCode == REQUEST_CODE_ICONS) &&
-            resultCode == Activity.RESULT_OK && data != null && data.data != null) {
+            resultCode == Activity.RESULT_OK && data != null && data.data != null
+        ) {
             if (requestCode == REQUEST_CODE_UPLOAD_IMG) {
                 mUploadImgUri = data.data!!
-                Picasso.with(this).load(mUploadImgUri).into(mUserImg)
-                buttonStateOnUploadImg()
+                Picasso.with(this).load(mUploadImgUri).into(upload_user_img_TV)
+                setUploadImgButtonState(View.VISIBLE)
             } else {
                 mIconUri = data.data!!
                 val applicationContext = (this.applicationContext as Cocktails)
@@ -318,17 +292,17 @@ class UserItemLevel1 : AppCompatActivity() {
                     Glide.with(applicationContext)
                         .load(it)
                         .apply(RequestOptions().placeholder(null).dontAnimate().fitCenter())
-                        .into(mIconView)
+                        .into(selected_icon_IV)
                         .clearOnDetach()
                 }
-                mIconView.visibility = View.VISIBLE
+                selected_icon_IV.visibility = View.VISIBLE
             }
 
         } else {
             if (requestCode == REQUEST_CODE_UPLOAD_IMG) {
-                buttonStateOffUploadImg()
+                setUploadImgButtonState(View.GONE)
             } else if (requestCode == REQUEST_CODE_ICONS) {
-                mIconView.visibility = View.GONE
+                selected_icon_IV.visibility = View.GONE
             }
         }
     }
@@ -361,7 +335,7 @@ class UserItemLevel1 : AppCompatActivity() {
     private fun getCocktailName(): String {
         // Get input text
         //todo trim
-        return mCocktailName.editText?.text.toString().trim()
+        return cocktailNameInput.editText?.text.toString().trim()
     }
 
     private fun closeKeyBoard() {
@@ -371,6 +345,7 @@ class UserItemLevel1 : AppCompatActivity() {
             imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
+
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
         if (event.action == MotionEvent.ACTION_DOWN) {
             val v = currentFocus
@@ -379,7 +354,8 @@ class UserItemLevel1 : AppCompatActivity() {
                 v.getGlobalVisibleRect(outRect)
                 if (!outRect.contains(event.rawX.toInt(), event.rawY.toInt())) {
                     v.clearFocus()
-                    val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    val imm: InputMethodManager =
+                        getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0)
                 }
             }

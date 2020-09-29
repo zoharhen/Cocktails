@@ -81,6 +81,18 @@
         <item name="font">@font/raleway_light</item>
     </style>
 
+    <style name="TableTitleText">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/colorRipple</item>
+        <item name="fontFamily">@font/raleway_light</item>
+    </style>
+
+    <style name="TableContentText">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="fontFamily">@font/raleway_light</item>
+    </style>
+
     <style name="simpletooltip_default" parent="@android:style/TextAppearance">
         <item name="android:textSize">@dimen/textFontSize</item>
         <item name="font">@font/raleway_light</item>

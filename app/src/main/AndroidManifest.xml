@@ -42,6 +42,7 @@
             android:parentActivityName=".CustomItem.UserItemLevel1" />
         <activity
             android:name=".CustomItem.CocktailIconLevel1"
+            android:configChanges="orientation|screenSize"
             android:parentActivityName=".CustomItem.UserItemLevel1" />
         <activity
             android:name=".ScrollingActivity"

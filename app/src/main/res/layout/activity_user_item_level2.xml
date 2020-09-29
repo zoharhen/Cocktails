@@ -4,91 +4,49 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/lightColorBg"
     tools:context="com.example.cocktails.CustomItem.UserItemLevel2">
+
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints">
+        app:layout_constraintStart_toStartOf="parent">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar_user2"
+        <com.anton46.stepsview.StepsView
+            android:id="@+id/stepsView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:id="@+id/levels"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingVertical="20dp"
-                android:layout_gravity="center"
-                tools:ignore="MissingConstraints">
-
-                <TextView
-                    android:id="@+id/tv_level_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/ic_circle_cur_level"
-                    android:gravity="center"
-                    android:text="@string/level1"
-                    android:textColor="#000000" />
-
-                <View
-                    android:id="@+id/tv_row1"
-                    android:layout_width="60dp"
-                    android:layout_height="1dp"
-                    android:layout_gravity="center"
-                    android:background="#020202" />
-
-                <TextView
-                    android:id="@+id/tv_level_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/ic_circle_cur_level"
-                    android:gravity="center"
-                    android:text="@string/level2"
-                    android:textColor="#000000" />
-
-                <View
-                    android:layout_width="60dp"
-                    android:layout_height="1dp"
-                    android:layout_gravity="center"
-                    android:background="#020202" />
-
-                <TextView
-                    android:id="@+id/tv_level_3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:background="@drawable/ic_circle_level"
-                    android:text="@string/level3"
-                    android:textColor="#000000" />
-            </LinearLayout>
-
-        </androidx.appcompat.widget.Toolbar>
-
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:padding="16dp">
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:gravity="center"
+                android:layout_weight="1"
+                android:fontFamily="@font/raleway_light"
                 android:text="@string/ingredients_user"
-                android:textColor="#000000"
-                android:textColorHighlight="#451010"
-                android:textSize="@dimen/h2"
-                android:textStyle="bold" />
+                android:textAppearance="@style/Regular"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <ImageButton
+                android:id="@+id/adding_new_row"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:background="@null"
+                android:contentDescription="TODO"
+                android:src="@drawable/ic_baseline_add_24" />
         </LinearLayout>
 
-        <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <TableLayout
             android:id="@+id/ingredient_table"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -97,101 +55,96 @@
             android:stretchColumns="1,2,3">
 
             <TableRow
-                android:background="#0079D6"
                 android:id="@+id/ingredients_table_row"
+                android:background="@color/colorPrimaryDark"
                 android:padding="5dp">
+
                 <TextView
                     android:id="@+id/number_col_table"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
+                    android:layout_column="0"
                     android:gravity="center"
-                    android:textSize="16sp"
                     android:text="@string/number"
-                    android:layout_column="0"/>
+                    android:textAppearance="@style/TableTitleText" />
+
                 <TextView
                     android:id="@+id/quantity_col_table"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
+                    android:layout_column="1"
                     android:gravity="center"
-                    android:textSize="16sp"
                     android:text="@string/quantity_title"
-                    android:layout_column="1"/>
+                    android:textAppearance="@style/TableTitleText" />
+
                 <TextView
                     android:id="@+id/unit_col_table"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_column="2"
                     android:gravity="center"
-                    android:textStyle="bold"
-                    android:textSize="16sp"
                     android:text="@string/unit_title"
-                    android:layout_column="2"/>
+                    android:textAppearance="@style/TableTitleText" />
+
                 <TextView
                     android:id="@+id/ingredient_col_table"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_column="3"
                     android:gravity="center"
-                    android:textStyle="bold"
-                    android:textSize="16sp"
                     android:text="@string/ingredient_user"
-                    android:layout_column="3"/>
+                    android:textAppearance="@style/TableTitleText" />
             </TableRow>
-            <TableRow android:background="#7D858F" android:padding="5dp"
-                android:id="@+id/example_ingredient_table_row">
+
+            <TableRow
+                android:id="@+id/example_ingredient_table_row"
+                android:background="@color/colorAccent"
+                android:padding="5dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:textSize="15sp"
+                    android:text="example"
                     android:textAlignment="center"
-                    android:text="example" />
+                    android:textAppearance="@style/TableContentText" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:textSize="15sp"
+                    android:text="1"
                     android:textAlignment="center"
-                    android:text="1" />
+                    android:textAppearance="@style/TableContentText" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:textSize="15sp"
+                    android:text="oz"
                     android:textAlignment="center"
-                    android:text="oz" />
+                    android:textAppearance="@style/TableContentText" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:textSize="15sp"
-                    android:text="Vodka" />
+                    android:text="Vodka"
+                    android:textAppearance="@style/TableContentText" />
             </TableRow>
+
+            <TextView
+                android:id="@+id/ingredients_level2_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:fontFamily="@font/raleway_light"
+                android:textSize="13sp"
+                android:text="* Please insert at least one ingredient"
+                android:textColor="@color/errorColor"
+                android:visibility="gone"/>
 
         </TableLayout>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_gravity="center"
-            android:id="@+id/adding_new_row"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:scaleType="center"
-            android:clickable="true"
-            app:srcCompat="@drawable/ic_add_30"
-            app:tint="@color/colorPrimary"
-            app:backgroundTint="@color/addButtonColor"
-            app:fabCustomSize="40dp"
-            android:focusable="true" />
-
-        <TextView
-            android:id="@+id/ingredients_level2_error"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Please insert at least one ingredient"
-            android:textStyle="bold"
-            android:textColor="@color/errorColor" />
 
         <View
             android:layout_width="match_parent"
@@ -202,22 +155,31 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:padding="16dp">
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:gravity="center"
+                android:layout_weight="1"
+                android:fontFamily="@font/raleway_light"
                 android:text="@string/preparation_user"
-                android:textColor="#000000"
-                android:textColorHighlight="#451010"
-                android:textSize="@dimen/h2"
-                android:textStyle="bold" />
+                android:textAppearance="@style/Regular"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <ImageButton
+                android:id="@+id/adding_new_row_preparation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:background="@null"
+                android:contentDescription="TODO"
+                android:src="@drawable/ic_baseline_add_24" />
+
         </LinearLayout>
 
-        <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <TableLayout
             android:id="@+id/preparation_table"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -226,83 +188,92 @@
             android:stretchColumns="1">
 
             <TableRow
-                android:background="#0079D6"
                 android:id="@+id/table_row_preparation"
+                android:background="@color/colorPrimaryDark"
                 android:padding="5dp">
+
                 <TextView
                     android:id="@+id/number_col_table_preparation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
                     android:gravity="center"
-                    android:textSize="16sp"
-                    android:text="@string/number" />
+                    android:text="@string/number"
+                    android:textAppearance="@style/TableTitleText" />
+
                 <TextView
                     android:id="@+id/preparation_gide_table"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
                     android:gravity="center"
-                    android:textSize="16sp"
-                    android:text="@string/preparation_user" />
+                    android:text="@string/preparation_user"
+                    android:textAppearance="@style/TableTitleText" />
             </TableRow>
-            <TableRow android:background="#7D858F" android:padding="5dp"
-                >
+
+            <TableRow
+                android:background="@color/colorAccent"
+                android:id="@+id/example_step_table_row"
+                android:padding="5dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:textSize="15sp"
+                    android:text="example "
                     android:textAlignment="center"
-                    android:text="example " />
+                    android:textAppearance="@style/TableContentText" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textSize="15sp"
-                    android:text="Fill a Collins glass with ice and add the gin" />
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:text="Fill a Collins glass with ice"
+                    android:textAppearance="@style/TableContentText" />
             </TableRow>
-        </TableLayout>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_gravity="center"
-            android:id="@+id/adding_new_row_preparation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:scaleType="center"
-            android:clickable="true"
-            app:srcCompat="@drawable/ic_add_30"
-            app:tint="@color/colorPrimary"
-            app:backgroundTint="@color/addButtonColor"
-            app:fabCustomSize="40dp"
-            android:focusable="true" />
-
-        <TextView
-            android:id="@+id/preparation_error"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Please Insert at least one step"
-            android:textStyle="bold"
-            android:textColor="@color/errorColor" />
-
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingRight="10dp"
-            android:paddingTop="20dp"
-            android:orientation="vertical">
-
-            <Button
-                android:id="@+id/nextLevel3Button"
-                android:fontFamily="@font/paytone_one"
+            <TextView
+                android:id="@+id/preparation_error"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:text="next"/>
-        </RelativeLayout>
+                android:layout_gravity="start"
+                android:fontFamily="@font/raleway_light"
+                android:textSize="13sp"
+                android:text="* Please insert at least one step"
+                android:textColor="@color/errorColor"
+                android:visibility="gone"/>
+
+        </TableLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="60dp"
+            android:gravity="bottom"
+            android:layout_gravity="bottom"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/prevButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:background="@null"
+                android:contentDescription="TODO"
+                android:src="@drawable/ic_baseline_arrow_back_24" />
+
+            <View android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"/>
+
+            <ImageButton
+                android:id="@+id/nextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:background="@null"
+                android:contentDescription="TODO"
+                android:src="@drawable/ic_baseline_arrow_forward_24" />
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>
