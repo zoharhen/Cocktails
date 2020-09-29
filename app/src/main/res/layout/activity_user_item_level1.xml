@@ -33,6 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:text="@string/cocktail_name"
+                android:textStyle="bold"
                 android:fontFamily="@font/raleway_light"
                 android:textAppearance="@style/Regular"
                 android:textColor="@color/colorPrimaryDark"
@@ -42,8 +43,8 @@
                 android:id="@+id/cocktailNameInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
                 app:counterEnabled="true"
                 app:endIconMode="clear_text">
 
@@ -77,6 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:text="@string/category"
+                android:textStyle="bold"
                 android:fontFamily="@font/raleway_light"
                 android:textAppearance="@style/Regular"
                 android:textColor="@color/colorPrimaryDark" />
@@ -121,6 +123,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:text="@string/icon"
+                android:textStyle="bold"
                 android:fontFamily="@font/raleway_light"
                 android:textAppearance="@style/Regular"
                 android:textColor="@color/colorPrimaryDark" />
@@ -174,6 +177,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:text="@string/cocktail_image"
+                android:textStyle="bold"
                 android:layout_weight="1"
                 android:fontFamily="@font/raleway_light"
                 android:textAppearance="@style/Regular"
@@ -183,6 +187,7 @@
                 android:id="@+id/upload_img_Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
                 android:backgroundTint="@color/colorPrimaryDark"
                 android:fontFamily="@font/raleway_light"
                 android:text="@string/upload" />
