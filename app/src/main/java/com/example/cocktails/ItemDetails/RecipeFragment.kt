@@ -116,7 +116,7 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun initViews(withTooltip: Boolean = true) {
-        if(cocktail.isReview){
+        if(cocktail.isReview||cocktail.isCustom){
             if(cocktail.image.isNullOrEmpty()){
                 (activity?.applicationContext as Cocktails).mStorageRef.child("images/$EMPTY_IMG_ICON.jpg")
                     .downloadUrl.addOnSuccessListener { img ->

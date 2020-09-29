@@ -17,11 +17,11 @@ import android.app.Activity
 import java.util.*
 
 
-class CocktailItemAdapter internal constructor(context: Context, data: List<Cocktail>) :
+class CocktailItemAdapter internal constructor(context: Context, data: ArrayList<Cocktail>) :
     RecyclerView.Adapter<CocktailItemAdapter.ViewHolder>(), Filterable {
 
     var onItemClick: ((Cocktail) -> Unit)? = null
-    private val items: List<Cocktail> = data
+    private val items: ArrayList<Cocktail> = data
     private var filteredItems: List<Cocktail> = items
     private var presentedItems: List<Cocktail> = items
     private val inflater: LayoutInflater = LayoutInflater.from(context)
