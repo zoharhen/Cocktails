@@ -32,9 +32,6 @@
                 android:layout_height="wrap_content"
                 android:text="preview" />
 
-            <View
-                android:layout_width="10dp"
-                android:layout_height="60dp" />
 
         </LinearLayout>
 

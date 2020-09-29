@@ -31,6 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_weight="1"
+                android:textStyle="bold"
                 android:fontFamily="@font/raleway_light"
                 android:text="@string/ingredients_user"
                 android:textAppearance="@style/Regular"
@@ -164,6 +165,7 @@
                 android:layout_marginBottom="8dp"
                 android:layout_weight="1"
                 android:fontFamily="@font/raleway_light"
+                android:textStyle="bold"
                 android:text="@string/preparation_user"
                 android:textAppearance="@style/Regular"
                 android:textColor="@color/colorPrimaryDark" />

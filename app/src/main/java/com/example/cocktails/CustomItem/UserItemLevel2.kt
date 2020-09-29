@@ -204,6 +204,9 @@ class UserItemLevel2 : AppCompatActivity() {
     private fun delIngredient(index: Int) {
         ingredientsValList.removeAt(index)
         updateIngredientList()
+        if(ingredientsValList.isEmpty()){
+            example_ingredient_table_row.visibility = View.VISIBLE
+        }
 
     }
 
@@ -260,6 +263,9 @@ class UserItemLevel2 : AppCompatActivity() {
     private fun delPreparation(index: Int) {
         preparationValList.removeAt(index)
         updatePreparationList()
+        if(preparationValList.isEmpty()){
+            example_step_table_row.visibility = View.VISIBLE
+        }
     }
 
     private fun showAddStepDialog(c: Context) {
