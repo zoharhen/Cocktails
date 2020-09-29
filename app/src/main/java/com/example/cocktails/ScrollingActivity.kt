@@ -39,9 +39,11 @@ import ru.nikartm.support.ImageBadgeView
 
 
 @Parcelize
-data class Cocktail(val name: String, val type: String, val steps: ArrayList<String>,
-                    val ingredients: ArrayList<String>, val clipart: String, val image: String?,
-                    val isCustom: Boolean = false, val glass: String?, val isReview:Boolean=false,val rotation:Float=0F): Parcelable
+data class Cocktail(
+    val name: String, val type: String, val steps:  ArrayList<String>,
+    val ingredients: ArrayList<String>, val clipart: String, val image: String?,
+    val isCustom: Boolean = false, val glass: String?, val isReview:Boolean=false, val rotation:Float=0F):Parcelable{
+    constructor() : this("","",ArrayList<String>(),ArrayList<String>(),"",null,false,null,false,0F)}
 
 class ScrollingActivity : AppCompatActivity() {
 
@@ -66,7 +68,7 @@ class ScrollingActivity : AppCompatActivity() {
 
     public override fun onStart() {
         super.onStart()
-        val mAuth = (applicationContext.applicationContext as Cocktails).mAuth
+        val mAuth = (applicationContext.applicationContext as Cocktails).mFAuth
 //        mAuth.signInAnonymously()
 //            .addOnCompleteListener { task ->
 //                if (task.isSuccessful) {
@@ -106,7 +108,7 @@ class ScrollingActivity : AppCompatActivity() {
     private fun initAdapter() {
         val jsonString = applicationContext.assets.open("predefined.json").bufferedReader().use { it.readText() }
         val listCocktailType = object : TypeToken<List<Cocktail>>() {}.type
-        val items = Gson().fromJson<List<Cocktail>>(jsonString, listCocktailType)
+        val items :ArrayList<Cocktail> = Gson().fromJson<ArrayList<Cocktail>>(jsonString, listCocktailType)
 
         gridViewAdapter = CocktailItemAdapter(this, items)
 
