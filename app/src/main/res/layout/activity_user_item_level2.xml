@@ -38,6 +38,16 @@
                 android:textColor="@color/colorPrimaryDark" />
 
             <ImageButton
+                android:id="@+id/info_ingredients_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:paddingEnd="15dp"
+                android:background="@null"
+                android:contentDescription="TODO"
+                android:src="@drawable/ic_info_24" />
+
+            <ImageButton
                 android:id="@+id/adding_new_row"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -169,6 +179,16 @@
                 android:text="@string/preparation_user"
                 android:textAppearance="@style/Regular"
                 android:textColor="@color/colorPrimaryDark" />
+
+            <ImageButton
+                android:id="@+id/info_steps_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:paddingEnd="15dp"
+                android:background="@null"
+                android:contentDescription="TODO"
+                android:src="@drawable/ic_info_24" />
 
             <ImageButton
                 android:id="@+id/adding_new_row_preparation"
