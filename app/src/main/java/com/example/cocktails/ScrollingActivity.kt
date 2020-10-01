@@ -5,6 +5,7 @@ import android.app.ActivityOptions
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.ACTION_OPEN_DOCUMENT
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.graphics.Color
@@ -135,7 +136,7 @@ class ScrollingActivity : AppCompatActivity() {
         val listCocktailType = object : TypeToken<List<Cocktail>>() {}.type
         val items: ArrayList<Cocktail> =
             Gson().fromJson<ArrayList<Cocktail>>(jsonString, listCocktailType)
-
+        items.addAll((applicationContext as Cocktails).mUserCocktailsList)
         gridViewAdapter = CocktailItemAdapter(this, items)
 
         gridViewAdapter?.onItemClick = { cocktail ->

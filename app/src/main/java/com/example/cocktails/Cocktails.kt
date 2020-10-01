@@ -6,10 +6,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 
@@ -36,13 +34,8 @@ class Cocktails : Application() {
     lateinit var mFirstTimeModeSP: SharedPreferences
     private var mUserId: String = ""
     //    private var mUserId: String= "enavDebug"//todo remove only for debug
-    private var mUserCocktailsMap = HashMap<String, Cocktail>()
+    var mUserCocktailsList =ArrayList<Cocktail>()
     lateinit var mCocktailsRef: CollectionReference
-
-
-//    companion object {
-//        var mUserId: String= java.util.UUID.randomUUID().toString()
-//    }
 
 
     override fun onCreate() {
@@ -70,40 +63,31 @@ class Cocktails : Application() {
         mCocktailsRef = FirebaseFirestore.getInstance().collection(COLLECTION_PATH).document(mUserId).collection(
             SUB_COLLECTION_PATH
         )
-
-//        mUserId = mFAuth.currentUser?.uid.toString()
-//        loadUserCocktailData()
+        loadUserCocktailData()
     }
 
-    fun getUploadImgPath(imageName: String):String{
+    fun getUploadUserImgPath(imageName: String):String{
         return "usersImages/$mUserId/$imageName.jpg"
     }
 
     @SuppressLint("LogNotTimber")
     private fun loadUserCocktailData() { //todo check fun
-        mUserCocktailsMap.clear()
+        mUserCocktailsList.clear()
         mCocktailsRef.get().addOnSuccessListener { queryDocumentSnapshot->
             for (doc in queryDocumentSnapshot) {
                 val cocktail=doc.toObject(Cocktail::class.java)
-                mUserCocktailsMap[cocktail.name]=cocktail
-                Log.i("cocktails", cocktail.toString())//todo remove only for debug
+                mUserCocktailsList.add(cocktail)
+                Log.i("cocktails", cocktail.name)//todo remove only for debug
             }
         }
     }
 
-    fun getAllUsersCocktailsMap() :HashMap<String, Cocktail>
-    {
-        return HashMap(mUserCocktailsMap)
-    }
-
-    fun getAllUsersCocktailsList() :ArrayList<Cocktail>
-    {
-
-        return ArrayList<Cocktail>(mUserCocktailsMap.values)
-    }
-
     fun addUserCocktail(newCocktail: Cocktail){
-        mUserCocktailsMap[newCocktail.name]=newCocktail
+        mUserCocktailsList.add(newCocktail)
+    }
+
+    fun removeUserCocktail(delCocktail:Cocktail){
+        mUserCocktailsList.remove(delCocktail)
     }
 
 
