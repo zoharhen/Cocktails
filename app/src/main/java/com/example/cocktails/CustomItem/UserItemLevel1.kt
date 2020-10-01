@@ -1,11 +1,13 @@
 package com.example.cocktails.CustomItem
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Rect
 import android.net.Uri
 import android.os.Build
@@ -18,6 +20,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.cocktails.Cocktail
@@ -53,6 +56,7 @@ class UserItemLevel1 : AppCompatActivity() {
     private val BACK_PRESS_MSG = "Are you sure you want to exit? \nyour details will be deleted"
     private val REQUEST_CODE_ICONS = 2
     private val REQUEST_CODE_UPLOAD_IMG = 1
+    private val PERMISSION_EXTERNAL_STORAGE_ID = 44
 
     @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("InflateParams")
@@ -68,9 +72,6 @@ class UserItemLevel1 : AppCompatActivity() {
         supportActionBar?.title = getString(R.string.title_user_item)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
-//        toolbar.setNavigationOnClickListener {
-//            showDialogOnBackPress()
-//        }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -121,12 +122,11 @@ class UserItemLevel1 : AppCompatActivity() {
         chipGroup.addView(chip)
     }
 
+
     private fun initButtonsListener() {
         upload_img_Button.setOnClickListener {
-            val intent = Intent()
-            intent.type = "image/*"
-            intent.action = Intent.ACTION_GET_CONTENT
-            startActivityForResult(intent, REQUEST_CODE_UPLOAD_IMG)
+            checkReadExternalStoragePermission()
+
         }
         rotate_upload_view_Button.setOnClickListener {
             if (upload_user_img_TV.rotation == 360F) {
@@ -174,7 +174,7 @@ class UserItemLevel1 : AppCompatActivity() {
     private fun checkedLevel1() {
         //save info
         val cocktailName = getCocktailName()
-        val categoryChipIdSelected: Int = mCategoryChip.checkedChipId
+        val categoryChipIdSelected: Int = selectCategoryChipGroup.checkedChipId
 
         //check all the values filled and correct
         if (confirmInput(cocktailName, categoryChipIdSelected)) {
@@ -186,10 +186,9 @@ class UserItemLevel1 : AppCompatActivity() {
     private fun startLevel2(cocktailName: String, categoryChipIdSelected: Int) {
         val intentLevel2 = Intent(this, UserItemLevel2::class.java)
         intentLevel2.putExtra(COCKTAIL_NAME_KEY, cocktailName)
+        val selectedChip=selectCategoryChipGroup.findViewById<Chip>(categoryChipIdSelected).text.toString()
         intentLevel2.putExtra(
-            CATEGORY_KEY,
-            (mCategoryChip.getChildAt(categoryChipIdSelected - 1) as Chip).text
-        )
+            CATEGORY_KEY, selectedChip)
         intentLevel2.putExtra(ICON_KEY, mIconUri.toString())
         var uploadImgStr: String? = null
         if (mUploadImgUri != null) {
@@ -268,7 +267,7 @@ class UserItemLevel1 : AppCompatActivity() {
         return false
     }
 
-    private fun displayIcon(iconUri: Uri){
+    private fun displayIcon(iconUri: Uri) {
         val applicationContext = (this.applicationContext as Cocktails)
         val ref = applicationContext.mStorageRef.child("cliparts/" + mIconUri)
         ref.downloadUrl.addOnSuccessListener {
@@ -281,7 +280,7 @@ class UserItemLevel1 : AppCompatActivity() {
         selected_icon_IV.visibility = View.VISIBLE
     }
 
-    private fun displayUploadImg(img: Uri){
+    private fun displayUploadImg(img: Uri) {
         Picasso.with(this).load(mUploadImgUri).into(upload_user_img_TV)
         setUploadImgButtonState(View.VISIBLE)
     }
@@ -363,9 +362,53 @@ class UserItemLevel1 : AppCompatActivity() {
         return super.dispatchTouchEvent(event)
     }
 
-}
+    private fun checkReadExternalStoragePermission() {
+        if (checkManifestReadExternalStoragePermission()) {
+            val intent = Intent()
+            intent.type = "image/*"
+            intent.action = Intent.ACTION_GET_CONTENT
+            startActivityForResult(intent, REQUEST_CODE_UPLOAD_IMG)
+        } else {
+            requestLocationPermissions()
+        }
+    }
 
-// Extension function to show toast message
-fun Context.toast(message: String) {
-    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    private fun checkManifestReadExternalStoragePermission(): Boolean {
+        return ActivityCompat.checkSelfPermission(
+            this,
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun requestLocationPermissions() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), PERMISSION_EXTERNAL_STORAGE_ID
+        )
+    }
+
+    @Override
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<String?>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            PERMISSION_EXTERNAL_STORAGE_ID -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    upload_img_Button.performClick()
+                } else {
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(
+                            this, Manifest.permission.READ_EXTERNAL_STORAGE
+                        )
+                    ) {
+                        Toast.makeText(
+                            applicationContext,
+                            "you can't upload an image without location permission",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+            }
+        }
+    }
 }

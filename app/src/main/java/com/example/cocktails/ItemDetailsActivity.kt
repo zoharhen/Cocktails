@@ -1,12 +1,17 @@
 package com.example.cocktails
 
 import android.os.Bundle
+import android.util.DisplayMetrics
+import android.view.Gravity
 import android.view.MenuItem
+import android.view.View
+import android.view.WindowManager
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.example.cocktails.ItemDetails.SectionsPagerAdapter
 import com.google.android.material.tabs.TabLayout
+import kotlinx.android.synthetic.main.tabbed_item.*
 
 
 class ItemDetailsActivity : AppCompatActivity() {
@@ -27,8 +32,12 @@ class ItemDetailsActivity : AppCompatActivity() {
         val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar1)
         setSupportActionBar(toolbar)
         supportActionBar?.setHomeButtonEnabled(true)
-        if(!cocktail.isReview) { // display back arrow while not in review mode
+        if(!cocktail.isReview) { // display back arrow while not in review mode //todo
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            finish_button_preview.visibility=View.GONE
+        }
+        finish_button_preview.setOnClickListener {
+            finish()
         }
 
         val activityTitle: TextView = findViewById(R.id.title)
