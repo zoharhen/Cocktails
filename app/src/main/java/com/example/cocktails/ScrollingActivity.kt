@@ -136,7 +136,6 @@ class ScrollingActivity : AppCompatActivity() {
         val listCocktailType = object : TypeToken<List<Cocktail>>() {}.type
         val items: ArrayList<Cocktail> =
             Gson().fromJson<ArrayList<Cocktail>>(jsonString, listCocktailType)
-        items.addAll((applicationContext as Cocktails).mUserCocktailsList)
         gridViewAdapter = CocktailItemAdapter(this, items)
 
         gridViewAdapter?.onItemClick = { cocktail ->
