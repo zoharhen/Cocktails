@@ -48,12 +48,12 @@ class UserItemLevel1 : AppCompatActivity() {
 
     private val YES = "Yes"
     private val NO = "No"
-    private val DIALOG_UPLOAD_MSG = "If you go back now, your upload image will be removed"
+    private val DIALOG_UPLOAD_MSG = "If you go back now, your upload image will be removed."
     private val MAX_LENGTH_COCKTAIL_NAME: Int = 12
-    private val COCKTAIL_ERROR_MSG_NAME = "Cocktail name already exist, choose different name"
+    private val COCKTAIL_ERROR_MSG_NAME = "Cocktail name already exist, choose different name."
     private val COCKTAIL_ERROR_MSG_LENGTH: String =
-        "Cocktail name too long,\n must be under $MAX_LENGTH_COCKTAIL_NAME characters"
-    private val BACK_PRESS_MSG = "Are you sure you want to exit? \nyour details will be deleted"
+        "Cocktail name too long,\n must be under $MAX_LENGTH_COCKTAIL_NAME characters."
+    private val BACK_PRESS_MSG = "You may be deleting cocktail item.\nAfter you delete this, it can't be recovered."
     private val REQUEST_CODE_ICONS = 2
     private val REQUEST_CODE_UPLOAD_IMG = 1
     private val PERMISSION_EXTERNAL_STORAGE_ID = 44
@@ -325,9 +325,11 @@ class UserItemLevel1 : AppCompatActivity() {
                 //DialogInterface.BUTTON_NEUTRAL->{}
             }
         }
-        builder.setPositiveButton(YES, dialogClickListener)
-        builder.setNegativeButton(NO, dialogClickListener)
+        builder.setPositiveButton("Delete", dialogClickListener)
+        builder.setNegativeButton("Cancel", dialogClickListener)
         dialog = builder.create()
+        dialog.setIcon(R.drawable.ic_warning_30)
+        dialog.setTitle("Delete cocktail")
         dialog.show()
     }
 
