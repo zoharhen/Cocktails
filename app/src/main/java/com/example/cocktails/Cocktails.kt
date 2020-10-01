@@ -10,7 +10,6 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
@@ -35,7 +34,7 @@ class Cocktails : Application() {
     lateinit var mStorageRef: StorageReference
     lateinit var mFirstTimeModeSP: SharedPreferences
 //    private val mUserId: String= UUID.randomUUID().toString()//todo. check for another option
-    val mUserId: String= "enavDebug"//todo remove only for debug
+    private val mUserId: String= "enavDebug"//todo remove only for debug
     private var mUserCocktailsMap = HashMap<String, Cocktail>()
     lateinit var mCocktailsRef: CollectionReference
 
@@ -56,6 +55,10 @@ class Cocktails : Application() {
         mCocktailsRef = FirebaseFirestore.getInstance().collection(COLLECTION_PATH).document(mUserId).collection(
             SUB_COLLECTION_PATH)
 //        loadUserCocktailData()
+    }
+
+    fun getUploadImgPath(imageName:String):String{
+        return "usersImages/$mUserId/$imageName.jpg"
     }
 
     @SuppressLint("LogNotTimber")
