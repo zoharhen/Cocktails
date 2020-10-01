@@ -2,7 +2,9 @@ package com.example.cocktails.ItemDetails
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -28,10 +30,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.blankj.utilcode.util.UriUtils.file2Uri
 import com.bumptech.glide.Glide
-import com.example.cocktails.BuildConfig
-import com.example.cocktails.Cocktail
-import com.example.cocktails.Cocktails
-import com.example.cocktails.R
+import com.example.cocktails.*
+import com.example.cocktails.CustomItem.DEL_BODY_MSG
+import com.example.cocktails.CustomItem.DEL_TITLE_MSG
 import com.ldoublem.loadingviewlib.view.LVCircularRing
 import developer.shivam.crescento.CrescentoImageView
 import github.nisrulz.screenshott.ScreenShott
@@ -138,6 +139,8 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
         }
         this.initTtsButton()
         this.initShareButtons()
+        this.initEditButton()
+        this.initDelButton()
     }
 
     @SuppressLint("LogNotTimber")
@@ -307,6 +310,63 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
             startActivity(sendIntent)
         }
 
+    }
+
+    private fun initEditButton(){
+        TODO()
+    }
+
+    @SuppressLint("LogNotTimber") //todo check
+    private fun initDelButton(){
+        val shareApp = rootView.findViewById<ImageButton>(R.id.deleteAction)
+        shareApp.setOnClickListener{
+            showDelCocktailDialog()
+        }
+    }
+
+    @SuppressLint("LogNotTimber")
+    private fun delCocktailItem(){
+        val cnt = (activity?.applicationContext as Cocktails)
+        //del img
+        val path=  cnt.getUploadImgPath(cocktail.name)
+        val desertRef  = cnt.mStorageRef.child(path)
+        desertRef.delete().addOnSuccessListener {
+            // File deleted successfully
+            Log.i("delete_cocktail_img",
+                "OnSuccess: Cocktail Name: ${cocktail.name}")
+        }.addOnFailureListener { Log.i("delete_cocktail_img",
+            "OnFailure: Cocktail Name: ${cocktail.name}");}
+
+        //del from cloud
+        cnt.mCocktailsRef.document(cocktail.name).delete()
+            .addOnSuccessListener { Toast.makeText(context, "Delete ${cocktail.name}",
+                Toast.LENGTH_LONG).show(); Log.i("delete_cocktail_data",
+                "OnSuccess: Cocktail Name: ${cocktail.name}"
+            );}
+            .addOnFailureListener { Log.i("delete_cocktail_data",
+                "OnFailure: Cocktail Name: ${cocktail.name}");}
+    }
+
+    private fun showDelCocktailDialog() {
+        lateinit var dialog: AlertDialog
+        val builder = AlertDialog.Builder(context)
+        builder.setMessage(DEL_BODY_MSG)
+        val dialogClickListener = DialogInterface.OnClickListener { _, which ->
+            when (which) {
+                DialogInterface.BUTTON_POSITIVE -> {
+                    delCocktailItem()
+                    val intent = Intent(activity?.applicationContext, ScrollingActivity::class.java)//todo check
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    startActivity(intent)
+                }
+            }
+        }
+        builder.setPositiveButton("Delete", dialogClickListener)
+        builder.setNegativeButton("Cancel", dialogClickListener)
+        dialog = builder.create()
+        dialog.setIcon(R.drawable.ic_warning_30)
+        dialog.setTitle(DEL_TITLE_MSG)
+        dialog.show()
     }
 
     private fun initPreparationSection() {
