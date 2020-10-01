@@ -11,10 +11,7 @@ import android.os.Bundle
 import android.text.InputType
 import android.view.Gravity
 import android.view.View
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.TableRow
-import android.widget.TextView
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.TextViewCompat
@@ -37,6 +34,8 @@ class UserItemLevel2 : AppCompatActivity() {
     private val NUM_OF_DEFUALT_ROWS = 2
     private val REQUEST_CODE_ADD_INGREDIENT = 1
     private val REQUEST_CODE_EDIT_INGREDIENT = 2
+    private val INFO_DIALOG_TITLE="Information"
+    private val INFO_DIALOG_BODY="For edit item - press on the item\nFor delete item - long press on the item"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +64,14 @@ class UserItemLevel2 : AppCompatActivity() {
 
         findViewById<ImageButton>(R.id.prevButton).setOnClickListener {
             onBackPressed()
+        }
+
+        info_ingredients_button.setOnClickListener{
+            showDialogOnInfoPress()
+        }
+
+        info_steps_button.setOnClickListener{
+            showDialogOnInfoPress()
         }
     }
 
@@ -275,7 +282,13 @@ class UserItemLevel2 : AppCompatActivity() {
             .setView(inputText)
             .setPositiveButton("Add") { _, _ ->
                 val input = inputText.text.toString()
-                addNewStepRow(input, null, true)
+                if(input.isNotEmpty()) {
+                    addNewStepRow(input, null, true)
+                }
+                else{
+                    Toast.makeText(this, "step can't be empty",
+                        Toast.LENGTH_SHORT).show();
+                }
             }
             .setNeutralButton("Cancel", null)
             .setTitle("Add a new step")
@@ -364,7 +377,7 @@ class UserItemLevel2 : AppCompatActivity() {
     ): View.OnLongClickListener? {
         lateinit var dialog: AlertDialog
         val builder = AlertDialog.Builder(this)
-        builder.setMessage("Are you sure you want to delete?")
+        builder.setMessage("Are you sure?")
         val dialogClickListener = DialogInterface.OnClickListener { _, which ->
             when (which) {
                 DialogInterface.BUTTON_POSITIVE -> {
@@ -381,6 +394,8 @@ class UserItemLevel2 : AppCompatActivity() {
         // Set the alert dialog negative/no button
         builder.setNegativeButton("NO", dialogClickListener)
         dialog = builder.create()
+        dialog.setIcon(R.drawable.ic_warning_30)
+        dialog.setTitle("Delete item")
         dialog.show()
         return null//todo
     }
@@ -422,5 +437,24 @@ class UserItemLevel2 : AppCompatActivity() {
 
         startActivity(intentLevel3)
     }
+
+    private fun showDialogOnInfoPress() {
+        lateinit var dialog: AlertDialog
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage(INFO_DIALOG_BODY)
+        val dialogClickListener = DialogInterface.OnClickListener { _, which ->
+            when (which) {
+                DialogInterface.BUTTON_POSITIVE -> { }
+                //DialogInterface.BUTTON_NEGATIVE ->{}
+                //DialogInterface.BUTTON_NEUTRAL->{}
+            }
+        }
+        builder.setPositiveButton("OK", dialogClickListener)
+        dialog = builder.create()
+        dialog.setIcon(R.drawable.ic_info_24)
+        dialog.setTitle(INFO_DIALOG_TITLE)
+        dialog.show()
+    }
+
 }
 
