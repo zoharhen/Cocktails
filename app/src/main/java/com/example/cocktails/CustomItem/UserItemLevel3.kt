@@ -22,6 +22,7 @@ import java.util.*
 
 class UserItemLevel3 : AppCompatActivity() {
     val DEFAULT_CLIPART = "default"
+    val DEFAULT_GLASS = "Water Glass.sfb"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -160,7 +161,7 @@ class UserItemLevel3 : AppCompatActivity() {
         if (intent.getStringArrayListExtra(PREPARATION_LIST_STR_KEY) != null) {
             steps = intent.getStringArrayListExtra(PREPARATION_LIST_STR_KEY)
         }
-        val glass = "cocktail glass.sfb"//todo default need to change
+        
         if (cocktailName.isNullOrEmpty() || category.isNullOrEmpty() || iconUri.isNullOrEmpty()
             || ingredients.isNullOrEmpty() || steps.isNullOrEmpty() ) {
             return null
@@ -168,7 +169,7 @@ class UserItemLevel3 : AppCompatActivity() {
 
         return Cocktail(
             cocktailName, category, steps, ingredients, DEFAULT_CLIPART,
-            uploadImgStr, true, glass, true, rotation
+            uploadImgStr, true, DEFAULT_GLASS, true, rotation
         )
     }
 
