@@ -6,16 +6,17 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
+
 
 const val COLLECTION_PATH = "user_cocktails"
 const val SUB_COLLECTION_PATH = "cocktails"
-
+const val USER_ID_KEY_SP="user_id"
 
 class Cocktails : Application() {
 
@@ -33,12 +34,15 @@ class Cocktails : Application() {
     lateinit var mActiveTypeFilters: SharedPreferences
     lateinit var mStorageRef: StorageReference
     lateinit var mFirstTimeModeSP: SharedPreferences
-//    private val mUserId: String= UUID.randomUUID().toString()//todo. check for another option
-    private val mUserId: String= "enavDebug"//todo remove only for debug
+    private var mUserId: String = ""
+    //    private var mUserId: String= "enavDebug"//todo remove only for debug
     private var mUserCocktailsMap = HashMap<String, Cocktail>()
     lateinit var mCocktailsRef: CollectionReference
 
 
+//    companion object {
+//        var mUserId: String= java.util.UUID.randomUUID().toString()
+//    }
 
 
     override fun onCreate() {
@@ -52,12 +56,26 @@ class Cocktails : Application() {
         mActiveTypeFilters = this.getSharedPreferences(TYPE_FILTERS, Context.MODE_PRIVATE)
         mStorageRef = FirebaseStorage.getInstance().reference
         mFirstTimeModeSP = this.getSharedPreferences(FIRST_TIME_MODE, Context.MODE_PRIVATE)
+
+        if(mUserId.isEmpty()){
+            val userId=mFirstTimeModeSP.getString(USER_ID_KEY_SP,"")
+            if (userId.isNullOrEmpty()){
+                mUserId= java.util.UUID.randomUUID().toString()
+                mFirstTimeModeSP.edit().putString(USER_ID_KEY_SP, mUserId).apply()
+            }
+            else{
+                mUserId=userId
+            }
+        }
         mCocktailsRef = FirebaseFirestore.getInstance().collection(COLLECTION_PATH).document(mUserId).collection(
-            SUB_COLLECTION_PATH)
+            SUB_COLLECTION_PATH
+        )
+
+//        mUserId = mFAuth.currentUser?.uid.toString()
 //        loadUserCocktailData()
     }
 
-    fun getUploadImgPath(imageName:String):String{
+    fun getUploadImgPath(imageName: String):String{
         return "usersImages/$mUserId/$imageName.jpg"
     }
 
@@ -68,7 +86,7 @@ class Cocktails : Application() {
             for (doc in queryDocumentSnapshot) {
                 val cocktail=doc.toObject(Cocktail::class.java)
                 mUserCocktailsMap[cocktail.name]=cocktail
-                Log.i("cocktails",cocktail.toString())//todo remove only for debug
+                Log.i("cocktails", cocktail.toString())//todo remove only for debug
             }
         }
     }
@@ -87,5 +105,6 @@ class Cocktails : Application() {
     fun addUserCocktail(newCocktail: Cocktail){
         mUserCocktailsMap[newCocktail.name]=newCocktail
     }
+
 
 }
