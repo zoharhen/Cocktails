@@ -63,7 +63,7 @@ class Cocktails : Application() {
         mCocktailsRef = FirebaseFirestore.getInstance().collection(COLLECTION_PATH).document(mUserId).collection(
             SUB_COLLECTION_PATH
         )
-        loadUserCocktailData()
+        loadUserCocktailData()//todo check
     }
 
     fun getUploadUserImgPath(imageName: String):String{
