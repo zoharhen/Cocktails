@@ -100,7 +100,7 @@ class UserItemLevel3 : AppCompatActivity() {
         bitmapUploadImg.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val data = baos.toByteArray()
         val cnt = (applicationContext as Cocktails)
-        val path=  cnt.getUploadImgPath(imgName)
+        val path=  cnt.getUploadUserImgPath(imgName)
         val mountainImagesRef = cnt.mStorageRef.child(path)
         val uploadTask = mountainImagesRef.putBytes(data)
         uploadTask.addOnFailureListener {
@@ -136,10 +136,7 @@ class UserItemLevel3 : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.preview_button).setOnClickListener {
-
-
-            val cocktail : Cocktail = getCocktail() ?: return@setOnClickListener
-
+            val cocktail : Cocktail = getCocktail(true) ?: return@setOnClickListener
             val intent = Intent(applicationContext, ItemDetailsActivity::class.java)
             intent.putExtra("cocktail", cocktail)
             startActivity(intent)
@@ -147,7 +144,7 @@ class UserItemLevel3 : AppCompatActivity() {
     }
 
     @SuppressLint("LongLogTag")
-    private fun getCocktail():Cocktail?{
+    private fun getCocktail(isForPreview:Boolean=false):Cocktail?{
         val cocktailName = intent.getStringExtra(COCKTAIL_NAME_KEY)
         val category = intent.getStringExtra(CATEGORY_KEY)
         val iconUri = intent.getStringExtra(ICON_KEY)
@@ -161,7 +158,7 @@ class UserItemLevel3 : AppCompatActivity() {
         if (intent.getStringArrayListExtra(PREPARATION_LIST_STR_KEY) != null) {
             steps = intent.getStringArrayListExtra(PREPARATION_LIST_STR_KEY)
         }
-        
+
         if (cocktailName.isNullOrEmpty() || category.isNullOrEmpty() || iconUri.isNullOrEmpty()
             || ingredients.isNullOrEmpty() || steps.isNullOrEmpty() ) {
             return null
@@ -169,7 +166,7 @@ class UserItemLevel3 : AppCompatActivity() {
 
         return Cocktail(
             cocktailName, category, steps, ingredients, DEFAULT_CLIPART,
-            uploadImgStr, true, DEFAULT_GLASS, true, rotation
+            uploadImgStr, true, DEFAULT_GLASS, isForPreview, rotation
         )
     }
 

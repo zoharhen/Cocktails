@@ -139,7 +139,7 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
         }
         this.initTtsButton()
         this.initShareButtons()
-        this.initEditButton()
+//        this.initEditButton() TODO
         this.initDelButton()
     }
 
@@ -147,14 +147,8 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
     private fun initCocktailImage(){
         val cnt = (activity?.applicationContext as Cocktails)
         if (cocktail.image.isNullOrEmpty()) {
-            cnt.mStorageRef.child("images/$EMPTY_IMG_ICON.jpg")
-                .downloadUrl.addOnSuccessListener { img ->
-                    context?.let { it ->
-                        Glide.with(it)
-                            .load(img)
-                            .into(rootView.findViewById(R.id.iv_cocktail))
-                    }
-                }
+            val path = "images/$EMPTY_IMG_ICON.jpg"
+            displayImg(path)
             return
         }
         if (cocktail.isReview) {
@@ -164,11 +158,18 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
                 .setImageBitmap(bitmapUploadImg)
             return
         }
-        var path = "images/" + cocktail.image + ".jpg"
+        var imgPath = "images/" + cocktail.image + ".jpg"
         if (cocktail.isCustom) {
-            path = cnt.getUploadImgPath(cocktail.name)
+            imgPath = cnt.getUploadUserImgPath(cocktail.name)
         }
-        cnt.mStorageRef.child(path)
+        displayImg(imgPath)
+
+    }
+
+    @SuppressLint("LogNotTimber")
+    private fun displayImg(imgPath:String){
+        val cnt = (activity?.applicationContext as Cocktails)
+        cnt.mStorageRef.child(imgPath)
             .downloadUrl.addOnSuccessListener { img ->
                 context?.let { it ->
                     Glide.with(it)
@@ -328,7 +329,7 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
     private fun delCocktailItem(){
         val cnt = (activity?.applicationContext as Cocktails)
         //del img
-        val path=  cnt.getUploadImgPath(cocktail.name)
+        val path=  cnt.getUploadUserImgPath(cocktail.name)
         val desertRef  = cnt.mStorageRef.child(path)
         desertRef.delete().addOnSuccessListener {
             // File deleted successfully
@@ -345,6 +346,7 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
             );}
             .addOnFailureListener { Log.i("delete_cocktail_data",
                 "OnFailure: Cocktail Name: ${cocktail.name}");}
+        cnt.removeUserCocktail(cocktail)//todo check
     }
 
     private fun showDelCocktailDialog() {
