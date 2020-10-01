@@ -179,14 +179,8 @@ class UserItemLevel1 : AppCompatActivity() {
         //check all the values filled and correct
         if (confirmInput(cocktailName, categoryChipIdSelected)) {
             //start level 2 activity
-            //todo for debug Toast.makeText(this, "all the values is valid!! :)", Toast.LENGTH_LONG).show()
             startLevel2(cocktailName, categoryChipIdSelected)
-            //TODO()
         }
-
-        //TODO(only for debug !!!!!!!!!! remove this( 2 rows) )
-//        val intentLevel2 = Intent(this, UserItemLevel2::class.java)
-//        startActivity(intentLevel2)
     }
 
     private fun startLevel2(cocktailName: String, categoryChipIdSelected: Int) {
@@ -274,6 +268,23 @@ class UserItemLevel1 : AppCompatActivity() {
         return false
     }
 
+    private fun displayIcon(iconUri: Uri){
+        val applicationContext = (this.applicationContext as Cocktails)
+        val ref = applicationContext.mStorageRef.child("cliparts/" + mIconUri)
+        ref.downloadUrl.addOnSuccessListener {
+            Glide.with(applicationContext)
+                .load(it)
+                .apply(RequestOptions().placeholder(null).dontAnimate().fitCenter())
+                .into(selected_icon_IV)
+                .clearOnDetach()
+        }
+        selected_icon_IV.visibility = View.VISIBLE
+    }
+
+    private fun displayUploadImg(img: Uri){
+        Picasso.with(this).load(mUploadImgUri).into(upload_user_img_TV)
+        setUploadImgButtonState(View.VISIBLE)
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -282,22 +293,11 @@ class UserItemLevel1 : AppCompatActivity() {
         ) {
             if (requestCode == REQUEST_CODE_UPLOAD_IMG) {
                 mUploadImgUri = data.data!!
-                Picasso.with(this).load(mUploadImgUri).into(upload_user_img_TV)
-                setUploadImgButtonState(View.VISIBLE)
+                displayUploadImg(mUploadImgUri!!)
             } else {
                 mIconUri = data.data!!
-                val applicationContext = (this.applicationContext as Cocktails)
-                val ref = applicationContext.mStorageRef.child("cliparts/" + mIconUri)
-                ref.downloadUrl.addOnSuccessListener {
-                    Glide.with(applicationContext)
-                        .load(it)
-                        .apply(RequestOptions().placeholder(null).dontAnimate().fitCenter())
-                        .into(selected_icon_IV)
-                        .clearOnDetach()
-                }
-                selected_icon_IV.visibility = View.VISIBLE
+                displayIcon(mIconUri!!)
             }
-
         } else {
             if (requestCode == REQUEST_CODE_UPLOAD_IMG) {
                 setUploadImgButtonState(View.GONE)

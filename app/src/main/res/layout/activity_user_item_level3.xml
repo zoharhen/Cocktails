@@ -32,7 +32,6 @@
                 android:layout_height="wrap_content"
                 android:text="preview" />
 
-
         </LinearLayout>
 
         <LinearLayout
