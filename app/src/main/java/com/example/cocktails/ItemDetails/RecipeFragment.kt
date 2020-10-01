@@ -13,6 +13,7 @@ import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -39,7 +40,6 @@ import net.gotev.speech.Speech
 import net.gotev.speech.TextToSpeechCallback
 import java.io.File
 import java.util.*
-import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
 
@@ -51,7 +51,7 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
     private lateinit var longPressTooltipBuilder: SimpleTooltip.Builder
     lateinit var longPressTooltip: SimpleTooltip
     private var isTtsOn: Boolean = false
-    val EMPTY_IMG_ICON ="empty_img_icon"
+    val EMPTY_IMG_ICON = "empty_img_icon"
 
     companion object {
         fun newInstance(cocktail: Cocktail): RecipeFragment? {
@@ -76,11 +76,16 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
 
     @RequiresApi(Build.VERSION_CODES.O)
     @Override
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         rootView = inflater.inflate(R.layout.recipe_item, container, false)
         this.initViews()
         rootView.findViewById<ScrollView>(R.id.recipe_item).post {
-            rootView.findViewById<ScrollView>(R.id.recipe_item).fullScroll(View.FOCUS_UP) // workaround, as tabs hide the ScrollView
+            rootView.findViewById<ScrollView>(R.id.recipe_item)
+                .fullScroll(View.FOCUS_UP) // workaround, as tabs hide the ScrollView
         }
 
         return rootView
@@ -100,9 +105,13 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
 
     fun dismissTooltip() {
         if (this::longPressTooltip.isInitialized && longPressTooltip.isShowing) {
-            val oldVal = (activity?.applicationContext as Cocktails).mFirstTimeModeSP.getBoolean("recipeTab", true)
+            val oldVal = (activity?.applicationContext as Cocktails).mFirstTimeModeSP.getBoolean(
+                "recipeTab",
+                true
+            )
             longPressTooltip.dismiss()
-            (activity?.applicationContext as Cocktails).mFirstTimeModeSP.edit().putBoolean("recipeTab", oldVal).apply()
+            (activity?.applicationContext as Cocktails).mFirstTimeModeSP.edit()
+                .putBoolean("recipeTab", oldVal).apply()
         }
     }
 
@@ -111,42 +120,16 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
         // prevent memory leaks when activity is destroyed
         try {
             Speech.getInstance().shutdown()
-        } catch (e: Exception) {}
+        } catch (e: Exception) {
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun initViews(withTooltip: Boolean = true) {
-        if(cocktail.isReview||cocktail.isCustom){
-            if(cocktail.image.isNullOrEmpty()){
-                (activity?.applicationContext as Cocktails).mStorageRef.child("images/$EMPTY_IMG_ICON.jpg")
-                    .downloadUrl.addOnSuccessListener { img ->
-                        context?.let { it ->
-                            Glide.with(it)
-                                .load(img)
-                                .into(rootView.findViewById(R.id.iv_cocktail))
-                        }
-                    }
-            }
-            else {
-                val uploadImgUri = Uri.parse(cocktail.image)
-                val bitmapUploadImg = getUploadUriToBitmap(cocktail.rotation, uploadImgUri)
-                rootView.findViewById<CrescentoImageView>(R.id.iv_cocktail)
-                    .setImageBitmap(bitmapUploadImg)
-            }
-        }
-        else {
-            (activity?.applicationContext as Cocktails).mStorageRef.child("images/" + cocktail.image + ".jpg")
-                .downloadUrl.addOnSuccessListener { img ->
-                    context?.let { it ->
-                        Glide.with(it)
-                            .load(img)
-                            .into(rootView.findViewById(R.id.iv_cocktail))
-                    }
-                }
-        }
+        initCocktailImage()
         rootView.findViewById<TextView>(R.id.tv_cocktailTitle).text = cocktail.name
-        rootView.findViewById<TextView>(R.id.ingredientContent).text = cocktail.ingredients.joinToString(separator = "\n")
-
+        rootView.findViewById<TextView>(R.id.ingredientContent).text =
+            cocktail.ingredients.joinToString(separator = "\n")
         this.initCustomCocktailButtons()
         this.initFavoriteButton()
         this.initPreparationSection()
@@ -155,6 +138,46 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
         }
         this.initTtsButton()
         this.initShareButtons()
+    }
+
+    @SuppressLint("LogNotTimber")
+    private fun initCocktailImage(){
+        val cnt = (activity?.applicationContext as Cocktails)
+        if (cocktail.image.isNullOrEmpty()) {
+            cnt.mStorageRef.child("images/$EMPTY_IMG_ICON.jpg")
+                .downloadUrl.addOnSuccessListener { img ->
+                    context?.let { it ->
+                        Glide.with(it)
+                            .load(img)
+                            .into(rootView.findViewById(R.id.iv_cocktail))
+                    }
+                }
+            return
+        }
+        if (cocktail.isReview) {
+            val uploadImgUri = Uri.parse(cocktail.image)
+            val bitmapUploadImg = getUploadUriToBitmap(cocktail.rotation, uploadImgUri)
+            rootView.findViewById<CrescentoImageView>(R.id.iv_cocktail)
+                .setImageBitmap(bitmapUploadImg)
+            return
+        }
+        var path = "images/" + cocktail.image + ".jpg"
+        if (cocktail.isCustom) {
+            path = cnt.getUploadImgPath(cocktail.name)
+        }
+        cnt.mStorageRef.child(path)
+            .downloadUrl.addOnSuccessListener { img ->
+                context?.let { it ->
+                    Glide.with(it)
+                        .load(img)
+                        .into(rootView.findViewById(R.id.iv_cocktail))
+                }
+            }.addOnFailureListener {
+                Log.i(
+                    "upload_cocktail_img",
+                    "OnFailure: Cocktail Name: ${cocktail.name}"
+                )
+            }
     }
 
     private fun initTtsButton() {
@@ -168,12 +191,13 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
                         "\n\n\n" + getString(R.string.preparation) + "\n\n\n\n" +
                         "\n\n\n" + cocktail.steps.joinToString(separator = "\n\n"),
                     object : TextToSpeechCallback {
-                        override fun onError() { }
+                        override fun onError() {}
 
                         override fun onStart() {
                             isTtsOn = true
                             ttsButton.setImageResource(R.drawable.ic_pause_circle_outline_black_24dp)
                         }
+
                         override fun onCompleted() {
                             isTtsOn = false
                             ttsButton.setImageResource(R.drawable.ic_play_circle_outline_black_24dp)
@@ -194,23 +218,27 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
             rootView.findViewById<View>(R.id.editActionSeparator).visibility = View.VISIBLE
             rootView.findViewById<View>(R.id.deleteActionSeparator).visibility = View.VISIBLE
 
-            rootView.findViewById<ImageButton>(R.id.favoriteAction).setPadding(22,0,22,0)
-            rootView.findViewById<ImageButton>(R.id.editAction).setPadding(22,0,22,0)
-            rootView.findViewById<ImageButton>(R.id.deleteAction).setPadding(22,0,22,0)
-            rootView.findViewById<ImageButton>(R.id.tts).setPadding(22,0,22,0)
-            rootView.findViewById<ImageButton>(R.id.share).setPadding(22,0,22,0)
+            rootView.findViewById<ImageButton>(R.id.favoriteAction).setPadding(22, 0, 22, 0)
+            rootView.findViewById<ImageButton>(R.id.editAction).setPadding(22, 0, 22, 0)
+            rootView.findViewById<ImageButton>(R.id.deleteAction).setPadding(22, 0, 22, 0)
+            rootView.findViewById<ImageButton>(R.id.tts).setPadding(22, 0, 22, 0)
+            rootView.findViewById<ImageButton>(R.id.share).setPadding(22, 0, 22, 0)
         }
 
         //todo: Einav: add edit + delete 'onClick' methods
     }
 
     private fun initFavoriteButton() {
-        val isFavorite = (activity?.applicationContext as Cocktails).mFavorites.getBoolean(cocktail.name, false)
+        val isFavorite =
+            (activity?.applicationContext as Cocktails).mFavorites.getBoolean(cocktail.name, false)
         val favorite = rootView.findViewById<ImageButton>(R.id.favoriteAction)
         favorite.setImageResource(if (isFavorite) R.drawable.ic_favorite_full_black else R.drawable.ic_favorite_empty_black)
 
         favorite.setOnClickListener {
-            val oldVal = (activity?.applicationContext as Cocktails).mFavorites.getBoolean(cocktail.name, false)
+            val oldVal = (activity?.applicationContext as Cocktails).mFavorites.getBoolean(
+                cocktail.name,
+                false
+            )
             (activity?.applicationContext as Cocktails).mFavorites.edit()
                 .putBoolean(cocktail.name, !oldVal).apply()
             favorite.setImageResource(if (!oldVal) R.drawable.ic_favorite_full_black else R.drawable.ic_favorite_empty_black)
@@ -218,7 +246,11 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
     }
 
     private fun initTooltipIfNeeded() {
-        if ((activity?.applicationContext as Cocktails).mFirstTimeModeSP.getBoolean("recipeTab", true)) {
+        if ((activity?.applicationContext as Cocktails).mFirstTimeModeSP.getBoolean(
+                "recipeTab",
+                true
+            )
+        ) {
             val preparationContext = rootView.findViewById<RecyclerView>(R.id.recyclerPreparation)
             preparationContext.setOnSystemUiVisibilityChangeListener {
                 longPressTooltipBuilder = SimpleTooltip.Builder(context)
@@ -229,7 +261,8 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
                     .transparentOverlay(true)
                     .dismissOnInsideTouch(true)
                     .onDismissListener {
-                        (activity?.applicationContext as Cocktails).mFirstTimeModeSP.edit().putBoolean("recipeTab", false).apply()
+                        (activity?.applicationContext as Cocktails).mFirstTimeModeSP.edit()
+                            .putBoolean("recipeTab", false).apply()
                     }
                     .dismissOnOutsideTouch(false)
                 longPressTooltip = longPressTooltipBuilder.build()
@@ -244,11 +277,15 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
         val shareCocktail = rootView.findViewById<ImageButton>(R.id.share)
         shareCocktail.setOnClickListener {
             if (Build.VERSION.SDK_INT >= 23 && !checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                val permissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
+                val permissions = arrayOf(
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                )
                 requestPermissions(permissions, PERMISSION_EXTERNAL_STORAGE, true)
             } else {
                 val bitmap: Bitmap = GetScreenShotTask(rootView).execute(context).get()
-                val screenshot : File = ScreenShott.getInstance().saveScreenshotToPicturesFolder(context, bitmap, cocktail.name)
+                val screenshot: File = ScreenShott.getInstance()
+                    .saveScreenshotToPicturesFolder(context, bitmap, cocktail.name)
                 val sendIntent = Intent()
                 sendIntent.action = Intent.ACTION_SEND
                 sendIntent.putExtra(Intent.EXTRA_STREAM, file2Uri(screenshot))
@@ -262,7 +299,10 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
         shareApp.setOnClickListener {
             val sendIntent = Intent()
             sendIntent.action = Intent.ACTION_SEND
-            sendIntent.putExtra(Intent.EXTRA_TEXT, "Check out Cocktails app at: https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID)
+            sendIntent.putExtra(
+                Intent.EXTRA_TEXT,
+                "Check out Cocktails app at: https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID
+            )
             sendIntent.type = "text/plain"
             startActivity(sendIntent)
         }
@@ -270,9 +310,11 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
     }
 
     private fun initPreparationSection() {
-        val recyclerViewPreparation =  rootView.findViewById(R.id.recyclerPreparation) as RecyclerView
+        val recyclerViewPreparation =
+            rootView.findViewById(R.id.recyclerPreparation) as RecyclerView
         mAdapterPreparation = context?.let { PreparationAdapter(it, generatePreparation()!!, this) }
-        val mLayoutManagerPreparation = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        val mLayoutManagerPreparation =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerViewPreparation.layoutManager = mLayoutManagerPreparation
         recyclerViewPreparation.itemAnimator = DefaultItemAnimator()
         recyclerViewPreparation.adapter = mAdapterPreparation
@@ -286,7 +328,7 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
     private fun generatePreparation(): List<ItemPreparation>? {
         val itemList: MutableList<ItemPreparation> = ArrayList()
         for (i in cocktail.steps.indices) {
-            itemList.add(ItemPreparation(cocktail.steps[i], i+1))
+            itemList.add(ItemPreparation(cocktail.steps[i], i + 1))
         }
         return itemList
     }
@@ -302,22 +344,38 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
     ///////////////// PERMISSIONS /////////////////
 
     private fun checkPermission(permission: String): Boolean {
-        return context?.let { ActivityCompat.checkSelfPermission(it, permission) } == PackageManager.PERMISSION_GRANTED
+        return context?.let {
+            ActivityCompat.checkSelfPermission(
+                it,
+                permission
+            )
+        } == PackageManager.PERMISSION_GRANTED
     }
 
-    private fun requestPermissions(permission: Array<String>, permissionId: Int, dummyParam: Boolean = true) {
+    private fun requestPermissions(
+        permission: Array<String>,
+        permissionId: Int,
+        dummyParam: Boolean = true
+    ) {
         // add dummyParam since it's not allowed to override requestPermissions inside a fragment
         requestPermissions(permission, permissionId)
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         if (requestCode == PERMISSION_EXTERNAL_STORAGE) {
             if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                 val shareCocktail = rootView.findViewById<ImageButton>(R.id.share)
                 shareCocktail.performClick()
-            }
-            else {
-                Toast.makeText(context, "Can't share a cocktail recipe without storage permission", Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(
+                    context,
+                    "Can't share a cocktail recipe without storage permission",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
     }
@@ -331,10 +389,15 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
         @SuppressLint("WrongThread")
         override fun doInBackground(vararg params: Any?): Bitmap {
             val scrollView = rootView.findViewById<ScrollView>(R.id.recipe_item)
-            val returnedBitmap = Bitmap.createBitmap(scrollView.getChildAt(0).width*2, scrollView.getChildAt(0).height*2, Bitmap.Config.RGB_565)
+            val returnedBitmap = Bitmap.createBitmap(
+                scrollView.getChildAt(0).width * 2,
+                scrollView.getChildAt(0).height * 2,
+                Bitmap.Config.RGB_565
+            )
             val canvas = Canvas(returnedBitmap)
             canvas.scale(2.0f, 2.0f)
-            (params[0] as Context?)?.let { ContextCompat.getColor(it, R.color.lightColorBg) }?.let { canvas.drawColor(it) }
+            (params[0] as Context?)?.let { ContextCompat.getColor(it, R.color.lightColorBg) }
+                ?.let { canvas.drawColor(it) }
             scrollView.getChildAt(0).draw(canvas)
             return returnedBitmap
         }
@@ -356,12 +419,10 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
         }
     }
 
-    private fun getUploadUriToBitmap(rotation:Float,uploadImgUri: Uri):Bitmap{
+    private fun getUploadUriToBitmap(rotation: Float, uploadImgUri: Uri): Bitmap {
         val bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, uploadImgUri)
-        val matrix= Matrix()
+        val matrix = Matrix()
         matrix.setRotate(rotation)
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
-
-//        findViewById<ImageView>(R.id.new_upload_user_img_TV).setImageBitmap(bitmapNew)
     }
 }

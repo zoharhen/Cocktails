@@ -71,7 +71,7 @@ class UserItemLevel3 : AppCompatActivity() {
     private fun saveCocktailToFirebase(cocktail: Cocktail){
         val cnt = (applicationContext as Cocktails)
         saveCocktailDataToFirebase(cocktail)
-        cocktail.image?.let { addImgToFirebase(cocktail.name, it,cocktail.rotation) }
+        cocktail.image?.let { saveImgToFirebase(cocktail.name, it,cocktail.rotation) }
         cnt.addUserCocktail(cocktail)
     }
 
@@ -92,14 +92,14 @@ class UserItemLevel3 : AppCompatActivity() {
     }
 
     @SuppressLint("LogNotTimber")
-    private fun addImgToFirebase(imgName:String, imgPath:String, imgRotation:Float){
+    private fun saveImgToFirebase(imgName:String, imgPath:String, imgRotation:Float){
         val uploadImgUri = Uri.parse(imgPath)
         val bitmapUploadImg = getUploadUriToBitmap(imgRotation, uploadImgUri)
         val baos = ByteArrayOutputStream()
         bitmapUploadImg.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val data = baos.toByteArray()
         val cnt = (applicationContext as Cocktails)
-        val path=  "usersImages/${cnt.mUserId}/$imgName.png"
+        val path=  cnt.getUploadImgPath(imgName)
         val mountainImagesRef = cnt.mStorageRef.child(path)
         val uploadTask = mountainImagesRef.putBytes(data)
         uploadTask.addOnFailureListener {
