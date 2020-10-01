@@ -39,6 +39,8 @@ const val CATEGORY_KEY = "category"
 const val ICON_KEY = "icon"
 const val UPLOAD_IMG_KEY = "upload_img"
 const val ROTATE_UPLOAD_IMG_KEY = "rotate_upload_img"
+const val DEL_BODY_MSG = "You may be deleting cocktail item.\nAfter you delete this, it can't be recovered."
+const val DEL_TITLE_MSG="Delete cocktail"
 
 class UserItemLevel1 : AppCompatActivity() {
 
@@ -53,7 +55,6 @@ class UserItemLevel1 : AppCompatActivity() {
     private val COCKTAIL_ERROR_MSG_NAME = "Cocktail name already exist, choose different name."
     private val COCKTAIL_ERROR_MSG_LENGTH: String =
         "Cocktail name too long,\n must be under $MAX_LENGTH_COCKTAIL_NAME characters."
-    private val BACK_PRESS_MSG = "You may be deleting cocktail item.\nAfter you delete this, it can't be recovered."
     private val REQUEST_CODE_ICONS = 2
     private val REQUEST_CODE_UPLOAD_IMG = 1
     private val PERMISSION_EXTERNAL_STORAGE_ID = 44
@@ -315,7 +316,7 @@ class UserItemLevel1 : AppCompatActivity() {
     private fun showDialogOnBackPress() {
         lateinit var dialog: AlertDialog
         val builder = AlertDialog.Builder(this)
-        builder.setMessage(BACK_PRESS_MSG)
+        builder.setMessage(DEL_BODY_MSG)
         val dialogClickListener = DialogInterface.OnClickListener { _, which ->
             when (which) {
                 DialogInterface.BUTTON_POSITIVE -> {
@@ -329,7 +330,7 @@ class UserItemLevel1 : AppCompatActivity() {
         builder.setNegativeButton("Cancel", dialogClickListener)
         dialog = builder.create()
         dialog.setIcon(R.drawable.ic_warning_30)
-        dialog.setTitle("Delete cocktail")
+        dialog.setTitle(DEL_TITLE_MSG)
         dialog.show()
     }
 
