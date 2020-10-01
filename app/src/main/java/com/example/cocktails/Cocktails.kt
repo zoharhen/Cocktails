@@ -17,12 +17,14 @@ import kotlin.collections.HashMap
 const val COLLECTION_PATH = "user_cocktails"
 const val SUB_COLLECTION_PATH = "cocktails"
 
+
 class Cocktails : Application() {
 
     val INGREDIENTS_FILTERS = "INGREDIENTSFILTERS"
     val TYPE_FILTERS = "TYPEFILTERS"
     val FAVORITES = "FAVORITES"
     val FIRST_TIME_MODE = "FIRSTMODE"
+
 
 
     // shared data
@@ -33,8 +35,7 @@ class Cocktails : Application() {
     lateinit var mStorageRef: StorageReference
     lateinit var mFirstTimeModeSP: SharedPreferences
 //    private val mUserId: String= UUID.randomUUID().toString()//todo. check for another option
-    private val mUserId: String= "enavDebug"//todo remove only for debug
-
+    val mUserId: String= "enavDebug"//todo remove only for debug
     private var mUserCocktailsMap = HashMap<String, Cocktail>()
     lateinit var mCocktailsRef: CollectionReference
 
@@ -54,11 +55,11 @@ class Cocktails : Application() {
         mFirstTimeModeSP = this.getSharedPreferences(FIRST_TIME_MODE, Context.MODE_PRIVATE)
         mCocktailsRef = FirebaseFirestore.getInstance().collection(COLLECTION_PATH).document(mUserId).collection(
             SUB_COLLECTION_PATH)
-        loadUserCocktailData()
+//        loadUserCocktailData()
     }
 
     @SuppressLint("LogNotTimber")
-    private fun loadUserCocktailData() {
+    private fun loadUserCocktailData() { //todo check fun
         mUserCocktailsMap.clear()
         mCocktailsRef.get().addOnSuccessListener { queryDocumentSnapshot->
             for (doc in queryDocumentSnapshot) {

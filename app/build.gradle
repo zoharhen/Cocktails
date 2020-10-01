@@ -59,6 +59,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:19.4.0'
     implementation 'com.firebaseui:firebase-ui-storage:6.2.0'
     implementation 'com.google.firebase:firebase-database:19.4.0'
+    implementation 'com.google.firebase:firebase-firestore-ktx:21.6.0'
     // git
     implementation 'com.github.ivbaranov:materialfavoritebutton:0.1.5'
     implementation 'com.github.douglasjunior:android-simple-tooltip:0.2.3'
@@ -88,7 +89,7 @@ dependencies {
 
     //User Item
     implementation 'com.google.android:flexbox:0.3.0-alpha2'
-    implementation 'com.google.firebase:firebase-firestore-ktx:21.6.0'
+
 }
 
 // Workaround for sceneform compatibility issue
