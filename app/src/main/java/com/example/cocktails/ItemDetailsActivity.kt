@@ -27,7 +27,9 @@ class ItemDetailsActivity : AppCompatActivity() {
         val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar1)
         setSupportActionBar(toolbar)
         supportActionBar?.setHomeButtonEnabled(true)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        if(!cocktail.isReview) { // display back arrow while not in review mode
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        }
 
         val activityTitle: TextView = findViewById(R.id.title)
         activityTitle.text = cocktail.name
