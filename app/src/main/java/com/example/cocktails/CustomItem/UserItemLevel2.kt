@@ -35,7 +35,7 @@ class UserItemLevel2 : AppCompatActivity() {
     private val REQUEST_CODE_ADD_INGREDIENT = 1
     private val REQUEST_CODE_EDIT_INGREDIENT = 2
     private val INFO_DIALOG_TITLE="Information"
-    private val INFO_DIALOG_BODY="For edit item - press on the item\nFor delete item - long press on the item"
+    private val INFO_DIALOG_BODY="Press an item in order to edit\nLong press in order to delete"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

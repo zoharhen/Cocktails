@@ -43,9 +43,9 @@ class AddIngredientItem : AppCompatActivity() {
     private lateinit var mIngredientNew: TextInputLayout
     private lateinit var mIngredientList: ArrayList<String>
     private var mRowNum =-1
-    val ERROR_MSG_EMPTY_INGREDIENT= "error - choose ingredient."
-    val ERROR_MSG_EMPTY_UNIT="error - choose quantity."
-    val ERROR_MSG_QUANTITY = "error - only a integer or float is allow."
+    val ERROR_MSG_EMPTY_INGREDIENT= "Choose ingredient"
+    val ERROR_MSG_EMPTY_UNIT="Choose quantity"
+    val ERROR_MSG_QUANTITY = "Enter numbers only"
     private val REQUEST_CODE_UNIT=2
     private val REQUEST_CODE_INGREDIENT=3
     private val TITLE_ACTIVITY="INGREDIENTS"
