@@ -18,12 +18,10 @@ const val USER_ID_KEY_SP="user_id"
 
 class Cocktails : Application() {
 
-    val INGREDIENTS_FILTERS = "INGREDIENTSFILTERS"
-    val TYPE_FILTERS = "TYPEFILTERS"
-    val FAVORITES = "FAVORITES"
-    val FIRST_TIME_MODE = "FIRSTMODE"
-
-
+    private val INGREDIENTS_FILTERS = "INGREDIENTSFILTERS"
+    private val TYPE_FILTERS = "TYPEFILTERS"
+    private val FAVORITES = "FAVORITES"
+    private val FIRST_TIME_MODE = "FIRSTMODE"
 
     // shared data
     lateinit var mFAuth: FirebaseAuth
@@ -37,27 +35,23 @@ class Cocktails : Application() {
     var mUserCocktailsList =ArrayList<Cocktail>()
     lateinit var mCocktailsRef: CollectionReference
 
-
     override fun onCreate() {
         super.onCreate()
         mFAuth = FirebaseAuth.getInstance()
         mFavorites = this.getSharedPreferences(FAVORITES, Context.MODE_PRIVATE)
-        mActiveIngredientsFilters = this.getSharedPreferences(
-            INGREDIENTS_FILTERS,
-            Context.MODE_PRIVATE
-        )
+        mActiveIngredientsFilters = this.getSharedPreferences(INGREDIENTS_FILTERS, Context.MODE_PRIVATE)
         mActiveTypeFilters = this.getSharedPreferences(TYPE_FILTERS, Context.MODE_PRIVATE)
         mStorageRef = FirebaseStorage.getInstance().reference
         mFirstTimeModeSP = this.getSharedPreferences(FIRST_TIME_MODE, Context.MODE_PRIVATE)
 
         if(mUserId.isEmpty()){
-            val userId=mFirstTimeModeSP.getString(USER_ID_KEY_SP,"")
+            val userId= mFirstTimeModeSP.getString(USER_ID_KEY_SP,"")
             if (userId.isNullOrEmpty()){
-                mUserId= java.util.UUID.randomUUID().toString()
+                mUserId = java.util.UUID.randomUUID().toString()
                 mFirstTimeModeSP.edit().putString(USER_ID_KEY_SP, mUserId).apply()
             }
             else{
-                mUserId=userId
+                mUserId = userId
             }
         }
         mCocktailsRef = FirebaseFirestore.getInstance().collection(COLLECTION_PATH).document(mUserId).collection(

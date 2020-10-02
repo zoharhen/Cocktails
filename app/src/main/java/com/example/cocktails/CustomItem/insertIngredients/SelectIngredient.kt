@@ -29,7 +29,7 @@ val DEFAULT_INGREDIENT_VAL="None"
 class SelectIngredient : AppCompatActivity() {
     private lateinit var mRadioGroup: RadioGroup
     private lateinit var mIngredientsList: ArrayList<String>
-    private val ERROR_MSG_INGREDIENT="This ingredient exist in the collection."
+    private val ERROR_MSG_INGREDIENT="Ingredient already exists"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

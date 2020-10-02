@@ -52,7 +52,8 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
     private lateinit var longPressTooltipBuilder: SimpleTooltip.Builder
     lateinit var longPressTooltip: SimpleTooltip
     private var isTtsOn: Boolean = false
-    val EMPTY_IMG_ICON = "empty_img_icon"
+
+    private val EMPTY_IMG_ICON = "empty_img_icon"
 
     companion object {
         fun newInstance(cocktail: Cocktail): RecipeFragment? {
@@ -129,8 +130,7 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
     fun initViews(withTooltip: Boolean = true) {
         initCocktailImage()
         rootView.findViewById<TextView>(R.id.tv_cocktailTitle).text = cocktail.name
-        rootView.findViewById<TextView>(R.id.ingredientContent).text =
-            cocktail.ingredients.joinToString(separator = "\n")
+        rootView.findViewById<TextView>(R.id.ingredientContent).text = cocktail.ingredients.joinToString(separator = "\n")
         this.initCustomCocktailButtons()
         this.initFavoriteButton()
         this.initPreparationSection()
@@ -139,12 +139,10 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
         }
         this.initTtsButton()
         this.initShareButtons()
-//        this.initEditButton() TODO
-        this.initDelButton()
     }
 
     @SuppressLint("LogNotTimber")
-    private fun initCocktailImage(){
+    private fun initCocktailImage() {
         val cnt = (activity?.applicationContext as Cocktails)
         if (cocktail.image.isNullOrEmpty()) {
             val path = "images/$EMPTY_IMG_ICON.jpg"
@@ -167,7 +165,7 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
     }
 
     @SuppressLint("LogNotTimber")
-    private fun displayImg(imgPath:String){
+    private fun displayImg(imgPath: String) {
         val cnt = (activity?.applicationContext as Cocktails)
         cnt.mStorageRef.child(imgPath)
             .downloadUrl.addOnSuccessListener { img ->
@@ -229,12 +227,12 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
             rootView.findViewById<ImageButton>(R.id.share).setPadding(22, 0, 22, 0)
         }
 
-        //todo: Einav: add edit + delete 'onClick' methods
+        //        this.initEditButton() TODO
+        this.initDelButton()
     }
 
     private fun initFavoriteButton() {
-        val isFavorite =
-            (activity?.applicationContext as Cocktails).mFavorites.getBoolean(cocktail.name, false)
+        val isFavorite = (activity?.applicationContext as Cocktails).mFavorites.getBoolean(cocktail.name, false)
         val favorite = rootView.findViewById<ImageButton>(R.id.favoriteAction)
         favorite.setImageResource(if (isFavorite) R.drawable.ic_favorite_full_black else R.drawable.ic_favorite_empty_black)
 
@@ -243,18 +241,13 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
                 cocktail.name,
                 false
             )
-            (activity?.applicationContext as Cocktails).mFavorites.edit()
-                .putBoolean(cocktail.name, !oldVal).apply()
+            (activity?.applicationContext as Cocktails).mFavorites.edit().putBoolean(cocktail.name, !oldVal).apply()
             favorite.setImageResource(if (!oldVal) R.drawable.ic_favorite_full_black else R.drawable.ic_favorite_empty_black)
         }
     }
 
     private fun initTooltipIfNeeded() {
-        if ((activity?.applicationContext as Cocktails).mFirstTimeModeSP.getBoolean(
-                "recipeTab",
-                true
-            )
-        ) {
+        if ((activity?.applicationContext as Cocktails).mFirstTimeModeSP.getBoolean("recipeTab", true)) {
             val preparationContext = rootView.findViewById<RecyclerView>(R.id.recyclerPreparation)
             preparationContext.setOnSystemUiVisibilityChangeListener {
                 longPressTooltipBuilder = SimpleTooltip.Builder(context)
@@ -313,39 +306,54 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
 
     }
 
-    private fun initEditButton(){
+    private fun initEditButton() {
         TODO()
     }
 
     @SuppressLint("LogNotTimber") //todo check
-    private fun initDelButton(){
-        val shareApp = rootView.findViewById<ImageButton>(R.id.deleteAction)
-        shareApp.setOnClickListener{
+    private fun initDelButton() {
+        val delButton = rootView.findViewById<ImageButton>(R.id.deleteAction)
+        delButton.setOnClickListener {
             showDelCocktailDialog()
         }
     }
 
     @SuppressLint("LogNotTimber")
-    private fun delCocktailItem(){
+    private fun delCocktailItem() {
         val cnt = (activity?.applicationContext as Cocktails)
         //del img
-        val path=  cnt.getUploadUserImgPath(cocktail.name)
-        val desertRef  = cnt.mStorageRef.child(path)
+        val path = cnt.getUploadUserImgPath(cocktail.name)
+        val desertRef = cnt.mStorageRef.child(path)
         desertRef.delete().addOnSuccessListener {
             // File deleted successfully
-            Log.i("delete_cocktail_img",
-                "OnSuccess: Cocktail Name: ${cocktail.name}")
-        }.addOnFailureListener { Log.i("delete_cocktail_img",
-            "OnFailure: Cocktail Name: ${cocktail.name}");}
+            Log.i(
+                "delete_cocktail_img",
+                "OnSuccess: Cocktail Name: ${cocktail.name}"
+            )
+        }.addOnFailureListener {
+            Log.i(
+                "delete_cocktail_img",
+                "OnFailure: Cocktail Name: ${cocktail.name}"
+            );
+        }
 
         //del from cloud
         cnt.mCocktailsRef.document(cocktail.name).delete()
-            .addOnSuccessListener { Toast.makeText(context, "Delete ${cocktail.name}",
-                Toast.LENGTH_LONG).show(); Log.i("delete_cocktail_data",
+            .addOnSuccessListener {
+                Toast.makeText(
+                    context, "Delete ${cocktail.name}",
+                    Toast.LENGTH_LONG
+                ).show(); Log.i(
+                "delete_cocktail_data",
                 "OnSuccess: Cocktail Name: ${cocktail.name}"
-            );}
-            .addOnFailureListener { Log.i("delete_cocktail_data",
-                "OnFailure: Cocktail Name: ${cocktail.name}");}
+            );
+            }
+            .addOnFailureListener {
+                Log.i(
+                    "delete_cocktail_data",
+                    "OnFailure: Cocktail Name: ${cocktail.name}"
+                );
+            }
         cnt.removeUserCocktail(cocktail)//todo check
     }
 
@@ -357,7 +365,10 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
             when (which) {
                 DialogInterface.BUTTON_POSITIVE -> {
                     delCocktailItem()
-                    val intent = Intent(activity?.applicationContext, ScrollingActivity::class.java)//todo check
+                    val intent = Intent(
+                        activity?.applicationContext,
+                        ScrollingActivity::class.java
+                    )//todo check
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     startActivity(intent)
                 }
@@ -372,11 +383,9 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
     }
 
     private fun initPreparationSection() {
-        val recyclerViewPreparation =
-            rootView.findViewById(R.id.recyclerPreparation) as RecyclerView
+        val recyclerViewPreparation = rootView.findViewById(R.id.recyclerPreparation) as RecyclerView
         mAdapterPreparation = context?.let { PreparationAdapter(it, generatePreparation()!!, this) }
-        val mLayoutManagerPreparation =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        val mLayoutManagerPreparation = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerViewPreparation.layoutManager = mLayoutManagerPreparation
         recyclerViewPreparation.itemAnimator = DefaultItemAnimator()
         recyclerViewPreparation.adapter = mAdapterPreparation

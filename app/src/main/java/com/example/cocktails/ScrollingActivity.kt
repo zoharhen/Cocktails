@@ -3,9 +3,7 @@ package com.example.cocktails
 import android.annotation.SuppressLint
 import android.app.ActivityOptions
 import android.app.SearchManager
-import android.content.Context
 import android.content.Intent
-import android.content.Intent.ACTION_OPEN_DOCUMENT
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.graphics.Color
@@ -72,28 +70,14 @@ class ScrollingActivity : AppCompatActivity() {
         initUserItemButton()
 
         gridViewAdapter?.filter?.filter("filterDialog") // update view by current selected filters
-
     }
 
     public override fun onStart() {
         super.onStart()
-        val user: FirebaseUser? =
-            (applicationContext.applicationContext as Cocktails).mFAuth.currentUser
-        if (user != null) {
-            // do your stuff
-        } else {
+        val user: FirebaseUser? = (applicationContext.applicationContext as Cocktails).mFAuth.currentUser
+        if (user == null) {
             signInAnonymously()
         }
-//        val mAuth = (applicationContext.applicationContext as Cocktails).mFAuth
-//        mAuth.signInAnonymously()
-//            .addOnCompleteListener { task ->
-//                if (task.isSuccessful) {
-//                    val user: FirebaseUser? = mAuth.currentUser
-//                    // todo: einav - get user custom cocktails objects? (remember to save the object once being created). maybe use SP instead?
-//                } else {
-//                    Toast.makeText(applicationContext, "Error loading data", Toast.LENGTH_SHORT).show()
-//                }
-//            }
     }
 
     @SuppressLint("LongLogTag", "LogNotTimber")
@@ -102,7 +86,6 @@ class ScrollingActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { }.addOnFailureListener {
                 Log.e("signInAnonymously:FAILURE", "")
             }
-
     }
 
     private fun initRecyclerview() {
@@ -115,7 +98,6 @@ class ScrollingActivity : AppCompatActivity() {
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {})
     }
 
-
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         recyclerView.layoutManager = GridLayoutManager(this, getColumnNum())
@@ -126,16 +108,15 @@ class ScrollingActivity : AppCompatActivity() {
 
     private fun getColumnNum(): Int {
         //        val columns = resources.getInteger(R.integer.gridColumnNum)
-        val screenWidthDp: Float = resources.displayMetrics.widthPixels / resources.displayMetrics.density
+        val screenWidthDp: Float =
+            resources.displayMetrics.widthPixels / resources.displayMetrics.density
         return ((screenWidthDp / 202 + 0.5).toInt()) // +0.5 for correct rounding to int.
     }
 
     private fun initAdapter() {
-        val jsonString =
-            applicationContext.assets.open("predefined.json").bufferedReader().use { it.readText() }
+        val jsonString = applicationContext.assets.open("predefined.json").bufferedReader().use { it.readText() }
         val listCocktailType = object : TypeToken<List<Cocktail>>() {}.type
-        val items: ArrayList<Cocktail> =
-            Gson().fromJson<ArrayList<Cocktail>>(jsonString, listCocktailType)
+        val items: ArrayList<Cocktail> = Gson().fromJson<ArrayList<Cocktail>>(jsonString, listCocktailType)
         gridViewAdapter = CocktailItemAdapter(this, items)
 
         gridViewAdapter?.onItemClick = { cocktail ->
@@ -147,8 +128,7 @@ class ScrollingActivity : AppCompatActivity() {
         gridViewAdapter!!.registerAdapterDataObserver(object : AdapterDataObserver() {
             override fun onChanged() {
                 super.onChanged()
-                no_data_textView.visibility =
-                    if (gridViewAdapter!!.itemCount == 0) View.VISIBLE else View.INVISIBLE
+                no_data_textView.visibility = if (gridViewAdapter!!.itemCount == 0) View.VISIBLE else View.INVISIBLE
             }
         })
     }
@@ -169,10 +149,8 @@ class ScrollingActivity : AppCompatActivity() {
     private fun refreshFilterBadge() {
         if (filterIcon != null) {
             val cnt = (applicationContext as Cocktails)
-            val isFilterOff =
-                cnt.mActiveTypeFilters.all.keys.isEmpty() && cnt.mActiveIngredientsFilters.all.keys.isEmpty()
-            filterIcon?.findViewById<ImageBadgeView>(id.filter_icon)?.badgeValue =
-                if (isFilterOff) 0 else 1
+            val isFilterOff = cnt.mActiveTypeFilters.all.keys.isEmpty() && cnt.mActiveIngredientsFilters.all.keys.isEmpty()
+            filterIcon?.findViewById<ImageBadgeView>(id.filter_icon)?.badgeValue = if (isFilterOff) 0 else 1
         }
     }
 
@@ -181,20 +159,14 @@ class ScrollingActivity : AppCompatActivity() {
     private fun initSearchView(menu: Menu) {
         val searchView: SearchView = menu.findItem(id.action_search).actionView as SearchView
         searchView.findViewById<AutoCompleteTextView>(id.search_src_text).threshold = 1
-        val searchPlate =
-            searchView.findViewById(androidx.appcompat.R.id.search_src_text) as EditText
+        val searchPlate = searchView.findViewById(androidx.appcompat.R.id.search_src_text) as EditText
         searchPlate.hint = "Search"
         searchPlate.setTextAppearance(style.chipText)
         searchPlate.background = resources.getDrawable(drawable.rounded_corner, theme)
         searchPlate.setHintTextColor(Color.parseColor("#D5D3D3"))
         searchPlate.setTextColor(Color.parseColor("#D5D3D3"))
         val searchPlateView: View = searchView.findViewById(androidx.appcompat.R.id.search_plate)
-        searchPlateView.setBackgroundColor(
-            ContextCompat.getColor(
-                this,
-                android.R.color.transparent
-            )
-        )
+        searchPlateView.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent))
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
@@ -223,8 +195,7 @@ class ScrollingActivity : AppCompatActivity() {
                 v.getGlobalVisibleRect(outRect)
                 if (!outRect.contains(event.rawX.toInt(), event.rawY.toInt())) {
                     v.clearFocus()
-                    val imm: InputMethodManager =
-                        getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                    val imm: InputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0)
                 }
             }
@@ -261,8 +232,7 @@ class ScrollingActivity : AppCompatActivity() {
         startActivity(filteredActivity)
 
         toolbar.menu.setGroupVisible(id.menuGroup, false)
-        toolbar_layout.title =
-            if (filter == "favorites") resources.getString(string.favorites) else resources.getString(
+        toolbar_layout.title = if (filter == "favorites") resources.getString(string.favorites) else resources.getString(
                 string.my_cocktails
             )
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -280,18 +250,10 @@ class ScrollingActivity : AppCompatActivity() {
 
         val layout = layoutInflater.inflate(layout.filter_dialog, null) as ScrollView
         resources.getStringArray(array.cocktailTypes_array).forEach {
-            addChip(
-                it,
-                layout.CategoryChipGroup,
-                typeFiltersSP
-            )
+            addChip(it, layout.CategoryChipGroup, typeFiltersSP)
         }
         resources.getStringArray(array.ingredients).forEach {
-            addChip(
-                it,
-                layout.IngredientChipGroup,
-                ingredientsFiltersSP
-            )
+            addChip(it, layout.IngredientChipGroup, ingredientsFiltersSP)
         }
 
         layout.findViewById<Button>(id.apply_btn).setOnClickListener {
