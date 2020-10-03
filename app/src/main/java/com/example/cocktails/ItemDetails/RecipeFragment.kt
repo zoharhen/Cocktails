@@ -229,6 +229,17 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
 
         //        this.initEditButton() TODO
         this.initDelButton()
+
+        if (cocktail.isReview) {
+            val editAction = rootView.findViewById<ImageButton>(R.id.editAction)
+            val delAction = rootView.findViewById<ImageButton>(R.id.deleteAction)
+            editAction.isEnabled = false
+            delAction.isEnabled = false
+            editAction.imageAlpha = 75
+            delAction.imageAlpha = 75
+            editAction.isClickable = false
+            delAction.isClickable = false
+        }
     }
 
     private fun initFavoriteButton() {
@@ -341,7 +352,7 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
         cnt.mCocktailsRef.document(cocktail.name).delete()
             .addOnSuccessListener {
                 Toast.makeText(
-                    context, "Delete ${cocktail.name}",
+                    context, "'${cocktail.name}' deleted successfully",
                     Toast.LENGTH_LONG
                 ).show(); Log.i(
                 "delete_cocktail_data",

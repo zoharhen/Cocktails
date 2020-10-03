@@ -81,7 +81,7 @@ class UserItemLevel3 : AppCompatActivity() {
         val cnt = (applicationContext as Cocktails)
         cnt.mCocktailsRef.document(cocktail.name).set(cocktail)
             .addOnSuccessListener{
-                Toast.makeText(this, "Create ${cocktail.name}",
+                Toast.makeText(this, "'${cocktail.name}' item was created",
                     Toast.LENGTH_LONG).show();
                 Log.i("storage_new_cocktail",
                     "OnSuccess: Cocktail Name: ${cocktail.name}"

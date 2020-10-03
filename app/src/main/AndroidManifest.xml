@@ -53,6 +53,10 @@
             android:name=".ScrollingActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:theme="@style/AppTheme.Splash"
+            android:name=".SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

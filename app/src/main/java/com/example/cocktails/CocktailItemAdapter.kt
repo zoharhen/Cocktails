@@ -15,7 +15,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.github.ivbaranov.mfb.MaterialFavoriteButton
 import android.app.Activity
 import java.util.*
-
+import kotlin.collections.ArrayList
 
 class CocktailItemAdapter internal constructor(context: Context, data: ArrayList<Cocktail>) :
     RecyclerView.Adapter<CocktailItemAdapter.ViewHolder>(), Filterable {
