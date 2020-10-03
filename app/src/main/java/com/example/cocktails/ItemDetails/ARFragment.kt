@@ -411,7 +411,7 @@ class ARFragment(val parent: SectionsPagerAdapter) : Fragment() {
         // Set the text
         val arText = TextView(requireActivity())
         arText.apply {
-            typeface = getFont(requireContext(), R.font.raleway_light)
+            typeface = getFont(requireContext(), R.font.raleway_semibold)
             text = ingredients[index]
             setTextColor(parseColor(arColor))
 //            setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.arBackTextColor))
@@ -551,7 +551,7 @@ class ARFragment(val parent: SectionsPagerAdapter) : Fragment() {
         // Set the text
         val arText = TextView(requireActivity())
         arText.apply {
-            typeface = getFont(requireContext(), R.font.raleway_light)
+            typeface = getFont(requireContext(), R.font.raleway_semibold)
             text = ingredients[index]
             setTextColor(parseColor(arColor))
         }
