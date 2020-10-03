@@ -17,7 +17,7 @@ todo: replace link!!!
 -   Filter cocktails menu by ingredients / spirit
 -   Share recipe screenshot to your friends
 
-<img src="screenshot/scrolling.png" height="500px" /><img src="screenshot/recipe.png" height="500px" /><img src="screenshot/ar1.png" height="500px" /><img src="screenshot/addNew.png" height="500px" />
+<img src="screenshot/scrolling.png" height="600px" /><img src="screenshot/recipe.png" height="600px" /><img src="screenshot/ar1.png" height="600px" /><img src="screenshot/addNew.png" height="600px" />
 
 ## Contributions
 
