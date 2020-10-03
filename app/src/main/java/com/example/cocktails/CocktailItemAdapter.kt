@@ -17,7 +17,6 @@ import android.app.Activity
 import java.util.*
 import kotlin.collections.ArrayList
 
-
 class CocktailItemAdapter internal constructor(context: Context, data: ArrayList<Cocktail>) :
     RecyclerView.Adapter<CocktailItemAdapter.ViewHolder>(), Filterable {
 
@@ -140,5 +139,4 @@ class CocktailItemAdapter internal constructor(context: Context, data: ArrayList
             //            imageView.setImageResource(imageId)
         }
     }
-
 }
