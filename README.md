@@ -17,8 +17,7 @@ todo: replace link!!!
 -   Filter cocktails menu by ingredients / spirit
 -   Share recipe screenshot to your friends
 
-todo: fix images links after app is done
-<img src="screenshots/cocktailspro_alcoholic_framed.png" height="500px" /><img src="screenshots/cocktailspro_nonalcoholic_framed.png" height="500px" /><img src="screenshots/cocktailspro_favorite_list_framed.png" height="500px" />
+<img src="screenshot/scrolling.png" height="500px" /><img src="screenshot/recipe.png" height="500px" /><img src="screenshot/ar1.png" height="500px" /><img src="screenshot/addNew.png" height="500px" />
 
 ## Contributions
 
