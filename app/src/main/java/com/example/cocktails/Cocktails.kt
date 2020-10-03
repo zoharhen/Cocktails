@@ -32,7 +32,7 @@ class Cocktails : Application() {
     lateinit var mFirstTimeModeSP: SharedPreferences
     private var mUserId: String = ""
     //    private var mUserId: String= "enavDebug"//todo remove only for debug
-    var mUserCocktailsList =ArrayList<Cocktail>()
+    var mUserCocktailsList = ArrayList<Cocktail>()
     lateinit var mCocktailsRef: CollectionReference
 
     override fun onCreate() {
@@ -64,14 +64,13 @@ class Cocktails : Application() {
         return "usersImages/$mUserId/$imageName.jpg"
     }
 
-    @SuppressLint("LogNotTimber")
     private fun loadUserCocktailData() { //todo check fun
         mUserCocktailsList.clear()
-        mCocktailsRef.get().addOnSuccessListener { queryDocumentSnapshot->
-            for (doc in queryDocumentSnapshot) {
-                val cocktail=doc.toObject(Cocktail::class.java)
+        val asyncGetCustomCocktails = mCocktailsRef.get()
+        asyncGetCustomCocktails.addOnCompleteListener { task ->
+            for (doc in task.result!!) {
+                val cocktail= doc.toObject(Cocktail::class.java)
                 mUserCocktailsList.add(cocktail)
-                Log.i("cocktails", cocktail.name)//todo remove only for debug
             }
         }
     }
@@ -84,5 +83,5 @@ class Cocktails : Application() {
         mUserCocktailsList.remove(delCocktail)
     }
 
-
 }
+

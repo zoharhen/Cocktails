@@ -19,5 +19,6 @@
     <color name="addButtonColor">#4CAF50</color>
     <color name="badgeColor">#F44336</color>
     <color name="errorColor">#C62828</color>
+    <color name="splash">#d5d3d4</color>
     <color name="stepBg">#0288D1</color>
 </resources>

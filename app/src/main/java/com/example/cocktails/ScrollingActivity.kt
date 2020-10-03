@@ -11,6 +11,7 @@ import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.os.Parcelable
 import android.util.Log
 import android.view.*
@@ -41,16 +42,10 @@ import ru.nikartm.support.ImageBadgeView
 
 @Parcelize
 data class Cocktail(
-    val name: String, val type: String, val steps: ArrayList<String>,
-    val ingredients: ArrayList<String>, val clipart: String, val image: String?,
-    val isCustom: Boolean = false, val glass: String?, val isReview: Boolean = false,
-    val rotation: Float = 0F
-) : Parcelable {
-    constructor() : this(
-        "", "", ArrayList<String>(), ArrayList<String>(), "",
-        null, false, null, false, 0F
-    )
-}
+    val name: String = "", val type: String = "", val steps: ArrayList<String> = ArrayList(),
+    val ingredients: ArrayList<String> = ArrayList(), val clipart: String = "", val image: String? = null,
+    val isCustom: Boolean = false, val glass: String? = null, val isReview: Boolean = false,
+    val rotation: Float = 0F) : Parcelable
 
 class ScrollingActivity : AppCompatActivity() {
 
@@ -70,6 +65,7 @@ class ScrollingActivity : AppCompatActivity() {
         initUserItemButton()
 
         gridViewAdapter?.filter?.filter("filterDialog") // update view by current selected filters
+
     }
 
     public override fun onStart() {
@@ -117,6 +113,8 @@ class ScrollingActivity : AppCompatActivity() {
         val jsonString = applicationContext.assets.open("predefined.json").bufferedReader().use { it.readText() }
         val listCocktailType = object : TypeToken<List<Cocktail>>() {}.type
         val items: ArrayList<Cocktail> = Gson().fromJson<ArrayList<Cocktail>>(jsonString, listCocktailType)
+        items.addAll((applicationContext as Cocktails).mUserCocktailsList)
+
         gridViewAdapter = CocktailItemAdapter(this, items)
 
         gridViewAdapter?.onItemClick = { cocktail ->
