@@ -46,7 +46,7 @@ Please feel free to post questions, recommendations, ideas, bugs by create [new 
   <img src="https://avatars0.githubusercontent.com/u/57680245" width="70" align="left">
 </a>
 
-**Einav Hasson**
+**Enav Hasson**
 
 [![Linkedin](https://img.shields.io/badge/-linkedin-grey?logo=linkedin)](https://www.linkedin.com/in/einav-hasson-45420513a/)
 
