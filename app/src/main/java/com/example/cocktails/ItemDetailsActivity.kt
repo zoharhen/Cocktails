@@ -1,11 +1,8 @@
 package com.example.cocktails
 
 import android.os.Bundle
-import android.util.DisplayMetrics
-import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
-import android.view.WindowManager
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
@@ -32,7 +29,7 @@ class ItemDetailsActivity : AppCompatActivity() {
         val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar1)
         setSupportActionBar(toolbar)
         supportActionBar?.setHomeButtonEnabled(true)
-        if(!cocktail.isReview) { // display back arrow while not in review mode //todo
+        if(!cocktail.reviewIs) { // display back arrow while not in review mode
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
             finish_button_preview.visibility=View.GONE
         }

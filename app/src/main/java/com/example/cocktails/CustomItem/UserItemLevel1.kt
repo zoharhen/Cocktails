@@ -21,35 +21,46 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.view.children
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.cocktails.Cocktail
 import com.example.cocktails.Cocktails
 import com.example.cocktails.R
 import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipDrawable
 import com.google.android.material.chip.ChipGroup
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_user_item_level1.*
+import java.io.File
 
 const val EMPTY_FIELD_ERROR_MSG: String = "Field can not be empty"
 const val COCKTAIL_NAME_KEY = "cocktailName"
 const val CATEGORY_KEY = "category"
 const val ICON_KEY = "icon"
 const val UPLOAD_IMG_KEY = "upload_img"
+const val UPLOAD_IMG_PATH_KEY = "upload_img_path"
 const val ROTATE_UPLOAD_IMG_KEY = "rotate_upload_img"
-const val DEL_BODY_MSG = "You may be deleting cocktail item.\nAfter you delete this, it can't be recovered."
-const val DEL_TITLE_MSG="Delete cocktail"
+const val DEL_BODY_MSG =
+    "You may be deleting cocktail item.\nAfter you delete this, it can't be recovered."
+const val DEL_CHANGES_BODY_MSG="You may be deleting your changes.\nAfter you delete this, it can't be recovered."
+const val DEL_TITLE_MSG = "Delete cocktail"
+const val DEL_CHANGES_TITLE_MSG = "Delete changes"
+const val EDIT_MODE_KEY = "edit"
+const val UPLOAD_IMG_BOOLEAN_KEY = "boolean_upload_image"
+const val YES = "Yes"
+const val NO = "No"
+const val CLIPART_STORAGE_PATH="cliparts/"
 
 class UserItemLevel1 : AppCompatActivity() {
 
     private var mUploadImgUri: Uri? = null
     private var mIconUri: Uri? = null
     private lateinit var mCategoryChip: ChipGroup
+    private var isEditMode : Boolean= false
 
-    private val YES = "Yes"
-    private val NO = "No"
     private val DIALOG_UPLOAD_MSG = "If you go back now, your uploaded image will be removed."
     private val MAX_LENGTH_COCKTAIL_NAME: Int = 12
     private val COCKTAIL_ERROR_MSG_NAME = "Cocktail name already exist, choose different name."
@@ -67,6 +78,12 @@ class UserItemLevel1 : AppCompatActivity() {
         initToolBar()
         initView()
         closeKeyBoard()
+        isEditMode=intent.getBooleanExtra(EDIT_MODE_KEY, false)
+        if (isEditMode) {
+            initEditMode()
+        } else { //for safe
+            cleanSpUserInput()
+        }
     }
 
     private fun initToolBar() {
@@ -89,6 +106,56 @@ class UserItemLevel1 : AppCompatActivity() {
         showDialogOnBackPress()
     }
 
+    private fun cleanSpUserInput() {
+        (this.applicationContext as Cocktails).mUserInputs.edit().clear().apply()
+    }
+
+    private fun initEditMode() {
+        //set name
+        val name: String? = (this.applicationContext as Cocktails).mUserInputs.getString(COCKTAIL_NAME_KEY, "")
+        if (!name.isNullOrEmpty()) {
+            cocktailNameText.setText(name)
+        }
+
+        setCategoryView()
+        setIconView()
+        setUploadImgView(name)
+    }
+
+    private fun setCategoryView(){
+        val categoryName = (this.applicationContext as Cocktails).mUserInputs.getString(CATEGORY_KEY, "")
+        selectCategoryChipGroup.clearCheck()
+        selectCategoryChipGroup.children.forEach {
+            if (((it as Chip).chipDrawable as ChipDrawable).text == categoryName) {
+                it.isChecked = true
+            }
+        }
+    }
+
+    private fun setIconView(){
+        val icon = (this.applicationContext as Cocktails).mUserInputs.getString(ICON_KEY, null)
+        if (!icon.isNullOrEmpty()) {
+            mIconUri = Uri.parse("$icon.png")
+            displayIcon()
+        }
+    }
+
+    private fun setUploadImgView(name:String?){
+        val c = (this.applicationContext as Cocktails)
+        val uploadImgPath = c.mUserInputs.getString(UPLOAD_IMG_PATH_KEY, null)
+        if (uploadImgPath != null && name != null) {
+            val imgPath = c.getUploadUserImgPath(name)
+            val islandRef = c.mStorageRef.child(imgPath)
+            // Local temp file has been created
+            val localFile = File.createTempFile("images", "jpg")
+            islandRef.getFile(localFile).addOnSuccessListener {
+                mUploadImgUri = Uri.fromFile(localFile)
+                displayUploadImg()
+            }
+        }
+    }
+
+
     @RequiresApi(Build.VERSION_CODES.M)
     private fun initView() {
         cocktailNameInput.counterMaxLength = MAX_LENGTH_COCKTAIL_NAME
@@ -98,12 +165,12 @@ class UserItemLevel1 : AppCompatActivity() {
         initCategory()
         initButtonsListener()
 
-        stepsView.setLabels(arrayOf("", "", ""))
-            .setBarColorIndicator(resources.getColor(R.color.material_blue_grey_800))
-            .setProgressColorIndicator(resources.getColor(R.color.stepBg))
-            .setLabelColorIndicator(resources.getColor(R.color.stepBg))
-            .setCompletedPosition(0)
-            .drawView()
+//        stepsView.setLabels(arrayOf("", "", ""))//todo try again
+//            .setBarColorIndicator(resources.getColor(R.color.material_blue_grey_800))
+//            .setProgressColorIndicator(resources.getColor(R.color.stepBg))
+//            .setLabelColorIndicator(resources.getColor(R.color.stepBg))
+//            .setCompletedPosition(0)
+//            .drawView()
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -136,7 +203,7 @@ class UserItemLevel1 : AppCompatActivity() {
             upload_user_img_TV.rotation = upload_user_img_TV.rotation + 90F
         }
         del_upload_img_Button.setOnClickListener {
-            showDialog()
+            showDelDialog()
         }
         select_icon_Button.setOnClickListener {
             openIconsActivity()
@@ -152,58 +219,16 @@ class UserItemLevel1 : AppCompatActivity() {
         del_upload_img_Button.visibility = visible
     }
 
-    private fun showDialog() {
-        lateinit var dialog: AlertDialog
-        val builder = AlertDialog.Builder(this)
-        builder.setMessage(DIALOG_UPLOAD_MSG)
-        val dialogClickListener = DialogInterface.OnClickListener { _, which ->
-            when (which) {
-                DialogInterface.BUTTON_POSITIVE -> {
-                    upload_user_img_TV.setImageDrawable(null)
-                    setUploadImgButtonState(View.GONE)
-                }
-                //DialogInterface.BUTTON_NEGATIVE ->{}
-            }
-        }
-        builder.setPositiveButton(YES, dialogClickListener)
-        builder.setNegativeButton(NO, dialogClickListener)
 
-        dialog = builder.create()
-        dialog.show()
+
+    private fun getCocktailName(): String {
+        // Get input text
+        return cocktailNameInput.editText?.text.toString().trim()
     }
 
-    private fun checkedLevel1() {
-        //save info
-        val cocktailName = getCocktailName()
-        val categoryChipIdSelected: Int = selectCategoryChipGroup.checkedChipId
 
-        //check all the values filled and correct
-        if (confirmInput(cocktailName, categoryChipIdSelected)) {
-            //start level 2 activity
-            startLevel2(cocktailName, categoryChipIdSelected)
-        }
-    }
-
-    private fun startLevel2(cocktailName: String, categoryChipIdSelected: Int) {
-        val intentLevel2 = Intent(this, UserItemLevel2::class.java)
-        intentLevel2.putExtra(COCKTAIL_NAME_KEY, cocktailName)
-        val selectedChip=selectCategoryChipGroup.findViewById<Chip>(categoryChipIdSelected).text.toString()
-        intentLevel2.putExtra(
-            CATEGORY_KEY, selectedChip)
-        intentLevel2.putExtra(ICON_KEY, mIconUri.toString())
-        var uploadImgStr: String? = null
-        if (mUploadImgUri != null) {
-            uploadImgStr = mUploadImgUri.toString()
-        }
-        intentLevel2.putExtra(UPLOAD_IMG_KEY, uploadImgStr)
-        intentLevel2.putExtra(
-            ROTATE_UPLOAD_IMG_KEY,
-            upload_user_img_TV.rotation
-        )//TODO CHECK INVALID WHEN UPLOAD NOT MUST
-        startActivity(intentLevel2)
-    }
-
-    private fun isCocktailNameExist(userCocktailName: String): Boolean {
+    //###########valitaion##################
+    private fun isCocktailNameExist(cocktailName: String): Boolean {
         /**check if cocktail name exist in app and user cocktail collection
          * return true if the name already exist otherwise return false */
         val jsonString =
@@ -211,11 +236,26 @@ class UserItemLevel1 : AppCompatActivity() {
         val listCocktailType = object : TypeToken<List<Cocktail>>() {}.type
         val items = Gson().fromJson<List<Cocktail>>(jsonString, listCocktailType)
         for (item in items) {
-            if (userCocktailName == item.name) {
+            if (cocktailName == item.name) {
                 return true
             }
         }
-        //todo check if cocktail Name exists in user collection at firebase
+        //check if cocktail Name exists in user collection at firebase
+        return  checkIfNameExistUserCocktail(cocktailName)
+    }
+
+    fun checkIfNameExistUserCocktail(cocktailName:String):Boolean{
+        for(cocktail in (this.applicationContext as Cocktails).mUserCocktailsList){
+            if(cocktail.name==cocktailName){
+                if(isEditMode){
+                    val name: String? = (this.applicationContext as Cocktails).mUserInputs.getString(COCKTAIL_NAME_KEY, "")
+                    if (!name.isNullOrEmpty() && cocktail.name==name) {
+                        continue
+                    }
+                }
+                return true
+            }
+        }
         return false
     }
 
@@ -256,7 +296,6 @@ class UserItemLevel1 : AppCompatActivity() {
 
     }
 
-
     private fun confirmInput(cocktailName: String?, chipId: Int): Boolean {
         /** return true if all the inputs is valid */
         val validName: Boolean = validateCocktailName(cocktailName)
@@ -268,9 +307,10 @@ class UserItemLevel1 : AppCompatActivity() {
         return false
     }
 
-    private fun displayIcon(iconUri: Uri) {
+    //#######diaplay images##############
+    private fun displayIcon() {
         val applicationContext = (this.applicationContext as Cocktails)
-        val ref = applicationContext.mStorageRef.child("cliparts/" + mIconUri)
+        val ref = applicationContext.mStorageRef.child(CLIPART_STORAGE_PATH + mIconUri)
         ref.downloadUrl.addOnSuccessListener {
             Glide.with(applicationContext)
                 .load(it)
@@ -281,9 +321,48 @@ class UserItemLevel1 : AppCompatActivity() {
         selected_icon_IV.visibility = View.VISIBLE
     }
 
-    private fun displayUploadImg(img: Uri) {
+    private fun displayUploadImg() {
         Picasso.with(this).load(mUploadImgUri).into(upload_user_img_TV)
         setUploadImgButtonState(View.VISIBLE)
+    }
+
+    //#############Activity###################
+    private fun checkedLevel1() {
+        //save info
+        val cocktailName = getCocktailName()
+        val categoryChipIdSelected: Int = selectCategoryChipGroup.checkedChipId
+
+        //check all the values filled and correct
+        if (confirmInput(cocktailName, categoryChipIdSelected)) {
+            //start level 2 activity
+            startLevel2(cocktailName, categoryChipIdSelected)
+        }
+    }
+
+    private fun startLevel2(cocktailName: String, categoryChipIdSelected: Int) {
+        val intentLevel2 = Intent(this, UserItemLevel2::class.java)
+        val selectedChip =
+            selectCategoryChipGroup.findViewById<Chip>(categoryChipIdSelected).text.toString()
+        val c = (this.applicationContext as Cocktails)
+        c.mUserInputs.edit().putString(COCKTAIL_NAME_KEY, cocktailName).putString(
+            CATEGORY_KEY,
+            selectedChip
+        )
+            .putString(ICON_KEY, mIconUri.toString()).apply()
+        if (mUploadImgUri != null) {
+            c.mUserInputs.edit().putString(UPLOAD_IMG_KEY, mUploadImgUri.toString()).putFloat(
+                ROTATE_UPLOAD_IMG_KEY, upload_user_img_TV.rotation
+            ).apply()
+        } else {
+            val isUploadImg = c.mUserInputs.getBoolean(UPLOAD_IMG_BOOLEAN_KEY, false)
+            if (isUploadImg) {
+                c.mUserInputs.edit().putFloat(ROTATE_UPLOAD_IMG_KEY, upload_user_img_TV.rotation
+                ).apply() }
+        }
+        if (isEditMode) {
+            intentLevel2.putExtra(EDIT_MODE_KEY, isEditMode)
+        }
+        startActivity(intentLevel2)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -293,10 +372,10 @@ class UserItemLevel1 : AppCompatActivity() {
         ) {
             if (requestCode == REQUEST_CODE_UPLOAD_IMG) {
                 mUploadImgUri = data.data!!
-                displayUploadImg(mUploadImgUri!!)
+                displayUploadImg()
             } else {
                 mIconUri = data.data!!
-                displayIcon(mIconUri!!)
+                displayIcon()
             }
         } else {
             if (requestCode == REQUEST_CODE_UPLOAD_IMG) {
@@ -313,13 +392,41 @@ class UserItemLevel1 : AppCompatActivity() {
         startActivityForResult(intent, REQUEST_CODE_ICONS)
     }
 
-    private fun showDialogOnBackPress() {
+    //##################Dialogs########################
+    private fun showDelDialog() {
         lateinit var dialog: AlertDialog
         val builder = AlertDialog.Builder(this)
-        builder.setMessage(DEL_BODY_MSG)
+        builder.setMessage(DIALOG_UPLOAD_MSG)
         val dialogClickListener = DialogInterface.OnClickListener { _, which ->
             when (which) {
                 DialogInterface.BUTTON_POSITIVE -> {
+                    mUploadImgUri=null
+                    upload_user_img_TV.setImageDrawable(null)
+                    setUploadImgButtonState(View.GONE)
+                }
+                //DialogInterface.BUTTON_NEGATIVE ->{}
+            }
+        }
+        builder.setPositiveButton(YES, dialogClickListener)
+        builder.setNegativeButton(NO, dialogClickListener)
+
+        dialog = builder.create()
+        dialog.show()
+    }
+
+    private fun showDialogOnBackPress() {
+        lateinit var dialog: AlertDialog
+        val builder = AlertDialog.Builder(this)
+        if(isEditMode){
+            builder.setMessage(DEL_CHANGES_BODY_MSG)
+        }
+        else {
+            builder.setMessage(DEL_BODY_MSG)
+        }
+        val dialogClickListener = DialogInterface.OnClickListener { _, which ->
+            when (which) {
+                DialogInterface.BUTTON_POSITIVE -> {
+                    (this.applicationContext as Cocktails).mUserInputs.edit().clear().apply()
                     finish()
                 }
                 //DialogInterface.BUTTON_NEGATIVE ->{}
@@ -330,16 +437,13 @@ class UserItemLevel1 : AppCompatActivity() {
         builder.setNegativeButton("Cancel", dialogClickListener)
         dialog = builder.create()
         dialog.setIcon(R.drawable.ic_warning_30)
-        dialog.setTitle(DEL_TITLE_MSG)
+        if(isEditMode){
+            dialog.setTitle(DEL_CHANGES_TITLE_MSG)
+        }else{dialog.setTitle(DEL_TITLE_MSG)}
         dialog.show()
     }
 
-    private fun getCocktailName(): String {
-        // Get input text
-        //todo trim
-        return cocktailNameInput.editText?.text.toString().trim()
-    }
-
+    //###keyBoard#######
     private fun closeKeyBoard() {
         val view = this.currentFocus
         if (view != null) {
@@ -365,6 +469,7 @@ class UserItemLevel1 : AppCompatActivity() {
         return super.dispatchTouchEvent(event)
     }
 
+    //###############Permission##################
     private fun checkReadExternalStoragePermission() {
         if (checkManifestReadExternalStoragePermission()) {
             val intent = Intent()
@@ -372,7 +477,7 @@ class UserItemLevel1 : AppCompatActivity() {
             intent.action = Intent.ACTION_GET_CONTENT
             startActivityForResult(intent, REQUEST_CODE_UPLOAD_IMG)
         } else {
-            requestLocationPermissions()
+            requestReadExternalStoragePermissions()
         }
     }
 
@@ -383,7 +488,7 @@ class UserItemLevel1 : AppCompatActivity() {
         ) == PackageManager.PERMISSION_GRANTED
     }
 
-    private fun requestLocationPermissions() {
+    private fun requestReadExternalStoragePermissions() {
         ActivityCompat.requestPermissions(
             this,
             arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), PERMISSION_EXTERNAL_STORAGE_ID

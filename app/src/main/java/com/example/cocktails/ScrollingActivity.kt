@@ -26,6 +26,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
+import com.example.cocktails.CustomItem.IngredientItem
 import com.example.cocktails.CustomItem.UserItemLevel1
 import com.example.cocktails.R.*
 import com.google.android.material.chip.Chip
@@ -44,8 +45,8 @@ import ru.nikartm.support.ImageBadgeView
 data class Cocktail(
     val name: String = "", val type: String = "", val steps: ArrayList<String> = ArrayList(),
     val ingredients: ArrayList<String> = ArrayList(), val clipart: String = "", val image: String? = null,
-    val isCustom: Boolean = false, val glass: String? = null, val isReview: Boolean = false,
-    val rotation: Float = 0F) : Parcelable
+    val customIs: Boolean = false, val glass: String? = null, val reviewIs: Boolean = false,
+    val rotation: Float = 0F,val ingredientItemsJsonList: String="",val stepsItemsJsonList: String="") : Parcelable
 
 class ScrollingActivity : AppCompatActivity() {
 
@@ -113,6 +114,7 @@ class ScrollingActivity : AppCompatActivity() {
         val jsonString = applicationContext.assets.open("predefined.json").bufferedReader().use { it.readText() }
         val listCocktailType = object : TypeToken<List<Cocktail>>() {}.type
         val items: ArrayList<Cocktail> = Gson().fromJson<ArrayList<Cocktail>>(jsonString, listCocktailType)
+//        (applicationContext as Cocktails).loadUserCocktailData()
         items.addAll((applicationContext as Cocktails).mUserCocktailsList)
 
         gridViewAdapter = CocktailItemAdapter(this, items)

@@ -77,15 +77,11 @@ class SelectUnit : AppCompatActivity() {
             val radioButtonView = RadioButton(this, null, R.attr.radioButtonStyle)
             radioButtonView.text = mUnitList[i]
             radioButtonView.setCircleColor(Color.parseColor("#1974D2"))
-//            if (radioButtonView.text == resources.getString(R.string.defaultUnit) ) {
-//                radioButtonView.text = radioButtonView.text as String + " (default) "
-//            }
             if(radioButtonView.text ==curVal){
                 radioButtonView.isChecked=true
             }
             radioButtonView.id = i
             mRadioGroup.addView(radioButtonView)
-            //todo set on click callback
         }
     }
 

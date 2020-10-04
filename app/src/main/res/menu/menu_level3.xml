@@ -5,5 +5,6 @@
         android:id="@+id/create_button_menu"
         android:title="@string/create"
         android:layout_gravity="right"
+        android:fontFamily="@font/raleway_light"
         app:showAsAction="always"/>
 </menu>

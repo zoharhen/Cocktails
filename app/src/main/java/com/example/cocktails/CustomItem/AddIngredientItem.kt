@@ -20,14 +20,14 @@ import kotlinx.android.synthetic.main.activity_add_ingredient_item.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-val ROW_NUM_KEY="row_num"
-val UNIT_KEY = "quantity"
-val INGREDIENT_KEY = "ingredient"
-val QUANTITY_KEY = "unit"
-val CURRENT_UNIT_KEY="current_unit_key"
-val CURRENT_INGREDIENT_KEY="current_ingredient_key"
-val CURRENT_QUANTITY_KEY="current_quantity_key"
-val CURRENT_ROW_NUM_KEY="current_row_num_key"
+const val ROW_NUM_KEY="row_num"
+const val UNIT_KEY = "quantity"
+const val INGREDIENT_KEY = "ingredient"
+const val QUANTITY_KEY = "unit"
+const val CURRENT_UNIT_KEY="current_unit_key"
+const val CURRENT_INGREDIENT_KEY="current_ingredient_key"
+const val CURRENT_QUANTITY_KEY="current_quantity_key"
+const val CURRENT_ROW_NUM_KEY="current_row_num_key"
 
 data class IngredientItem(val quantity: String, val unit: String, val ingredient: String,
                     var ingredientNum: Int){
@@ -40,15 +40,10 @@ class AddIngredientItem : AppCompatActivity() {
     private lateinit var mUnit: TextView
     private lateinit var mQuantity: TextInputLayout
     private lateinit var mIngredient: TextView
-    private lateinit var mIngredientNew: TextInputLayout
-    private lateinit var mIngredientList: ArrayList<String>
     private var mRowNum =-1
-    val ERROR_MSG_EMPTY_INGREDIENT= "Choose ingredient"
-    val ERROR_MSG_EMPTY_UNIT="Choose quantity"
     val ERROR_MSG_QUANTITY = "Enter numbers only"
     private val REQUEST_CODE_UNIT=2
     private val REQUEST_CODE_INGREDIENT=3
-    private val TITLE_ACTIVITY="INGREDIENTS"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -159,7 +154,6 @@ class AddIngredientItem : AppCompatActivity() {
 
     private fun getQuantity(): String {
         // Get input text
-        //todo trim
         return mQuantity.editText?.text.toString().trim()
     }
 
