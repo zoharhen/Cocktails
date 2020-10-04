@@ -1,0 +1,8 @@
+# Cocktails project
+
+Team members:
+Zohar Hen, ID 206092991, Email: zohar.hen@mail.huji.ac.il
+Enav Hasson, ID 315006650, Email: enav.hasson@mail.huji.ac.il
+Shahaf Hermann, ID 308156983, Email: shahaf.hermann@mail.huji.ac.il
+
+App Version:
