@@ -33,11 +33,9 @@ class CocktailIconLevel1 : AppCompatActivity(),ImageAdapter.ItemClickListener {
 
         val layoutManager = FlexboxLayoutManager()
         layoutManager.flexWrap = FlexWrap.WRAP
-
         mRecyclerView.layoutManager = layoutManager
         layoutManager.alignItems = AlignItems.BASELINE;
         layoutManager.justifyContent = JustifyContent.CENTER;
-//        mRecyclerView.layoutManager=GridLayoutManager(this, 3)
         mIcons = ArrayList()
 
         mDataRef = (this.applicationContext as Cocktails).mStorageRef
@@ -84,7 +82,6 @@ class CocktailIconLevel1 : AppCompatActivity(),ImageAdapter.ItemClickListener {
     }
 
     override fun onItemClicked(position: Int) {
-//        Toast.makeText(this, "Cell clicked", Toast.LENGTH_SHORT).show()//todo remove?
         val imgUrl:String=mIcons[position].name
         returnImgResult(imgUrl)
     }

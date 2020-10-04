@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/lightColorBg"
     tools:context="com.example.cocktails.CustomItem.UserItemLevel3">
 
     <LinearLayout
@@ -14,11 +15,60 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints">
-
-        <com.anton46.stepsview.StepsView
-            android:id="@+id/stepsView"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_user3"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:id="@+id/levels"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingVertical="20dp"
+                android:layout_gravity="center"
+                tools:ignore="MissingConstraints">
+
+                <TextView
+                    android:id="@+id/tv_level_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_done_circle_level"
+                    android:fontFamily="@font/paytone_one"
+                    android:gravity="center"
+                    android:textColor="#000000" />
+
+                <View
+                    android:layout_width="90dp"
+                    android:layout_height="2dp"
+                    android:layout_gravity="center"
+                    android:background="@color/material_blue_grey_800" />
+
+                <TextView
+                    android:id="@+id/tv_level_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_done_circle_level"
+                    android:gravity="center"
+                    android:fontFamily="@font/paytone_one"
+                    android:textColor="#000000" />
+
+                <View
+                    android:layout_width="90dp"
+                    android:layout_height="2dp"
+                    android:layout_gravity="center"
+                    android:background="@color/material_blue_grey_800" />
+
+                <TextView
+                    android:id="@+id/tv_level_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:background="@drawable/ic_cur_circle_level"
+                    android:fontFamily="@font/paytone_one"
+                    android:textColor="#000000" />
+
+            </LinearLayout>
+
+        </androidx.appcompat.widget.Toolbar>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -30,6 +80,7 @@
                 android:id="@+id/preview_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/raleway_light"
                 android:text="preview" />
 
         </LinearLayout>

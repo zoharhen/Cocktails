@@ -38,7 +38,7 @@ class ImageAdapter internal constructor(
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
         val curIcon: IconItem = mIcons[position]
         val applicationContext = (mContext.applicationContext as Cocktails)
-        val ref = applicationContext.mStorageRef.child("cliparts/" + curIcon.name)
+        val ref = applicationContext.mStorageRef.child(CLIPART_STORAGE_PATH + curIcon.name)
         ref.downloadUrl.addOnSuccessListener {
             Glide.with(applicationContext)
                 .load(it)

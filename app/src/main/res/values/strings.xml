@@ -40,6 +40,13 @@
     <string name="ingredient_user">Ingredient</string>
     <string name="defaultUnit">oz</string>
     <string name="create">Create</string>
+    <string name="example_step">Fill a Collins glass with ice</string>
+    <string name="example">"example "</string>
+    <string name="example_quantity">123</string>
+    <string name="example_unit">oz</string>
+    <string name="example_ingredient">Vodka</string>
+    <string name="error_ingredients_msg">* Please insert at least one ingredient</string>
+    <string name="error_step_msg">* Please insert at least one step</string>
     <string-array name="cocktailTypes_array">
         <item>Bourbon</item>
         <item>Brandy</item>

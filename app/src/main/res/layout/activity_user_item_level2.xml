@@ -14,11 +14,65 @@
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
-
-        <com.anton46.stepsview.StepsView
-            android:id="@+id/stepsView"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_user2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:id="@+id/levels"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingVertical="20dp"
+                android:layout_gravity="center"
+                tools:ignore="MissingConstraints">
+
+                <TextView
+                    android:id="@+id/tv_level_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_done_circle_level"
+                    android:fontFamily="@font/paytone_one"
+                    android:gravity="center"
+                    android:textColor="#000000" />
+
+                <View
+                    android:layout_width="90dp"
+                    android:layout_height="2dp"
+                    android:layout_gravity="center"
+                    android:background="@color/material_blue_grey_800" />
+
+                <TextView
+                    android:id="@+id/tv_level_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_cur_circle_level"
+                    android:gravity="center"
+                    android:fontFamily="@font/paytone_one"
+                    android:textColor="#000000" />
+
+                <View
+                    android:layout_width="90dp"
+                    android:layout_height="2dp"
+                    android:layout_gravity="center"
+                    android:background="@color/material_blue_grey_800" />
+
+                <TextView
+                    android:id="@+id/tv_level_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:background="@drawable/ic_circle_level"
+                    android:fontFamily="@font/paytone_one"
+                    android:textColor="#000000" />
+
+            </LinearLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -116,7 +170,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="example"
+                    android:text="@string/example"
                     android:textAlignment="center"
                     android:textAppearance="@style/TableContentText" />
 
@@ -124,7 +178,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="1"
+                    android:text="@string/example_quantity"
                     android:textAlignment="center"
                     android:textAppearance="@style/TableContentText" />
 
@@ -132,7 +186,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="oz"
+                    android:text="@string/example_unit"
                     android:textAlignment="center"
                     android:textAppearance="@style/TableContentText" />
 
@@ -140,28 +194,36 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Vodka"
+                    android:text="@string/example_ingredient"
                     android:textAppearance="@style/TableContentText" />
             </TableRow>
 
-            <TextView
-                android:id="@+id/ingredients_level2_error"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:fontFamily="@font/raleway_light"
-                android:textSize="13sp"
-                android:text="* Please insert at least one ingredient"
-                android:textColor="@color/errorColor"
-                android:visibility="gone"/>
-
         </TableLayout>
+
+        <TextView
+            android:id="@+id/ingredients_level2_error"
+            android:paddingTop="@dimen/space16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:fontFamily="@font/raleway_light"
+            android:textSize="13sp"
+            android:text="@string/error_ingredients_msg"
+            android:textColor="@color/errorColor"
+            android:visibility="gone"/>
+
+    </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="15dp"
             android:background="@color/colorRipple" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -240,7 +302,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="example "
+                    android:text="@string/example"
                     android:textAlignment="center"
                     android:textAppearance="@style/TableContentText" />
 
@@ -250,22 +312,24 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:textAlignment="center"
-                    android:text="Fill a Collins glass with ice"
+                    android:text="@string/example_step"
                     android:textAppearance="@style/TableContentText" />
             </TableRow>
 
-            <TextView
-                android:id="@+id/preparation_error"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:fontFamily="@font/raleway_light"
-                android:textSize="13sp"
-                android:text="* Please insert at least one step"
-                android:textColor="@color/errorColor"
-                android:visibility="gone"/>
-
         </TableLayout>
+
+        <TextView
+            android:id="@+id/preparation_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:fontFamily="@font/raleway_light"
+            android:textSize="13sp"
+            android:text="@string/error_step_msg"
+            android:textColor="@color/errorColor"
+            android:visibility="gone"/>
+
+    </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

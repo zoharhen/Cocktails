@@ -1,10 +1,8 @@
 package com.example.cocktails
 
-import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -22,6 +20,7 @@ class Cocktails : Application() {
     private val TYPE_FILTERS = "TYPEFILTERS"
     private val FAVORITES = "FAVORITES"
     private val FIRST_TIME_MODE = "FIRSTMODE"
+    private val USER_INPUT = "USER_INPUT"
 
     // shared data
     lateinit var mFAuth: FirebaseAuth
@@ -31,9 +30,9 @@ class Cocktails : Application() {
     lateinit var mStorageRef: StorageReference
     lateinit var mFirstTimeModeSP: SharedPreferences
     private var mUserId: String = ""
-    //    private var mUserId: String= "enavDebug"//todo remove only for debug
     var mUserCocktailsList = ArrayList<Cocktail>()
     lateinit var mCocktailsRef: CollectionReference
+    lateinit var mUserInputs:SharedPreferences
 
     override fun onCreate() {
         super.onCreate()
@@ -43,11 +42,15 @@ class Cocktails : Application() {
         mActiveTypeFilters = this.getSharedPreferences(TYPE_FILTERS, Context.MODE_PRIVATE)
         mStorageRef = FirebaseStorage.getInstance().reference
         mFirstTimeModeSP = this.getSharedPreferences(FIRST_TIME_MODE, Context.MODE_PRIVATE)
+        mUserInputs=this.getSharedPreferences(USER_INPUT,Context.MODE_PRIVATE)
 
         if(mUserId.isEmpty()){
             val userId= mFirstTimeModeSP.getString(USER_ID_KEY_SP,"")
             if (userId.isNullOrEmpty()){
                 mUserId = java.util.UUID.randomUUID().toString()
+                while (checkIfUserIdAlreadyExist(mUserId)){
+                    mUserId = java.util.UUID.randomUUID().toString()
+                }
                 mFirstTimeModeSP.edit().putString(USER_ID_KEY_SP, mUserId).apply()
             }
             else{
@@ -57,14 +60,14 @@ class Cocktails : Application() {
         mCocktailsRef = FirebaseFirestore.getInstance().collection(COLLECTION_PATH).document(mUserId).collection(
             SUB_COLLECTION_PATH
         )
-        loadUserCocktailData()//todo check
+        loadUserCocktailData()
     }
 
     fun getUploadUserImgPath(imageName: String):String{
         return "usersImages/$mUserId/$imageName.jpg"
     }
 
-    private fun loadUserCocktailData() { //todo check fun
+    private fun loadUserCocktailData() {
         mUserCocktailsList.clear()
         val asyncGetCustomCocktails = mCocktailsRef.get()
         asyncGetCustomCocktails.addOnCompleteListener { task ->
@@ -81,6 +84,21 @@ class Cocktails : Application() {
 
     fun removeUserCocktail(delCocktail:Cocktail){
         mUserCocktailsList.remove(delCocktail)
+    }
+
+
+    private fun checkIfUserIdAlreadyExist(idUser:String):Boolean{ //todo check again
+        var isExist=false
+        val userIdRef= FirebaseFirestore.getInstance().collection(COLLECTION_PATH)
+        userIdRef.get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    if(document.id==idUser) {
+                        isExist = true
+                    }
+                }
+            }
+        return isExist
     }
 
 }

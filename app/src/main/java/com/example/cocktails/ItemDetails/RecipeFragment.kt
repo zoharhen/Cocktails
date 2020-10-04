@@ -31,8 +31,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.blankj.utilcode.util.UriUtils.file2Uri
 import com.bumptech.glide.Glide
 import com.example.cocktails.*
-import com.example.cocktails.CustomItem.DEL_BODY_MSG
-import com.example.cocktails.CustomItem.DEL_TITLE_MSG
+import com.example.cocktails.CustomItem.*
+import com.google.gson.Gson
 import com.ldoublem.loadingviewlib.view.LVCircularRing
 import developer.shivam.crescento.CrescentoImageView
 import github.nisrulz.screenshott.ScreenShott
@@ -149,7 +149,7 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
             displayImg(path)
             return
         }
-        if (cocktail.isReview) {
+        if (cocktail.reviewIs) {
             val uploadImgUri = Uri.parse(cocktail.image)
             val bitmapUploadImg = getUploadUriToBitmap(cocktail.rotation, uploadImgUri)
             rootView.findViewById<CrescentoImageView>(R.id.iv_cocktail)
@@ -157,7 +157,7 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
             return
         }
         var imgPath = "images/" + cocktail.image + ".jpg"
-        if (cocktail.isCustom) {
+        if (cocktail.customIs) {
             imgPath = cnt.getUploadUserImgPath(cocktail.name)
         }
         displayImg(imgPath)
@@ -214,7 +214,7 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
     }
 
     private fun initCustomCocktailButtons() {
-        if (cocktail.isCustom) {
+        if (cocktail.customIs) {
             rootView.findViewById<ImageButton>(R.id.editAction).visibility = ImageButton.VISIBLE
             rootView.findViewById<ImageButton>(R.id.deleteAction).visibility = ImageButton.VISIBLE
             rootView.findViewById<View>(R.id.editActionSeparator).visibility = View.VISIBLE
@@ -227,10 +227,10 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
             rootView.findViewById<ImageButton>(R.id.share).setPadding(22, 0, 22, 0)
         }
 
-        //        this.initEditButton() TODO
+        this.initEditButton()
         this.initDelButton()
 
-        if (cocktail.isReview) {
+        if (cocktail.reviewIs) {
             val editAction = rootView.findViewById<ImageButton>(R.id.editAction)
             val delAction = rootView.findViewById<ImageButton>(R.id.deleteAction)
             editAction.isEnabled = false
@@ -318,10 +318,25 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
     }
 
     private fun initEditButton() {
-        TODO()
+        val editButton= rootView.findViewById<ImageButton>(R.id.editAction)
+        editButton.setOnClickListener {
+            val cnt = (activity?.applicationContext as Cocktails)
+            cnt.mUserInputs.edit().clear().apply()//for safe
+            cnt.mUserInputs.edit().putString(COCKTAIL_NAME_KEY,cocktail.name).putString(CATEGORY_KEY,cocktail.type)
+                .putString(ICON_KEY,cocktail.clipart).apply()
+            cnt.mUserInputs.edit().putString(INGREDIENT_LIST_JSON_STR_KEY,cocktail.ingredientItemsJsonList).apply()
+            cnt.mUserInputs.edit().putString(PREPARATION_LIST_JSON_STR_KEY,cocktail.stepsItemsJsonList).apply()
+            if (cocktail.image != null) {
+                val imgPath = cnt.getUploadUserImgPath(cocktail.name)
+                cnt.mUserInputs.edit().putString(UPLOAD_IMG_PATH_KEY,imgPath).putFloat(
+                    ROTATE_UPLOAD_IMG_KEY,cocktail.rotation).apply()
+            }
+            val intent=Intent(activity?.applicationContext,UserItemLevel1::class.java)
+            intent.putExtra(EDIT_MODE_KEY,true)
+            startActivity(intent)
+        }
     }
 
-    @SuppressLint("LogNotTimber") //todo check
     private fun initDelButton() {
         val delButton = rootView.findViewById<ImageButton>(R.id.deleteAction)
         delButton.setOnClickListener {
@@ -365,7 +380,7 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
                     "OnFailure: Cocktail Name: ${cocktail.name}"
                 );
             }
-        cnt.removeUserCocktail(cocktail)//todo check
+        cnt.removeUserCocktail(cocktail)
     }
 
     private fun showDelCocktailDialog() {
@@ -379,7 +394,7 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
                     val intent = Intent(
                         activity?.applicationContext,
                         ScrollingActivity::class.java
-                    )//todo check
+                    )
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     startActivity(intent)
                 }
