@@ -10,6 +10,7 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Matrix
+import android.graphics.Typeface
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Build
@@ -24,6 +25,7 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,7 +34,6 @@ import com.blankj.utilcode.util.UriUtils.file2Uri
 import com.bumptech.glide.Glide
 import com.example.cocktails.*
 import com.example.cocktails.CustomItem.*
-import com.google.gson.Gson
 import com.ldoublem.loadingviewlib.view.LVCircularRing
 import developer.shivam.crescento.CrescentoImageView
 import github.nisrulz.screenshott.ScreenShott
@@ -402,10 +403,16 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
         }
         builder.setPositiveButton("Delete", dialogClickListener)
         builder.setNegativeButton("Cancel", dialogClickListener)
+
         dialog = builder.create()
         dialog.setIcon(R.drawable.ic_warning_30)
         dialog.setTitle(DEL_TITLE_MSG)
         dialog.show()
+        val font: Typeface? = context?.let { ResourcesCompat.getFont(it, R.font.raleway_semibold) }
+        val fontBody: Typeface? = context?.let { ResourcesCompat.getFont(it, R.font.raleway_regular) }
+        dialog.findViewById<TextView>(android.R.id.message).typeface = fontBody
+        dialog.findViewById<Button>(android.R.id.button1).typeface = font
+        dialog.findViewById<Button>(android.R.id.button2).typeface = font
     }
 
     private fun initPreparationSection() {

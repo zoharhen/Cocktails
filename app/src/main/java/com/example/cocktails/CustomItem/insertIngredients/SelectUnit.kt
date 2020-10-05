@@ -59,16 +59,6 @@ class SelectUnit : AppCompatActivity() {
         return true
     }
 
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        when (item.itemId) {
-//            android.R.id.home -> {
-//                onBackPressed()
-//                return true
-//            }
-//        }
-//        return super.onOptionsItemSelected(item)
-//    }
-
     @SuppressLint("SetTextI18n")
     private fun createRadioButtons(curVal: String) {
         mRadioGroup = findViewById(R.id.unit_radio_group)

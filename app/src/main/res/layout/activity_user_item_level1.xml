@@ -40,7 +40,7 @@
 
                 <View
                     android:layout_width="90dp"
-                    android:layout_height="2dp"
+                    android:layout_height="4dp"
                     android:layout_gravity="center"
                     android:background="@color/material_blue_grey_800" />
 
@@ -55,7 +55,7 @@
 
                 <View
                     android:layout_width="90dp"
-                    android:layout_height="2dp"
+                    android:layout_height="4dp"
                     android:layout_gravity="center"
                     android:background="@color/material_blue_grey_800" />
 
@@ -84,10 +84,9 @@
                 android:layout_marginBottom="8dp"
                 android:text="@string/cocktail_name"
                 android:textStyle="bold"
-                android:fontFamily="@font/raleway_light"
+                android:fontFamily="@font/raleway_semibold"
                 android:textAppearance="@style/Regular"
-                android:textColor="@color/colorPrimaryDark"
-                android:textColorHighlight="#451010" />
+                android:textColor="@color/colorPrimaryDark"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/cocktailNameInput"
@@ -129,7 +128,7 @@
                 android:layout_marginBottom="8dp"
                 android:text="@string/category"
                 android:textStyle="bold"
-                android:fontFamily="@font/raleway_light"
+                android:fontFamily="@font/raleway_semibold"
                 android:textAppearance="@style/Regular"
                 android:textColor="@color/colorPrimaryDark" />
 
@@ -174,7 +173,7 @@
                 android:layout_marginBottom="8dp"
                 android:text="@string/icon"
                 android:textStyle="bold"
-                android:fontFamily="@font/raleway_light"
+                android:fontFamily="@font/raleway_semibold"
                 android:textAppearance="@style/Regular"
                 android:textColor="@color/colorPrimaryDark" />
 
@@ -196,6 +195,7 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/colorPrimaryDark"
                 android:fontFamily="@font/raleway_light"
+                android:textStyle="bold"
                 android:text="@string/select" />
 
         </LinearLayout>
@@ -229,7 +229,7 @@
                 android:text="@string/cocktail_image"
                 android:textStyle="bold"
                 android:layout_weight="1"
-                android:fontFamily="@font/raleway_light"
+                android:fontFamily="@font/raleway_semibold"
                 android:textAppearance="@style/Regular"
                 android:textColor="@color/colorPrimaryDark" />
 
@@ -264,6 +264,7 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/colorPrimaryDark"
                 android:fontFamily="@font/raleway_light"
+                android:textStyle="bold"
                 android:text="@string/rotate_view" />
 
             <View
@@ -276,6 +277,7 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/colorPrimaryDark"
                 android:fontFamily="@font/raleway_light"
+                android:textStyle="bold"
                 android:text="@string/delete" />
         </LinearLayout>
 

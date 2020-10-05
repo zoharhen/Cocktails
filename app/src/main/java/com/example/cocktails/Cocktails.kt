@@ -3,16 +3,19 @@ package com.example.cocktails
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import com.example.cocktails.CustomItem.insertIngredients.SelectIngredient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.google.gson.Gson
 
 
 const val COLLECTION_PATH = "user_cocktails"
 const val SUB_COLLECTION_PATH = "cocktails"
 const val USER_ID_KEY_SP="user_id"
+const val USER_INGREDIENTS_LIST_KEY_SP="user_ingredients_list"
 
 class Cocktails : Application() {
 
@@ -87,7 +90,7 @@ class Cocktails : Application() {
     }
 
 
-    private fun checkIfUserIdAlreadyExist(idUser:String):Boolean{ //todo check again
+    private fun checkIfUserIdAlreadyExist(idUser:String):Boolean{
         var isExist=false
         val userIdRef= FirebaseFirestore.getInstance().collection(COLLECTION_PATH)
         userIdRef.get()
@@ -99,6 +102,14 @@ class Cocktails : Application() {
                 }
             }
         return isExist
+    }
+
+    fun getUserSpIngredients(): List<String> {
+        val jsonSpIngredients=mFirstTimeModeSP.getString(USER_INGREDIENTS_LIST_KEY_SP,"")
+        if(!jsonSpIngredients.isNullOrEmpty()){
+            return Gson().fromJson(jsonSpIngredients,Array<String>::class.java).asList()
+        }
+        return emptyList()
     }
 
 }

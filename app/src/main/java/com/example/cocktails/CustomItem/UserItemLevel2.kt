@@ -6,21 +6,22 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
 import android.text.InputType
+import android.util.TypedValue
 import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.widget.TextViewCompat
+import androidx.core.content.res.ResourcesCompat
 import com.example.cocktails.Cocktails
 import com.example.cocktails.R
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-//import kotlinx.android.synthetic.main.activity_user_item_level1.stepsView
 import kotlinx.android.synthetic.main.activity_user_item_level2.*
 
 
@@ -47,7 +48,6 @@ class UserItemLevel2 : AppCompatActivity() {
         setContentView(R.layout.activity_user_item_level2)
 
         initToolBar()
-//        initView() //todo try again
         initButtons()
         initIngredientsTable()
         initPreparationTable()
@@ -100,15 +100,6 @@ class UserItemLevel2 : AppCompatActivity() {
 
     }
 
-//    private fun initView() { //todo try again
-////        stepsView.setLabels(arrayOf("", "", ""))
-////            .setBarColorIndicator(resources.getColor(R.color.material_blue_grey_800))
-////            .setProgressColorIndicator(resources.getColor(R.color.stepBg))
-////            .setLabelColorIndicator(resources.getColor(R.color.stepBg))
-////            .setCompletedPosition(1)
-////            .drawView()
-//    }
-
     private fun initButtons(){
         findViewById<ImageButton>(R.id.nextButton).setOnClickListener {
             if (checkedValidationLevel2()) {
@@ -140,7 +131,6 @@ class UserItemLevel2 : AppCompatActivity() {
         ingredientsValList = ArrayList()
         ingredientTableRow = findViewById(R.id.example_ingredient_table_row)
 
-        //todo check for correct Stretch
         ingredient_table.setColumnStretchable(0, true)
         ingredient_table.setColumnStretchable(1, true)
         ingredient_table.setColumnStretchable(2, true)
@@ -178,19 +168,19 @@ class UserItemLevel2 : AppCompatActivity() {
         }
         scrNumRow.text = (rowNum + 1).toString()
         scrNumRow.gravity = Gravity.CENTER
-        scrNumRow.setTextAppearance(this, R.style.TableContentText)
+        setTableContentTextStyle(scrNumRow)
 
         scrQuantity.text = quantityVal
         scrQuantity.gravity = Gravity.CENTER
-        TextViewCompat.setTextAppearance(scrQuantity, R.style.TableContentText)
+        setTableContentTextStyle(scrQuantity)
 
         scrUnit.text = unitVal
         scrUnit.gravity = Gravity.CENTER
-        scrUnit.setTextAppearance(R.style.TableContentText)
+        setTableContentTextStyle(scrUnit)
 
         scrIngredient.text = ingredientVal
         scrIngredient.gravity = Gravity.CENTER
-        scrIngredient.setTextAppearance(R.style.TableContentText)
+        setTableContentTextStyle(scrIngredient)
 
         val params = TableRow.LayoutParams(
             TableRow.LayoutParams.WRAP_CONTENT,
@@ -227,7 +217,7 @@ class UserItemLevel2 : AppCompatActivity() {
             ingredient_table.removeView(ingredient_table.getChildAt(ingredient_table.childCount - 1))
 
         for (i in 0 until ingredientsValList.size) {
-            ingredientsValList[i].ingredientNum = i //todo check
+            ingredientsValList[i].ingredientNum = i
             addNewIngredientRow(
                 ingredientsValList[i].quantity,
                 ingredientsValList[i].unit,
@@ -281,6 +271,7 @@ class UserItemLevel2 : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("ResourceAsColor")
     @RequiresApi(Build.VERSION_CODES.M)
     private fun addNewStepRow(stepInput: String, isNewStepItem: Boolean, stepNum: Int? = null) {
         preparationTableRow = TableRow(this)
@@ -291,13 +282,12 @@ class UserItemLevel2 : AppCompatActivity() {
         if (stepNum != null) {
             rowNum = stepNum
         }
-
         scrNumRow.text = (rowNum + 1).toString()
-        scrNumRow.gravity = Gravity.CENTER
-        scrNumRow.setTextAppearance(R.style.TableContentText)
+        scrNumRow.gravity= Gravity.CENTER
+        setTableContentTextStyle(scrNumRow)
 
         scrStep.text = stepInput
-        scrStep.setTextAppearance(R.style.TableContentText)
+        setTableContentTextStyle(scrStep)
 
         val stepParams = TableRow.LayoutParams(
             TableRow.LayoutParams.WRAP_CONTENT,
@@ -324,6 +314,14 @@ class UserItemLevel2 : AppCompatActivity() {
 
     }
 
+    @SuppressLint("ResourceAsColor")
+    fun setTableContentTextStyle(textView: TextView){
+        val font: Typeface? = ResourcesCompat.getFont(this, R.font.raleway_light)
+        textView.typeface = font
+        textView.setTextColor(Color.BLACK)
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14F);
+    }
+
     @RequiresApi(Build.VERSION_CODES.M)
     private fun delPreparation(index: Int) {
         preparationValList.removeAt(index)
@@ -334,22 +332,31 @@ class UserItemLevel2 : AppCompatActivity() {
     }
 
 
-
     @RequiresApi(Build.VERSION_CODES.M)
     private fun showUpdateStepDialog(c: Context, step: String, stepNum: Int) {
-        val inputText = EditText(c)
-        inputText.setRawInputType(InputType.TYPE_CLASS_TEXT)
-        inputText.setText(step)
+        val layout = LinearLayout(this)
+        layout.orientation = LinearLayout.VERTICAL
+        val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        params.setMargins(40, 40, 40, 0)
+        val textBox = EditText(c)
+        textBox.setText(step)
+        textBox.requestFocus()
+        textBox.typeface = ResourcesCompat.getFont(c, R.font.raleway_light)
+        textBox.setRawInputType(InputType.TYPE_CLASS_TEXT)
+        layout.addView(textBox, params)
         val dialog = AlertDialog.Builder(c)
-            .setView(inputText)
+            .setView(layout)
             .setPositiveButton("Update") { _, _ ->
-                val input = inputText.text.toString()
+                val input = textBox.text.toString()
                 updateStep(input, stepNum)
             }
             .setNeutralButton("Cancel", null)
             .setTitle("Update step")
-        dialog.create()
+            .create()
         dialog.show()
+        val font: Typeface? = ResourcesCompat.getFont(c, R.font.raleway_semibold)
+        dialog.findViewById<Button>(android.R.id.button1).typeface = font
+        dialog.findViewById<Button>(android.R.id.button3).typeface = font
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -367,7 +374,7 @@ class UserItemLevel2 : AppCompatActivity() {
                 )
             )
         for (i in 0 until preparationValList.size) {
-            preparationValList[i].stemNum = i //todo
+            preparationValList[i].stemNum = i
             addNewStepRow(preparationValList[i].step, false, preparationValList[i].stemNum)
         }
     }
@@ -452,6 +459,11 @@ class UserItemLevel2 : AppCompatActivity() {
         dialog.setIcon(R.drawable.ic_warning_30)
         dialog.setTitle("Delete item")
         dialog.show()
+        val font: Typeface? =  ResourcesCompat.getFont(this, R.font.raleway_semibold)
+        val fontBody: Typeface? = ResourcesCompat.getFont(this, R.font.raleway_regular)
+        dialog.findViewById<TextView>(android.R.id.message).typeface = fontBody
+        dialog.findViewById<Button>(android.R.id.button1).typeface = font
+        dialog.findViewById<Button>(android.R.id.button2).typeface = font
         return null
     }
 
@@ -470,15 +482,28 @@ class UserItemLevel2 : AppCompatActivity() {
         dialog.setIcon(R.drawable.ic_info_24)
         dialog.setTitle(INFO_DIALOG_TITLE)
         dialog.show()
+        val font: Typeface? =  ResourcesCompat.getFont(this, R.font.raleway_semibold)
+        val fontBody: Typeface? = ResourcesCompat.getFont(this, R.font.raleway_regular)
+        dialog.findViewById<TextView>(android.R.id.message).typeface = fontBody
+        dialog.findViewById<Button>(android.R.id.button1).typeface = font
+        dialog.findViewById<Button>(android.R.id.button2).typeface = font
     }
+
     @RequiresApi(Build.VERSION_CODES.M)
     private fun showAddStepDialog(c: Context) {
-        val inputText = EditText(c)
-        inputText.setRawInputType(InputType.TYPE_CLASS_TEXT)
+        val layout = LinearLayout(this)
+        layout.orientation = LinearLayout.VERTICAL
+        val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        params.setMargins(40, 40, 40, 0)
+        val textBox = EditText(c)
+        textBox.requestFocus()
+        textBox.typeface = ResourcesCompat.getFont(c, R.font.raleway_light)
+        textBox.setRawInputType(InputType.TYPE_CLASS_TEXT)
+        layout.addView(textBox, params)
         val dialog = AlertDialog.Builder(c)
-            .setView(inputText)
+            .setView(layout)
             .setPositiveButton("Add") { _, _ ->
-                val input = inputText.text.toString()
+                val input = textBox.text.toString()
                 if(input.isNotEmpty()) {
                     addNewStepRow(input, true)
                 }
@@ -491,8 +516,11 @@ class UserItemLevel2 : AppCompatActivity() {
             }
             .setNeutralButton("Cancel", null)
             .setTitle("Add a new step")
-        dialog.create()
+            .create()
         dialog.show()
+        val font: Typeface? = ResourcesCompat.getFont(c, R.font.raleway_semibold)
+        dialog.findViewById<Button>(android.R.id.button1).typeface = font
+        dialog.findViewById<Button>(android.R.id.button3).typeface = font
     }
 
 }

@@ -11,7 +11,6 @@ import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.os.Parcelable
 import android.util.Log
 import android.view.*
@@ -26,7 +25,6 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
-import com.example.cocktails.CustomItem.IngredientItem
 import com.example.cocktails.CustomItem.UserItemLevel1
 import com.example.cocktails.R.*
 import com.google.android.material.chip.Chip
@@ -252,7 +250,10 @@ class ScrollingActivity : AppCompatActivity() {
         resources.getStringArray(array.cocktailTypes_array).forEach {
             addChip(it, layout.CategoryChipGroup, typeFiltersSP)
         }
-        resources.getStringArray(array.ingredients).forEach {
+        val ingredients= ArrayList<String>()
+        ingredients.addAll(resources.getStringArray(array.ingredients))
+        ingredients.addAll((applicationContext as Cocktails).getUserSpIngredients())
+        ingredients.forEach {
             addChip(it, layout.IngredientChipGroup, ingredientsFiltersSP)
         }
 

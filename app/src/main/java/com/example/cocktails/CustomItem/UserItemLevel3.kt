@@ -29,18 +29,8 @@ class UserItemLevel3 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_item_level3)
-        initViews()
         initButtons()
         initToolBar()
-    }
-
-    private fun initViews() {
-//        stepsView.setLabels(arrayOf("", "", ""))
-//            .setBarColorIndicator(resources.getColor(R.color.material_blue_grey_800))
-//            .setProgressColorIndicator(resources.getColor(R.color.stepBg))
-//            .setLabelColorIndicator(resources.getColor(R.color.stepBg))
-//            .setCompletedPosition(2)
-//            .drawView()
     }
 
     private fun initToolBar() {
@@ -71,9 +61,27 @@ class UserItemLevel3 : AppCompatActivity() {
         saveCocktailToFirebase(cocktail)
         val cnt = (applicationContext as Cocktails)
         cnt.mUserInputs.edit().clear().apply()
+        saveNewIngredientsToSp(cocktail.ingredientItemsJsonList)
         val intent = Intent(applicationContext, ScrollingActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         startActivity(intent)
+    }
+
+    private fun saveNewIngredientsToSp(ingredientItemsJsonList:String) {
+        val cnt = (applicationContext as Cocktails)
+        val ingredientItemsCurrent=Gson().fromJson(ingredientItemsJsonList, Array<IngredientItem>::class.java).asList()
+        val ingredientsListSP=cnt.getUserSpIngredients()
+        val ingredientsList=ArrayList<String>()
+        if(!ingredientsListSP.isNullOrEmpty()){
+            ingredientsList.addAll(ingredientsListSP)
+        }
+        ingredientItemsCurrent.forEach { ingredientItem->
+            if(!ingredientsListSP.contains(ingredientItem.ingredient)){
+                ingredientsList.add(ingredientItem.ingredient)
+            }
+        }
+        val json=Gson().toJson(ingredientsList)
+        cnt.mFirstTimeModeSP.edit().putString(USER_INGREDIENTS_LIST_KEY_SP,json).apply()
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -177,7 +185,7 @@ class UserItemLevel3 : AppCompatActivity() {
         if(!iconUri.isNullOrEmpty()){
             iconUri=iconUri.replace(".png","")
         }
-        val uploadImgStr = c.mUserInputs.getString(UPLOAD_IMG_KEY,null)//todo change
+        val uploadImgStr = c.mUserInputs.getString(UPLOAD_IMG_KEY,null)
         val rotation = c.mUserInputs.getFloat(ROTATE_UPLOAD_IMG_KEY, 0F)
         val ingredients=getIngredientsListStr()
         val ingredientsJson = c.mUserInputs.getString(INGREDIENT_LIST_JSON_STR_KEY,null)
