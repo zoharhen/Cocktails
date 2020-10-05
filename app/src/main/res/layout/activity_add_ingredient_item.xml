@@ -32,6 +32,7 @@
                     android:text="@string/quantity_title"
                     android:textColor="@android:color/black"
                     android:textStyle="bold"
+                    android:fontFamily="@font/raleway_light"
                     android:textSize="22sp"/>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -40,6 +41,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:maxLines="1"
                 app:endIconMode="clear_text"
+                android:fontFamily="@font/raleway_light"
                 android:id="@+id/textFieldQuantity"
                 app:helperTextEnabled="true"
                 app:helperText="Enter integer or float"
@@ -53,6 +55,7 @@
                     android:layout_height="wrap_content"
                     android:background="#00FFFFFF"
                     android:inputType="numberDecimal"
+                    android:fontFamily="@font/raleway_light"
                     android:textColor="@android:color/holo_blue_dark"
                     tools:ignore="LabelFor" />
 
@@ -71,31 +74,43 @@
                 android:clickable="true"
                 android:focusable="true">
 
-
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Unit"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold"
-                    android:textSize="22sp"/>
+                    android:orientation="horizontal">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Unit"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/raleway_light"
+                        android:textSize="22sp"/>
+
+                    <TextView
+                        android:id="@+id/unit_error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="*"
+                        android:textSize="25dp"
+                        android:visibility="invisible"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/raleway_semibold"
+                        android:textAppearance="@style/Regular"
+                        android:textColor="@color/errorColor" />
+
+                </LinearLayout>
                 <TextView
                     android:id="@+id/unit_textView"
                     android:layout_width="wrap_content"
                     android:paddingTop="10dp"
                     android:layout_height="40dp"
+                    android:fontFamily="@font/raleway_light"
                     android:text="@string/defaultUnit"
                     android:textColor="@android:color/holo_blue_dark"
                     android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/unit_error"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="@string/required_field"
-                    android:textColor="@android:color/holo_red_dark"/>
             </LinearLayout>
 
             <View
@@ -111,13 +126,33 @@
                 android:clickable="true"
                 android:focusable="true">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/ingredient_user"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold"
-                    android:textSize="22sp"/>
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ingredient_user"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/raleway_light"
+                        android:textSize="22sp"/>
+
+                    <TextView
+                        android:id="@+id/ingredient_error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="*"
+                        android:textSize="25dp"
+                        android:visibility="invisible"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/raleway_semibold"
+                        android:textAppearance="@style/Regular"
+                        android:textColor="@color/errorColor" />
+
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/ingredient_textView"
@@ -125,16 +160,10 @@
                     android:paddingTop="10dp"
                     android:text="None"
                     android:layout_height="40dp"
+                    android:fontFamily="@font/raleway_light"
                     android:textColor="@android:color/holo_blue_dark"
                     android:textSize="18sp"/>
 
-                <TextView
-                    android:id="@+id/ingredient_error"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="@string/required_field"
-                    android:textColor="@android:color/holo_red_dark"/>
             </LinearLayout>
 
 
@@ -157,6 +186,8 @@
             android:id="@+id/cancel_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/raleway_light"
+            android:textStyle="bold"
             android:text="@string/cancel" />
 
             <View
@@ -167,6 +198,8 @@
                 android:id="@+id/done_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/raleway_light"
+                android:textStyle="bold"
                 android:text="save" />
 
         </LinearLayout>

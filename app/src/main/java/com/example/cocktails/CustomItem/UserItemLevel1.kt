@@ -9,6 +9,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Rect
+import android.graphics.Typeface
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -16,11 +17,14 @@ import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.children
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -165,12 +169,6 @@ class UserItemLevel1 : AppCompatActivity() {
         initCategory()
         initButtonsListener()
 
-//        stepsView.setLabels(arrayOf("", "", ""))//todo try again
-//            .setBarColorIndicator(resources.getColor(R.color.material_blue_grey_800))
-//            .setProgressColorIndicator(resources.getColor(R.color.stepBg))
-//            .setLabelColorIndicator(resources.getColor(R.color.stepBg))
-//            .setCompletedPosition(0)
-//            .drawView()
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -244,7 +242,7 @@ class UserItemLevel1 : AppCompatActivity() {
         return  checkIfNameExistUserCocktail(cocktailName)
     }
 
-    fun checkIfNameExistUserCocktail(cocktailName:String):Boolean{
+    private fun checkIfNameExistUserCocktail(cocktailName:String):Boolean{
         for(cocktail in (this.applicationContext as Cocktails).mUserCocktailsList){
             if(cocktail.name==cocktailName){
                 if(isEditMode){
@@ -412,6 +410,11 @@ class UserItemLevel1 : AppCompatActivity() {
 
         dialog = builder.create()
         dialog.show()
+        val font: Typeface? =  ResourcesCompat.getFont(this, R.font.raleway_semibold)
+        val fontBody: Typeface? = ResourcesCompat.getFont(this, R.font.raleway_regular)
+        dialog.findViewById<TextView>(android.R.id.message).typeface = fontBody
+        dialog.findViewById<Button>(android.R.id.button1).typeface = font
+        dialog.findViewById<Button>(android.R.id.button2).typeface = font
     }
 
     private fun showDialogOnBackPress() {
@@ -441,6 +444,11 @@ class UserItemLevel1 : AppCompatActivity() {
             dialog.setTitle(DEL_CHANGES_TITLE_MSG)
         }else{dialog.setTitle(DEL_TITLE_MSG)}
         dialog.show()
+        val font: Typeface? =  ResourcesCompat.getFont(this, R.font.raleway_semibold)
+        val fontBody: Typeface? = ResourcesCompat.getFont(this, R.font.raleway_regular)
+        dialog.findViewById<TextView>(android.R.id.message).typeface = fontBody
+        dialog.findViewById<Button>(android.R.id.button1).typeface = font
+        dialog.findViewById<Button>(android.R.id.button2).typeface = font
     }
 
     //###keyBoard#######

@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -15,10 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.cocktails.CustomItem.insertIngredients.*
 import com.example.cocktails.R
 import com.google.android.material.textfield.TextInputLayout
-import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_add_ingredient_item.*
-import java.util.*
-import kotlin.collections.ArrayList
 
 const val ROW_NUM_KEY="row_num"
 const val UNIT_KEY = "quantity"

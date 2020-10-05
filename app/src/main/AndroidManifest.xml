@@ -28,6 +28,7 @@
         tools:targetApi="q">
         <activity android:name=".CustomItem.UserItemLevel3"
             android:configChanges="orientation|screenSize"
+            android:theme="@style/AppUserTheme"
             android:parentActivityName=".CustomItem.UserItemLevel2" />
         <activity
             android:name=".CustomItem.insertIngredients.SelectIngredient"

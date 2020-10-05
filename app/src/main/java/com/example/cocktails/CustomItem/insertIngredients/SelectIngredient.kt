@@ -8,6 +8,7 @@ import android.content.res.ColorStateList
 import android.graphics.BlendMode
 import android.graphics.Color
 import android.graphics.PorterDuff
+import android.graphics.Typeface
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -16,7 +17,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
-import androidx.appcompat.widget.Toolbar
+import androidx.core.content.res.ResourcesCompat
+import com.example.cocktails.Cocktails
 import com.example.cocktails.CustomItem.CURRENT_INGREDIENT_KEY
 import com.example.cocktails.CustomItem.EMPTY_FIELD_ERROR_MSG
 import com.example.cocktails.R
@@ -51,10 +53,6 @@ class SelectIngredient : AppCompatActivity() {
         addIngredientButton.setOnClickListener {
             showAddNewIngredientDialog(this)
         }
-//        //init done button
-//        findViewById<Button>(R.id.done_button_toolbar).setOnClickListener {
-//            finish()
-//        }
     }
 
     private fun validationNewIngredient(input: String?): Boolean {
@@ -72,21 +70,32 @@ class SelectIngredient : AppCompatActivity() {
     }
 
     private fun showAddNewIngredientDialog(c: Context) {
-        val inputText = EditText(c)
-        inputText.setRawInputType(InputType.TYPE_CLASS_TEXT)
+        val layout = LinearLayout(this)
+        layout.orientation = LinearLayout.VERTICAL
+        val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        params.setMargins(40, 40, 40, 0)
+        val textBox = EditText(c)
+        textBox.requestFocus()
+        textBox.typeface = ResourcesCompat.getFont(c, R.font.raleway_light)
+        textBox.setRawInputType(InputType.TYPE_CLASS_TEXT)
+        layout.addView(textBox, params)
         val dialog = AlertDialog.Builder(c)
-            .setView(inputText)
+            .setView(layout)
             .setPositiveButton("Add") { _, _ ->
-                val input = inputText.text.toString()
+                val input = textBox.text.toString()
                 if(validationNewIngredient(input)) {
                     addNewRadioButton(input)
                 }
             }
             .setNeutralButton("Cancel", null)
             .setTitle("Add a new ingredient")
-        dialog.create()
+            .create()
         dialog.show()
+        val font: Typeface? = ResourcesCompat.getFont(c, R.font.raleway_semibold)
+        dialog.findViewById<Button>(android.R.id.button1).typeface = font
+        dialog.findViewById<Button>(android.R.id.button3).typeface = font
     }
+
 
     @SuppressLint("ResourceType")
     private fun addNewRadioButton(newIngredient: String) {
@@ -102,8 +111,6 @@ class SelectIngredient : AppCompatActivity() {
     }
 
     private fun initToolBar(){
-//        val toolbar: Toolbar = findViewById<View>(R.id.ingredient_toolbar) as Toolbar
-//        setSupportActionBar(toolbar)
         supportActionBar?.title = getString(R.string.ingredient_user)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
@@ -132,6 +139,7 @@ class SelectIngredient : AppCompatActivity() {
     private fun createRadioButtons(curVal:String?) {
         mRadioGroup = findViewById(R.id.ingredient_radio_group)
         mIngredientsList = ArrayList(listOf(*resources.getStringArray(R.array.ingredients)))
+        mIngredientsList.addAll((applicationContext as Cocktails).getUserSpIngredients())
         var isNewIngredient=true
         for (i in 0 until mIngredientsList.size) {
             val radioButtonView = RadioButton(this, null, R.attr.radioButtonStyle)
