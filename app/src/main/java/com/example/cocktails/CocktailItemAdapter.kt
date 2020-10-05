@@ -67,7 +67,7 @@ class CocktailItemAdapter internal constructor(context: Context, data: ArrayList
         val favoriteList = (cnt.applicationContext as Cocktails).mFavorites
         when (toSearch) {
             "favorites" -> items.filter { favoriteList.getBoolean(it.name, false)}.forEach { resultList.add(it) }
-            "custom" -> items.filter { it.customIs }.forEach { resultList.add(it) }
+            "custom" -> items.filter { it.custom }.forEach { resultList.add(it) }
             "filterDialog" -> applyFilterDialogChoice().forEach { resultList.add(it) }
             else -> {
                 resultList = filteredItems.filter {

@@ -10,20 +10,19 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Matrix
+import android.graphics.Typeface
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,7 +31,6 @@ import com.blankj.utilcode.util.UriUtils.file2Uri
 import com.bumptech.glide.Glide
 import com.example.cocktails.*
 import com.example.cocktails.CustomItem.*
-import com.google.gson.Gson
 import com.ldoublem.loadingviewlib.view.LVCircularRing
 import developer.shivam.crescento.CrescentoImageView
 import github.nisrulz.screenshott.ScreenShott
@@ -149,7 +147,7 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
             displayImg(path)
             return
         }
-        if (cocktail.reviewIs) {
+        if (cocktail.review) {
             val uploadImgUri = Uri.parse(cocktail.image)
             val bitmapUploadImg = getUploadUriToBitmap(cocktail.rotation, uploadImgUri)
             rootView.findViewById<CrescentoImageView>(R.id.iv_cocktail)
@@ -157,7 +155,7 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
             return
         }
         var imgPath = "images/" + cocktail.image + ".jpg"
-        if (cocktail.customIs) {
+        if (cocktail.custom) {
             imgPath = cnt.getUploadUserImgPath(cocktail.name)
         }
         displayImg(imgPath)
@@ -214,7 +212,7 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
     }
 
     private fun initCustomCocktailButtons() {
-        if (cocktail.customIs) {
+        if (cocktail.custom) {
             rootView.findViewById<ImageButton>(R.id.editAction).visibility = ImageButton.VISIBLE
             rootView.findViewById<ImageButton>(R.id.deleteAction).visibility = ImageButton.VISIBLE
             rootView.findViewById<View>(R.id.editActionSeparator).visibility = View.VISIBLE
@@ -230,7 +228,7 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
         this.initEditButton()
         this.initDelButton()
 
-        if (cocktail.reviewIs) {
+        if (cocktail.review) {
             val editAction = rootView.findViewById<ImageButton>(R.id.editAction)
             val delAction = rootView.findViewById<ImageButton>(R.id.deleteAction)
             editAction.isEnabled = false
@@ -406,6 +404,10 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
         dialog.setIcon(R.drawable.ic_warning_30)
         dialog.setTitle(DEL_TITLE_MSG)
         dialog.show()
+        val font: Typeface? = context?.let { ResourcesCompat.getFont(it, R.font.raleway_light) }
+        dialog.findViewById<TextView>(android.R.id.message).typeface = font
+        dialog.findViewById<Button>(android.R.id.button1).typeface = font
+        dialog.findViewById<Button>(android.R.id.button2).typeface = font
     }
 
     private fun initPreparationSection() {

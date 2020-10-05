@@ -9,6 +9,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Rect
+import android.graphics.Typeface
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -16,11 +17,14 @@ import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.children
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -43,11 +47,10 @@ const val ICON_KEY = "icon"
 const val UPLOAD_IMG_KEY = "upload_img"
 const val UPLOAD_IMG_PATH_KEY = "upload_img_path"
 const val ROTATE_UPLOAD_IMG_KEY = "rotate_upload_img"
-const val DEL_BODY_MSG =
-    "You may be deleting cocktail item.\nAfter you delete this, it can't be recovered."
-const val DEL_CHANGES_BODY_MSG="You may be deleting your changes.\nAfter you delete this, it can't be recovered."
+const val DEL_BODY_MSG = "Are you sure you want to permanently delete this cocktail?"
 const val DEL_TITLE_MSG = "Delete cocktail"
-const val DEL_CHANGES_TITLE_MSG = "Delete changes"
+const val EXIT_BODY_MSG = "Your last changes won't be saved.\nAre you sure you want to exit?"
+const val EXIT_TITLE_MSG = "Exit"
 const val EDIT_MODE_KEY = "edit"
 const val UPLOAD_IMG_BOOLEAN_KEY = "boolean_upload_image"
 const val YES = "Yes"
@@ -244,7 +247,7 @@ class UserItemLevel1 : AppCompatActivity() {
         return  checkIfNameExistUserCocktail(cocktailName)
     }
 
-    fun checkIfNameExistUserCocktail(cocktailName:String):Boolean{
+    private fun checkIfNameExistUserCocktail(cocktailName:String):Boolean{
         for(cocktail in (this.applicationContext as Cocktails).mUserCocktailsList){
             if(cocktail.name==cocktailName){
                 if(isEditMode){
@@ -417,12 +420,7 @@ class UserItemLevel1 : AppCompatActivity() {
     private fun showDialogOnBackPress() {
         lateinit var dialog: AlertDialog
         val builder = AlertDialog.Builder(this)
-        if(isEditMode){
-            builder.setMessage(DEL_CHANGES_BODY_MSG)
-        }
-        else {
-            builder.setMessage(DEL_BODY_MSG)
-        }
+        builder.setMessage(EXIT_BODY_MSG)
         val dialogClickListener = DialogInterface.OnClickListener { _, which ->
             when (which) {
                 DialogInterface.BUTTON_POSITIVE -> {
@@ -433,14 +431,16 @@ class UserItemLevel1 : AppCompatActivity() {
                 //DialogInterface.BUTTON_NEUTRAL->{}
             }
         }
-        builder.setPositiveButton("Delete", dialogClickListener)
-        builder.setNegativeButton("Cancel", dialogClickListener)
+        builder.setPositiveButton("Yes", dialogClickListener)
+        builder.setNegativeButton("No", dialogClickListener)
         dialog = builder.create()
         dialog.setIcon(R.drawable.ic_warning_30)
-        if(isEditMode){
-            dialog.setTitle(DEL_CHANGES_TITLE_MSG)
-        }else{dialog.setTitle(DEL_TITLE_MSG)}
+        dialog.setTitle(EXIT_TITLE_MSG)
         dialog.show()
+        val font: Typeface? = ResourcesCompat.getFont(this, R.font.raleway_light)
+        dialog.findViewById<TextView>(android.R.id.message).typeface = font
+        dialog.findViewById<Button>(android.R.id.button1).typeface = font
+        dialog.findViewById<Button>(android.R.id.button2).typeface = font
     }
 
     //###keyBoard#######

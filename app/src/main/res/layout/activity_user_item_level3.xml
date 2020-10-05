@@ -38,9 +38,9 @@
 
                 <View
                     android:layout_width="90dp"
-                    android:layout_height="2dp"
+                    android:layout_height="4dp"
                     android:layout_gravity="center"
-                    android:background="@color/material_blue_grey_800" />
+                    android:background="#1976D2" />
 
                 <TextView
                     android:id="@+id/tv_level_2"
@@ -53,9 +53,9 @@
 
                 <View
                     android:layout_width="90dp"
-                    android:layout_height="2dp"
+                    android:layout_height="4dp"
                     android:layout_gravity="center"
-                    android:background="@color/material_blue_grey_800" />
+                    android:background="#1976D2" />
 
                 <TextView
                     android:id="@+id/tv_level_3"

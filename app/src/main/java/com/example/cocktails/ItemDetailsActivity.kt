@@ -29,7 +29,7 @@ class ItemDetailsActivity : AppCompatActivity() {
         val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar1)
         setSupportActionBar(toolbar)
         supportActionBar?.setHomeButtonEnabled(true)
-        if(!cocktail.reviewIs) { // display back arrow while not in review mode
+        if(!cocktail.review) { // display back arrow while not in review mode
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
             finish_button_preview.visibility=View.GONE
         }

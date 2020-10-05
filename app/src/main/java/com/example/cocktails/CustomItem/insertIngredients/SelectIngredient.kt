@@ -8,20 +8,24 @@ import android.content.res.ColorStateList
 import android.graphics.BlendMode
 import android.graphics.Color
 import android.graphics.PorterDuff
+import android.graphics.Typeface
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputType
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
-import androidx.appcompat.widget.Toolbar
+import android.widget.LinearLayout
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import com.example.cocktails.CustomItem.CURRENT_INGREDIENT_KEY
 import com.example.cocktails.CustomItem.EMPTY_FIELD_ERROR_MSG
 import com.example.cocktails.R
 import java.util.*
 import kotlin.collections.ArrayList
+
 
 val INGREDIENT_VAL_KEY = "ingredient_val"
 val DEFAULT_INGREDIENT_VAL="None"
@@ -72,20 +76,30 @@ class SelectIngredient : AppCompatActivity() {
     }
 
     private fun showAddNewIngredientDialog(c: Context) {
-        val inputText = EditText(c)
-        inputText.setRawInputType(InputType.TYPE_CLASS_TEXT)
+        val layout = LinearLayout(this)
+        layout.orientation = LinearLayout.VERTICAL
+        val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        params.setMargins(40, 40, 40, 0)
+        val textBox = EditText(c)
+        textBox.hint = "Add new ingredient here"
+        textBox.requestFocus()
+        textBox.typeface = ResourcesCompat.getFont(c, R.font.raleway_light)
+        textBox.setRawInputType(InputType.TYPE_CLASS_TEXT)
+        layout.addView(textBox, params)
         val dialog = AlertDialog.Builder(c)
-            .setView(inputText)
+            .setView(layout)
             .setPositiveButton("Add") { _, _ ->
-                val input = inputText.text.toString()
+                val input = textBox.text.toString()
                 if(validationNewIngredient(input)) {
                     addNewRadioButton(input)
                 }
             }
             .setNeutralButton("Cancel", null)
-            .setTitle("Add a new ingredient")
-        dialog.create()
+            .create()
         dialog.show()
+        val font: Typeface? = ResourcesCompat.getFont(c, R.font.raleway_semibold)
+        dialog.findViewById<Button>(android.R.id.button1).typeface = font
+        dialog.findViewById<Button>(android.R.id.button3).typeface = font
     }
 
     @SuppressLint("ResourceType")

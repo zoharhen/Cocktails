@@ -6,21 +6,22 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
 import android.text.InputType
+import android.view.ContextThemeWrapper
 import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.TextViewCompat
 import com.example.cocktails.Cocktails
 import com.example.cocktails.R
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-//import kotlinx.android.synthetic.main.activity_user_item_level1.stepsView
 import kotlinx.android.synthetic.main.activity_user_item_level2.*
 
 
@@ -337,19 +338,28 @@ class UserItemLevel2 : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.M)
     private fun showUpdateStepDialog(c: Context, step: String, stepNum: Int) {
-        val inputText = EditText(c)
-        inputText.setRawInputType(InputType.TYPE_CLASS_TEXT)
-        inputText.setText(step)
+        val layout = LinearLayout(this)
+        layout.orientation = LinearLayout.VERTICAL
+        val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        params.setMargins(40, 40, 40, 0)
+        val textBox = EditText(c)
+        textBox.setText(step)
+        textBox.requestFocus()
+        textBox.typeface = ResourcesCompat.getFont(c, R.font.raleway_light)
+        textBox.setRawInputType(InputType.TYPE_CLASS_TEXT)
+        layout.addView(textBox, params)
         val dialog = AlertDialog.Builder(c)
-            .setView(inputText)
+            .setView(layout)
             .setPositiveButton("Update") { _, _ ->
-                val input = inputText.text.toString()
+                val input = textBox.text.toString()
                 updateStep(input, stepNum)
             }
             .setNeutralButton("Cancel", null)
-            .setTitle("Update step")
-        dialog.create()
+            .create()
         dialog.show()
+        val font: Typeface? = ResourcesCompat.getFont(c, R.font.raleway_semibold)
+        dialog.findViewById<Button>(android.R.id.button1).typeface = font
+        dialog.findViewById<Button>(android.R.id.button3).typeface = font
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -452,6 +462,10 @@ class UserItemLevel2 : AppCompatActivity() {
         dialog.setIcon(R.drawable.ic_warning_30)
         dialog.setTitle("Delete item")
         dialog.show()
+        val font: Typeface? = ResourcesCompat.getFont(this, R.font.raleway_light)
+        dialog.findViewById<TextView>(android.R.id.message).typeface = font
+        dialog.findViewById<Button>(android.R.id.button1).typeface = font
+        dialog.findViewById<Button>(android.R.id.button2).typeface = font
         return null
     }
 
@@ -470,15 +484,27 @@ class UserItemLevel2 : AppCompatActivity() {
         dialog.setIcon(R.drawable.ic_info_24)
         dialog.setTitle(INFO_DIALOG_TITLE)
         dialog.show()
+        val font: Typeface? = ResourcesCompat.getFont(this, R.font.raleway_light)
+        dialog.findViewById<TextView>(android.R.id.message).typeface = font
+        dialog.findViewById<Button>(android.R.id.button1).typeface = font
+        dialog.findViewById<Button>(android.R.id.button2).typeface = font
     }
     @RequiresApi(Build.VERSION_CODES.M)
     private fun showAddStepDialog(c: Context) {
-        val inputText = EditText(c)
-        inputText.setRawInputType(InputType.TYPE_CLASS_TEXT)
+        val layout = LinearLayout(this)
+        layout.orientation = LinearLayout.VERTICAL
+        val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        params.setMargins(40, 40, 40, 0)
+        val textBox = EditText(c)
+        textBox.hint = "Add new step here"
+        textBox.requestFocus()
+        textBox.typeface = ResourcesCompat.getFont(c, R.font.raleway_light)
+        textBox.setRawInputType(InputType.TYPE_CLASS_TEXT)
+        layout.addView(textBox, params)
         val dialog = AlertDialog.Builder(c)
-            .setView(inputText)
+            .setView(layout)
             .setPositiveButton("Add") { _, _ ->
-                val input = inputText.text.toString()
+                val input = textBox.text.toString()
                 if(input.isNotEmpty()) {
                     addNewStepRow(input, true)
                 }
@@ -490,9 +516,11 @@ class UserItemLevel2 : AppCompatActivity() {
                 }
             }
             .setNeutralButton("Cancel", null)
-            .setTitle("Add a new step")
-        dialog.create()
+            .create()
         dialog.show()
+        val font: Typeface? = ResourcesCompat.getFont(c, R.font.raleway_semibold)
+        dialog.findViewById<Button>(android.R.id.button1).typeface = font
+        dialog.findViewById<Button>(android.R.id.button3).typeface = font
     }
 
 }

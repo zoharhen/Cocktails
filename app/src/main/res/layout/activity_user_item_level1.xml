@@ -40,7 +40,7 @@
 
                 <View
                     android:layout_width="90dp"
-                    android:layout_height="2dp"
+                    android:layout_height="4dp"
                     android:layout_gravity="center"
                     android:background="@color/material_blue_grey_800" />
 
@@ -55,7 +55,7 @@
 
                 <View
                     android:layout_width="90dp"
-                    android:layout_height="2dp"
+                    android:layout_height="4dp"
                     android:layout_gravity="center"
                     android:background="@color/material_blue_grey_800" />
 
@@ -194,6 +194,7 @@
                 android:id="@+id/select_icon_Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
                 android:backgroundTint="@color/colorPrimaryDark"
                 android:fontFamily="@font/raleway_light"
                 android:text="@string/select" />
