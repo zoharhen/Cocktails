@@ -368,7 +368,7 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
         cnt.mCocktailsRef.document(cocktail.name).delete()
             .addOnSuccessListener {
                 Toast.makeText(
-                    context, "'${cocktail.name}' deleted successfully",
+                    activity?.applicationContext, "'${cocktail.name}' deleted successfully",
                     Toast.LENGTH_LONG
                 ).show(); Log.i(
                 "delete_cocktail_data",
