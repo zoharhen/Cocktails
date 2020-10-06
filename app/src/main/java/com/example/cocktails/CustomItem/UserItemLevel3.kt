@@ -71,12 +71,13 @@ class UserItemLevel3 : AppCompatActivity() {
         val cnt = (applicationContext as Cocktails)
         val ingredientItemsCurrent=Gson().fromJson(ingredientItemsJsonList, Array<IngredientItem>::class.java).asList()
         val ingredientsListSP=cnt.getUserSpIngredients()
+        val ingredientListApp=resources.getStringArray(R.array.ingredients)
         val ingredientsList=ArrayList<String>()
         if(!ingredientsListSP.isNullOrEmpty()){
             ingredientsList.addAll(ingredientsListSP)
         }
         ingredientItemsCurrent.forEach { ingredientItem->
-            if(!ingredientsListSP.contains(ingredientItem.ingredient)){
+            if(!ingredientsListSP.contains(ingredientItem.ingredient)&& !ingredientListApp.contains(ingredientItem.ingredient)){
                 ingredientsList.add(ingredientItem.ingredient)
             }
         }

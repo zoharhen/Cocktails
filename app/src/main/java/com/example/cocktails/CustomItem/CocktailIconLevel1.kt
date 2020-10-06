@@ -81,6 +81,11 @@ class CocktailIconLevel1 : AppCompatActivity(),ImageAdapter.ItemClickListener {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
     override fun onItemClicked(position: Int) {
         val imgUrl:String=mIcons[position].name
         returnImgResult(imgUrl)

@@ -377,9 +377,13 @@ class UserItemLevel1 : AppCompatActivity() {
             }
         } else {
             if (requestCode == REQUEST_CODE_UPLOAD_IMG) {
-                setUploadImgButtonState(View.GONE)
+                if(mUploadImgUri==null) {
+                    setUploadImgButtonState(View.GONE)
+                }
             } else if (requestCode == REQUEST_CODE_ICONS) {
-                selected_icon_IV.visibility = View.GONE
+                if(mIconUri==null) {
+                    selected_icon_IV.visibility = View.GONE
+                }
             }
         }
     }
