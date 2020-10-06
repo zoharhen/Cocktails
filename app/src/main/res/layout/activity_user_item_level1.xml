@@ -137,7 +137,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="*"
-                android:visibility="gone"
+                android:visibility="invisible"
                 android:fontFamily="@font/raleway_semibold"
                 android:textAppearance="@style/Regular"
                 android:textSize="25dp"

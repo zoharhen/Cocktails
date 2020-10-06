@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
@@ -39,8 +38,8 @@ class UserItemLevel2 : AppCompatActivity() {
     private val NUM_OF_DEFUALT_ROWS = 2
     private val REQUEST_CODE_ADD_INGREDIENT = 1
     private val REQUEST_CODE_EDIT_INGREDIENT = 2
-    private val INFO_DIALOG_TITLE="Information"
-    private val INFO_DIALOG_BODY="Press an item in order to edit\nLong press in order to delete"
+    private val INFO_DIALOG_TITLE=" Information"
+    private val INFO_DIALOG_BODY="Press on item:\n- Short press in order to edit.\n- Long press in order to delete."
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -338,12 +337,24 @@ class UserItemLevel2 : AppCompatActivity() {
         layout.orientation = LinearLayout.VERTICAL
         val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
         params.setMargins(40, 40, 40, 0)
+
         val textBox = EditText(c)
         textBox.setText(step)
         textBox.requestFocus()
+        textBox.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18F);
+        textBox.setTextColor(Color.BLACK)
         textBox.typeface = ResourcesCompat.getFont(c, R.font.raleway_light)
         textBox.setRawInputType(InputType.TYPE_CLASS_TEXT)
+
+        val title=TextView(c)
+        title.text = "Update step"
+        setStyleDialogTitle(title,0,this)
+        val paramsTitle = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        paramsTitle.setMargins(40, 40, 50, 10)
+
+        layout.addView(title,paramsTitle)
         layout.addView(textBox, params)
+
         val dialog = AlertDialog.Builder(c)
             .setView(layout)
             .setPositiveButton("Update") { _, _ ->
@@ -351,9 +362,9 @@ class UserItemLevel2 : AppCompatActivity() {
                 updateStep(input, stepNum)
             }
             .setNeutralButton("Cancel", null)
-            .setTitle("Update step")
             .create()
         dialog.show()
+
         val font: Typeface? = ResourcesCompat.getFont(c, R.font.raleway_semibold)
         dialog.findViewById<Button>(android.R.id.button1).typeface = font
         dialog.findViewById<Button>(android.R.id.button3).typeface = font
@@ -434,57 +445,65 @@ class UserItemLevel2 : AppCompatActivity() {
 
     //################Dialogs################
     @RequiresApi(Build.VERSION_CODES.M)
-    private fun showDelItemDialog(
-        index: Int,
-        isPreparation: Boolean
-    ): View.OnLongClickListener? {
+    private fun showDelItemDialog(index: Int, isPreparation: Boolean): View.OnLongClickListener? {
+        val layout = LinearLayout(this)
+        layout.orientation = LinearLayout.VERTICAL
+        val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        params.setMargins(40, 40, 40, 0)
+
+        val textBox = TextView(this)
+        setStyleDialogBodyTV(textBox,this)
+        textBox.text="Are you sure?"
+        val title=TextView(this)
+        setStyleDialogTitle(title,R.drawable.ic_warning_30,this)
+        title.text=" Delete item"
+
+        layout.addView(title,params)
+        layout.addView(textBox, params)
+
         lateinit var dialog: AlertDialog
         val builder = AlertDialog.Builder(this)
-        builder.setMessage("Are you sure?")
-        val dialogClickListener = DialogInterface.OnClickListener { _, which ->
-            when (which) {
-                DialogInterface.BUTTON_POSITIVE -> {
+            .setView(layout)
+            .setPositiveButton(YES) { _, _ ->
                     if (isPreparation) {
                         delPreparation(index)
                     } else {
                         delIngredient(index)
                     }
-                }
             }
-        }
-        builder.setPositiveButton("YES", dialogClickListener)
-        // Set the alert dialog negative/no button
-        builder.setNegativeButton("NO", dialogClickListener)
+            .setNegativeButton(NO, null)
+
         dialog = builder.create()
-        dialog.setIcon(R.drawable.ic_warning_30)
-        dialog.setTitle("Delete item")
         dialog.show()
         val font: Typeface? =  ResourcesCompat.getFont(this, R.font.raleway_semibold)
-        val fontBody: Typeface? = ResourcesCompat.getFont(this, R.font.raleway_regular)
-        dialog.findViewById<TextView>(android.R.id.message).typeface = fontBody
         dialog.findViewById<Button>(android.R.id.button1).typeface = font
         dialog.findViewById<Button>(android.R.id.button2).typeface = font
         return null
     }
 
     private fun showDialogOnInfoPress() {
+        val layout = LinearLayout(this)
+        layout.orientation = LinearLayout.VERTICAL
+        val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        params.setMargins(40, 30, 40, 0)
+
+        val textBox = TextView(this)
+        setStyleDialogBodyTV(textBox,this)
+        textBox.text=INFO_DIALOG_BODY
+        val title=TextView(this)
+        setStyleDialogTitle(title,R.drawable.ic_info_24,this)
+        title.text=" $INFO_DIALOG_TITLE"
+
+        layout.addView(title,params)
+        layout.addView(textBox, params)
+
         lateinit var dialog: AlertDialog
         val builder = AlertDialog.Builder(this)
-        builder.setMessage(INFO_DIALOG_BODY)
-        val dialogClickListener = DialogInterface.OnClickListener { _, which ->
-            when (which) {
-                DialogInterface.BUTTON_POSITIVE -> {
-                }
-            }
-        }
-        builder.setPositiveButton("OK", dialogClickListener)
+            .setView(layout)
+            .setPositiveButton("OK") { _, _ ->}
         dialog = builder.create()
-        dialog.setIcon(R.drawable.ic_info_24)
-        dialog.setTitle(INFO_DIALOG_TITLE)
         dialog.show()
         val font: Typeface? =  ResourcesCompat.getFont(this, R.font.raleway_semibold)
-        val fontBody: Typeface? = ResourcesCompat.getFont(this, R.font.raleway_regular)
-        dialog.findViewById<TextView>(android.R.id.message).typeface = fontBody
         dialog.findViewById<Button>(android.R.id.button1).typeface = font
         dialog.findViewById<Button>(android.R.id.button2).typeface = font
     }
@@ -495,10 +514,17 @@ class UserItemLevel2 : AppCompatActivity() {
         layout.orientation = LinearLayout.VERTICAL
         val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
         params.setMargins(40, 40, 40, 0)
+
         val textBox = EditText(c)
-        textBox.requestFocus()
-        textBox.typeface = ResourcesCompat.getFont(c, R.font.raleway_light)
-        textBox.setRawInputType(InputType.TYPE_CLASS_TEXT)
+        setStyleDialogBodyET(textBox,this)
+
+        val title=TextView(c)
+        title.text = "Add a new step"
+        setStyleDialogTitle(title,0,this)
+        val paramsTitle = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        paramsTitle.setMargins(40, 40, 50, 0)
+
+        layout.addView(title,paramsTitle)
         layout.addView(textBox, params)
         val dialog = AlertDialog.Builder(c)
             .setView(layout)
@@ -515,9 +541,9 @@ class UserItemLevel2 : AppCompatActivity() {
                 }
             }
             .setNeutralButton("Cancel", null)
-            .setTitle("Add a new step")
             .create()
         dialog.show()
+
         val font: Typeface? = ResourcesCompat.getFont(c, R.font.raleway_semibold)
         dialog.findViewById<Button>(android.R.id.button1).typeface = font
         dialog.findViewById<Button>(android.R.id.button3).typeface = font
