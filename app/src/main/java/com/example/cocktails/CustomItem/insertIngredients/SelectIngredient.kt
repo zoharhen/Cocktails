@@ -12,7 +12,6 @@ import android.graphics.Typeface
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.InputType
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -21,6 +20,8 @@ import androidx.core.content.res.ResourcesCompat
 import com.example.cocktails.Cocktails
 import com.example.cocktails.CustomItem.CURRENT_INGREDIENT_KEY
 import com.example.cocktails.CustomItem.EMPTY_FIELD_ERROR_MSG
+import com.example.cocktails.CustomItem.setStyleDialogBodyET
+import com.example.cocktails.CustomItem.setStyleDialogTitle
 import com.example.cocktails.R
 import java.util.*
 import kotlin.collections.ArrayList
@@ -74,11 +75,17 @@ class SelectIngredient : AppCompatActivity() {
         layout.orientation = LinearLayout.VERTICAL
         val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
         params.setMargins(40, 40, 40, 0)
+
         val textBox = EditText(c)
-        textBox.requestFocus()
-        textBox.typeface = ResourcesCompat.getFont(c, R.font.raleway_light)
-        textBox.setRawInputType(InputType.TYPE_CLASS_TEXT)
+        setStyleDialogBodyET(textBox,this)
+
+        val title=TextView(c)
+        title.text = "Add a new ingredient"
+        setStyleDialogTitle(title,0,this)
+
+        layout.addView(title,params)
         layout.addView(textBox, params)
+
         val dialog = AlertDialog.Builder(c)
             .setView(layout)
             .setPositiveButton("Add") { _, _ ->
@@ -88,8 +95,8 @@ class SelectIngredient : AppCompatActivity() {
                 }
             }
             .setNeutralButton("Cancel", null)
-            .setTitle("Add a new ingredient")
             .create()
+
         dialog.show()
         val font: Typeface? = ResourcesCompat.getFont(c, R.font.raleway_semibold)
         dialog.findViewById<Button>(android.R.id.button1).typeface = font

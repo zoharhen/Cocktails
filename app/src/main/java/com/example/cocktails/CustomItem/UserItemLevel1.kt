@@ -5,22 +5,21 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.text.InputType
+import android.util.TypedValue
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -58,6 +57,30 @@ const val YES = "Yes"
 const val NO = "No"
 const val CLIPART_STORAGE_PATH="cliparts/"
 
+fun setStyleDialogTitle(textView: TextView,icon:Int,context: Context){
+    val font: Typeface? = ResourcesCompat.getFont(context, R.font.raleway_semibold)
+    textView.typeface=font
+    textView.setTextColor(Color.BLACK)
+    textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20F)
+    textView.setCompoundDrawablesRelativeWithIntrinsicBounds(icon,0,0,0)
+}
+
+fun setStyleDialogBodyTV(textView: TextView, context: Context){
+    val fontBody: Typeface? = ResourcesCompat.getFont(context, R.font.raleway_regular)
+    textView.typeface = fontBody
+    textView.setRawInputType(InputType.TYPE_CLASS_TEXT)
+    textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16F);
+    textView.setTextColor(Color.BLACK)
+}
+
+fun setStyleDialogBodyET(editText: EditText, context: Context){
+    editText.requestFocus()
+    editText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16F);
+    editText.setTextColor(Color.BLACK)
+    editText.setRawInputType(InputType.TYPE_CLASS_TEXT)
+    editText.typeface = ResourcesCompat.getFont(context, R.font.raleway_regular)
+}
+
 class UserItemLevel1 : AppCompatActivity() {
 
     private var mUploadImgUri: Uri? = null
@@ -65,7 +88,7 @@ class UserItemLevel1 : AppCompatActivity() {
     private lateinit var mCategoryChip: ChipGroup
     private var isEditMode : Boolean= false
 
-    private val DIALOG_UPLOAD_MSG = "If you go back now, your uploaded image will be removed."
+    private val DIALOG_UPLOAD_MSG = "You may be deleting your uploaded image."
     private val MAX_LENGTH_COCKTAIL_NAME: Int = 12
     private val COCKTAIL_ERROR_MSG_NAME = "Cocktail name already exist, choose different name."
     private val COCKTAIL_ERROR_MSG_LENGTH: String =
@@ -201,7 +224,7 @@ class UserItemLevel1 : AppCompatActivity() {
             upload_user_img_TV.rotation = upload_user_img_TV.rotation + 90F
         }
         del_upload_img_Button.setOnClickListener {
-            showDelDialog()
+            showDelUploadImgDialog()
         }
         select_icon_Button.setOnClickListener {
             openIconsActivity()
@@ -395,62 +418,76 @@ class UserItemLevel1 : AppCompatActivity() {
     }
 
     //##################Dialogs########################
-    private fun showDelDialog() {
+    private fun showDelUploadImgDialog() {
+        val layout = LinearLayout(this)
+        layout.orientation = LinearLayout.VERTICAL
+        val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        params.setMargins(40, 30, 40, 0)
+
+        val textBox = TextView(this)
+        setStyleDialogBodyTV(textBox,this)
+        textBox.text="Are you sure?"
+        val title=TextView(this)
+        setStyleDialogTitle(title,R.drawable.ic_warning_30,this)
+        title.text=" Delete upload image"
+
+        layout.addView(title,params)
+        layout.addView(textBox, params)
+
         lateinit var dialog: AlertDialog
         val builder = AlertDialog.Builder(this)
-        builder.setMessage(DIALOG_UPLOAD_MSG)
-        val dialogClickListener = DialogInterface.OnClickListener { _, which ->
-            when (which) {
-                DialogInterface.BUTTON_POSITIVE -> {
-                    mUploadImgUri=null
-                    upload_user_img_TV.setImageDrawable(null)
-                    setUploadImgButtonState(View.GONE)
-                }
-                //DialogInterface.BUTTON_NEGATIVE ->{}
+            .setView(layout)
+            .setPositiveButton(YES) { _, _ ->
+                mUploadImgUri=null
+                upload_user_img_TV.setImageDrawable(null)
+                setUploadImgButtonState(View.GONE)
             }
-        }
-        builder.setPositiveButton(YES, dialogClickListener)
-        builder.setNegativeButton(NO, dialogClickListener)
+            .setNegativeButton(NO, null)
 
         dialog = builder.create()
         dialog.show()
         val font: Typeface? =  ResourcesCompat.getFont(this, R.font.raleway_semibold)
-        val fontBody: Typeface? = ResourcesCompat.getFont(this, R.font.raleway_regular)
-        dialog.findViewById<TextView>(android.R.id.message).typeface = fontBody
         dialog.findViewById<Button>(android.R.id.button1).typeface = font
         dialog.findViewById<Button>(android.R.id.button2).typeface = font
     }
 
+    @SuppressLint("ResourceType", "SetTextI18n")
     private fun showDialogOnBackPress() {
-        lateinit var dialog: AlertDialog
-        val builder = AlertDialog.Builder(this)
+        val layout = LinearLayout(this)
+        layout.orientation = LinearLayout.VERTICAL
+        val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        params.setMargins(40, 30, 40, 0)
+
+        val textBox = TextView(this)
+        setStyleDialogBodyTV(textBox,this)
+        val title=TextView(this)
+        setStyleDialogTitle(title,R.drawable.ic_warning_30,this)
+        val paramsTitle = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        paramsTitle.setMargins(40, 40, 40, 0)
+
         if(isEditMode){
-            builder.setMessage(DEL_CHANGES_BODY_MSG)
+            textBox.text = DEL_CHANGES_BODY_MSG
+            title.text = " $DEL_CHANGES_TITLE_MSG"
         }
         else {
-            builder.setMessage(DEL_BODY_MSG)
+            textBox.text = DEL_BODY_MSG
+            title.text = " $DEL_TITLE_MSG"
         }
-        val dialogClickListener = DialogInterface.OnClickListener { _, which ->
-            when (which) {
-                DialogInterface.BUTTON_POSITIVE -> {
-                    (this.applicationContext as Cocktails).mUserInputs.edit().clear().apply()
-                    finish()
-                }
-                //DialogInterface.BUTTON_NEGATIVE ->{}
-                //DialogInterface.BUTTON_NEUTRAL->{}
+
+        layout.addView(title,paramsTitle)
+        layout.addView(textBox, params)
+
+        lateinit var dialog: AlertDialog
+        val builder = AlertDialog.Builder(this)
+            .setView(layout)
+            .setPositiveButton("Delete") { _, _ ->
+                (this.applicationContext as Cocktails).mUserInputs.edit().clear().apply()
+                finish()
             }
-        }
-        builder.setPositiveButton("Delete", dialogClickListener)
-        builder.setNegativeButton("Cancel", dialogClickListener)
+            .setNeutralButton("Cancel", null)
         dialog = builder.create()
-        dialog.setIcon(R.drawable.ic_warning_30)
-        if(isEditMode){
-            dialog.setTitle(DEL_CHANGES_TITLE_MSG)
-        }else{dialog.setTitle(DEL_TITLE_MSG)}
         dialog.show()
-        val font: Typeface? =  ResourcesCompat.getFont(this, R.font.raleway_semibold)
-        val fontBody: Typeface? = ResourcesCompat.getFont(this, R.font.raleway_regular)
-        dialog.findViewById<TextView>(android.R.id.message).typeface = fontBody
+        val font: Typeface? = ResourcesCompat.getFont(this, R.font.raleway_semibold)
         dialog.findViewById<Button>(android.R.id.button1).typeface = font
         dialog.findViewById<Button>(android.R.id.button2).typeface = font
     }
