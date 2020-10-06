@@ -26,6 +26,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -86,8 +87,8 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
     ): View? {
         rootView = inflater.inflate(R.layout.recipe_item, container, false)
         this.initViews()
-        rootView.findViewById<ScrollView>(R.id.recipe_item).post {
-            rootView.findViewById<ScrollView>(R.id.recipe_item)
+        rootView.findViewById<NestedScrollView>(R.id.recipe_item).post {
+            rootView.findViewById<NestedScrollView>(R.id.recipe_item)
                 .fullScroll(View.FOCUS_UP) // workaround, as tabs hide the ScrollView
         }
 
@@ -492,7 +493,7 @@ class RecipeFragment : Fragment(), PreparationAdapter.ViewHolder.ClickListener {
 
         @SuppressLint("WrongThread")
         override fun doInBackground(vararg params: Any?): Bitmap {
-            val scrollView = rootView.findViewById<ScrollView>(R.id.recipe_item)
+            val scrollView = rootView.findViewById<NestedScrollView>(R.id.recipe_item)
             val returnedBitmap = Bitmap.createBitmap(
                 scrollView.getChildAt(0).width * 2,
                 scrollView.getChildAt(0).height * 2,
