@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.cocktails">
+    package="com.cocktailsppc.cocktails">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -14,7 +14,7 @@
         android:required="true" />
 
     <application
-        android:name=".Cocktails"
+        android:name="com.cocktailsppc.cocktails.Cocktails"
         android:allowBackup="false"
         android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
@@ -26,54 +26,54 @@
         android:theme="@style/AppTheme"
         tools:replace="android:supportsRtl, android:allowBackup"
         tools:targetApi="q">
-        <activity android:name=".CustomItem.UserItemLevel3"
+        <activity android:name="com.cocktailsppc.cocktails.CustomItem.UserItemLevel3"
             android:configChanges="orientation|screenSize"
             android:theme="@style/AppUserTheme"
-            android:parentActivityName=".CustomItem.UserItemLevel2" />
+            android:parentActivityName="com.cocktailsppc.cocktails.CustomItem.UserItemLevel2" />
         <activity
-            android:name=".CustomItem.insertIngredients.SelectIngredient"
+            android:name="com.cocktailsppc.cocktails.CustomItem.insertIngredients.SelectIngredient"
             android:configChanges="orientation|screenSize"
-            android:parentActivityName=".CustomItem.AddIngredientItem" />
+            android:parentActivityName="com.cocktailsppc.cocktails.CustomItem.AddIngredientItem" />
         <activity
-            android:name=".CustomItem.insertIngredients.SelectUnit"
+            android:name="com.cocktailsppc.cocktails.CustomItem.insertIngredients.SelectUnit"
             android:configChanges="orientation|screenSize"
-            android:parentActivityName=".CustomItem.AddIngredientItem" />
+            android:parentActivityName="com.cocktailsppc.cocktails.CustomItem.AddIngredientItem" />
         <activity
-            android:name=".CustomItem.AddIngredientItem"
+            android:name="com.cocktailsppc.cocktails.CustomItem.AddIngredientItem"
             android:configChanges="orientation|screenSize"
-            android:parentActivityName=".CustomItem.UserItemLevel2" />
+            android:parentActivityName="com.cocktailsppc.cocktails.CustomItem.UserItemLevel2" />
         <activity
-            android:name=".CustomItem.UserItemLevel2"
+            android:name="com.cocktailsppc.cocktails.CustomItem.UserItemLevel2"
             android:configChanges="orientation|screenSize"
-            android:parentActivityName=".CustomItem.UserItemLevel1" />
+            android:parentActivityName="com.cocktailsppc.cocktails.CustomItem.UserItemLevel1" />
         <activity
-            android:name=".CustomItem.CocktailIconLevel1"
+            android:name="com.cocktailsppc.cocktails.CustomItem.CocktailIconLevel1"
             android:configChanges="orientation|screenSize"
-            android:parentActivityName=".CustomItem.UserItemLevel1" />
+            android:parentActivityName="com.cocktailsppc.cocktails.CustomItem.UserItemLevel1" />
         <activity
-            android:name=".ScrollingActivity"
+            android:name="com.cocktailsppc.cocktails.ScrollingActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:theme="@style/AppTheme.Splash"
-            android:name=".SplashScreen">
+            android:name="com.cocktailsppc.cocktails.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".CustomItem.UserItemLevel1"
+            android:name="com.cocktailsppc.cocktails.CustomItem.UserItemLevel1"
             android:configChanges="orientation|screenSize"
-            android:parentActivityName=".ScrollingActivity" />
+            android:parentActivityName="com.cocktailsppc.cocktails.ScrollingActivity" />
         <activity
-            android:name=".ItemDetailsActivity"
+            android:name="com.cocktailsppc.cocktails.ItemDetailsActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_item_details_activity"
-            android:parentActivityName=".ScrollingActivity"
+            android:parentActivityName="com.cocktailsppc.cocktails.ScrollingActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ContactUsActivity" />
+        <activity android:name="com.cocktailsppc.cocktails.ContactUsActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/lightColorBg"
-    tools:context="com.example.cocktails.CustomItem.insertIngredients.SelectUnit">
+    tools:context="com.cocktailsppc.cocktails.CustomItem.insertIngredients.SelectUnit">
 
 
   <LinearLayout

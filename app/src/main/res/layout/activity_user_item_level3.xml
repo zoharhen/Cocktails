@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/lightColorBg"
-    tools:context="com.example.cocktails.CustomItem.UserItemLevel3">
+    tools:context="com.cocktailsppc.cocktails.CustomItem.UserItemLevel3">
 
     <LinearLayout
         android:layout_width="fill_parent"
