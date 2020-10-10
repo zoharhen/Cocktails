@@ -4,8 +4,7 @@
 
 Want to make a cocktail but need some help? Try out Cocktails app, explore and create different excellent cocktails, and get assisted with the app AR (Augmented reality) and TTS (text-to-speech) awesome features!
 
-todo: replace link!!! 
-<a href='https://play.google.com/store/apps/details?id=ch.sheremet.katarina.cocktailspro&referrer=utm_source%3Dgithub'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height='64px'/></a>
+<a href='https://play.google.com/store/apps/details?id=com.cocktailsppc.cocktails'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height='64px'/></a>
 
 ## Features
 
